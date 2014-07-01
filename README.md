@@ -5,7 +5,9 @@ lets you:
 
   * Render really freakin' fast 
   * Reuse existing CSS
-  * Use all the latest standards, such as FlexBox
+  * Use all the latest standards, such as [flexbox][]
+
+[flexbox]: (http://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
 [Embedding Elm widgets](https://github.com/evancz/elm-html-and-js) in existing
 applications and [JS interop](http://elm-lang.org/learn/Ports.elm) are both
