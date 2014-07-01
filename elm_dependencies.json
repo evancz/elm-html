@@ -1,0 +1,15 @@
+{
+    "version": "0.1",
+    "summary": "Fast HTML, rendered with virtual DOM diffing",
+    "description": "This library gives you raw bindings to HTML, allowing you to reuse existing CSS with Elm. It uses the same diffing technique for rendering as seen in Facebook's React library and in Elm's core rendering system.",
+    "license": "BSD3",
+    "exposed-modules": [
+        "Html"
+    ],
+    "native-modules": [
+        "Native.Html"
+    ],
+    "elm-version": "0.12.3",
+    "dependencies": {},
+    "repository": "https://github.com/evancz/elm-html.git"
+}
