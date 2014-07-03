@@ -6,64 +6,52 @@ render state =
     node "div"
       [ "className" := "todomvc-wrapper" ]
       [ "visibility" := "hidden" ]
-      [ node "link"
-          [ rel := "stylesheet"
-          , href := "/mercury/examples/todomvc/style.css"
-          ]
-          []
-          []
+      [ node "link" [ rel := "stylesheet", href := "/examples/style.css" ] [] []
       , node "section"
           [ "id" := "todoapp.todoapp" ]
           []
-          [ mercury.partial(header, state.field, state.events)
-          , mainSection(state.todos, state.route, state.events)
-          , mercury.partial(statsSection,
-                state.todos, state.route, state.events)
+          [ header state
+          , mainSection state
+          , statsSection state
           ]
-      , mercury.partial(infoFooter)
+      , infoFooter
       ]
 
-header field events =
+header : State -> Html
+header state =
     node "header" 
       [ "id" := "header.header" ]
-        "ev-event": [
-            mercury.changeEvent(events.setTodoField),
-            mercury.submitEvent(events.add)
-        ]
       []
       [ node "h1" [] [] [ text "Todos" ]
       , node "input"
           [ "id"          := "new-todo.new-todo"
           , "placeholder" := "What needs to be done?"
           , "autofocus"   := "true"
-          , "value"       := field.text
+          , "value"       := state.field.text
           , "name"        := "newTodo"
           ]
           []
           []
       ]
 
-mainSection todos route events =
-    var allCompleted = todos.every(function (todo) {
-        return todo.completed
-    })
-    var visibleTodos = todos.filter(function (todo) {
-        return route === "completed" && todo.completed ||
-            route === "active" && !todo.completed ||
-            route === "all"
-    })
-
+mainSection : State -> Html
+mainSection state =
+    let isVisible todo =
+            case state.route of
+              Completed -> todo.completed
+              Active -> not todo.completed
+              All -> True
+    in
     node "section"
-      [ "id" := "main.main" ]
-      , "hidden" := bool (isEmpty todos)
+      [ "id" := "main.main"
+      , "hidden" := bool (isEmpty state.todos)
       ]
       []
       [ node "input"
           [ "id" := "toggle-all.toggle-all" ]
           [ "type" := "checkbox"
           , "name" := "toggle"
-          , "checked" := bool (all .completed todos)
-          , "ev-change": mercury.valueEvent(events.toggleAll)
+          , "checked" := bool (all .completed state.todos)
           ]
           []
       , node "label"
@@ -73,32 +61,25 @@ mainSection todos route events =
       , node "ul"
           [ "id" := "todo-list.todolist" ]
           []
-          (map todoItem (filter isVisible todos))
+          (map todoItem (filter isVisible state.todos))
       ]
 
-todoItem todo events =
+todoItem : Todo -> Html
+todoItem todo =
     let className = (if todo.completed then "completed " else "") ++
                     (if todo.editing   then "editing"    else "")
     in
 
     node "li" [ "className" := className, "key" := show todo.id ] []
       [ node "div" [ "className" := "view" ] []
-          [ node "input" [ "className" := "toggle" ]
+          [ node "input"
+              [ "className" := "toggle" ]
               [ "type" := "checkbox"
               , "checked" := bool todo.completed
-              , "ev-change": mercury.event(events.toggle, {
-                    id: todo.id,
-                    completed: !todo.completed
-                })
               ]
               []
-          , node "label" [] []
-              [ text todo.title ]
-                "ev-dblclick": mercury.event(events.startEdit, {
-                    id: todo.id 
-                })
+          , node "label" [] [] [ text todo.title ]
           , node "button" [ "className" := "destroy" ] [] []
-              |> on "click" (mercury.event(events.destroy, { id: todo.id }))
           ]
       , node "input"
           [ "className" := "edit" ]
@@ -107,20 +88,9 @@ todoItem todo events =
           ]
           []
       ]
-{-
-            "ev-focus": todo.editing ? doMutableFocus() : null,
-            "ev-keydown": mercury.keyEvent(events.cancelEdit, ESCAPE, {
-                id: todo.id
-            }),
-            "ev-event": mercury.submitEvent(events.finishEdit, {
-                id: todo.id
-            }),
-            "ev-blur": mercury.valueEvent(events.finishEdit, { id: todo.id })
-        })
--}
 
-
-statsSection todos route events =
+statsSection : State -> Html
+statsSection {todos,route} =
     let todosLeft = length (filter .completed todos)
         todosCompleted = length todos - todosLeft
     in
@@ -131,15 +101,15 @@ statsSection todos route events =
             in  text (item_ ++ " left")
           ]
       , node "ul" [ "id" := "filters.filters" ] []
-          [ link("#/", "All", route === "all"),
-            link("#/active", "Active", route === "active"),
-            link("#/completed", "Completed", route === "completed")
+          [ link "#/" "All" (route == All)
+          , link "#/active" "Active" (route == Active)
+          , link "#/completed" "Completed" (route == Completed)
           ]
       , node "button"
-          [ "className" := "clear-completed", "id" := "clear-completed" ]
-          [ "hidden" := bool (todosCompleted == 0)
-          , "ev-click": mercury.event(events.clearCompleted)
+          [ "className" := "clear-completed"
+          , "id" := "clear-completed"
           ]
+          [ "hidden" := bool (todosCompleted == 0) ]
           [ text ("Clear completed (" ++ show todosCompleted ++ ")") ]
       ]
 
