@@ -1,14 +1,43 @@
-import Http
-import Http (..)
+
+import Html
+import Html (..)
+import Window
+
+data Route = All | Completed | Active
+
+type Todo =
+    { completed : Bool
+    , editing : Bool
+    , title : String
+    , id : Int
+    }
+
+type State =
+    { todos : [Todo]
+    , route : Route
+    , field : { text : String }
+    }
+
+main = scene <~ Window.dimensions
+
+scene (w,h) =
+    let state =
+            { todos = [ Todo False False "Buy milk" 42 ]
+            , route = All
+            , field = { text = "Hello" }
+            }
+
+    in
+        Html.toElement w h (render state)
 
 render : State -> Html
 render state =
     node "div"
       [ "className" := "todomvc-wrapper" ]
       [ "visibility" := "hidden" ]
-      [ node "link" [ rel := "stylesheet", href := "/examples/style.css" ] [] []
+      [ node "link" [ "rel" := "stylesheet", "href" := "style.css" ] [] []
       , node "section"
-          [ "id" := "todoapp.todoapp" ]
+          [ "id" := "todoapp" ]
           []
           [ header state
           , mainSection state
@@ -20,11 +49,11 @@ render state =
 header : State -> Html
 header state =
     node "header" 
-      [ "id" := "header.header" ]
+      [ "id" := "header" ]
       []
       [ node "h1" [] [] [ text "Todos" ]
       , node "input"
-          [ "id"          := "new-todo.new-todo"
+          [ "id"          := "new-todo"
           , "placeholder" := "What needs to be done?"
           , "autofocus"   := "true"
           , "value"       := state.field.text
@@ -43,23 +72,22 @@ mainSection state =
               All -> True
     in
     node "section"
-      [ "id" := "main.main"
-      , "hidden" := bool (isEmpty state.todos)
-      ]
-      []
+      [ "id" := "main" ]
+      [ "visibility" := if isEmpty state.todos then "hidden" else "visible" ]
       [ node "input"
-          [ "id" := "toggle-all.toggle-all" ]
-          [ "type" := "checkbox"
+          [ "id" := "toggle-all"
+          , "type" := "checkbox"
           , "name" := "toggle"
           , "checked" := bool (all .completed state.todos)
           ]
+          []
           []
       , node "label"
           [ "htmlFor" := "toggle-all" ]
           []
           [ text "Mark all as complete" ]
       , node "ul"
-          [ "id" := "todo-list.todolist" ]
+          [ "id" := "todo-list" ]
           []
           (map todoItem (filter isVisible state.todos))
       ]
@@ -70,13 +98,14 @@ todoItem todo =
                     (if todo.editing   then "editing"    else "")
     in
 
-    node "li" [ "className" := className, "key" := show todo.id ] []
+    node "li" [ "className" := className ] []
       [ node "div" [ "className" := "view" ] []
           [ node "input"
-              [ "className" := "toggle" ]
-              [ "type" := "checkbox"
+              [ "className" := "toggle"
+              , "type" := "checkbox"
               , "checked" := bool todo.completed
               ]
+              []
               []
           , node "label" [] [] [ text todo.title ]
           , node "button" [ "className" := "destroy" ] [] []
@@ -94,13 +123,13 @@ statsSection {todos,route} =
     let todosLeft = length (filter .completed todos)
         todosCompleted = length todos - todosLeft
     in
-    node "footer" [ "id" := "footer.footer" ] [ "hidden" := bool (isEmpty todos) ]
-      [ node "span" [ "id" := "todo-count.todo-count" ] []
-          [ node "strong" [] [] [ text todosLeft ]
+    node "footer" [ "id" := "footer" ] [ "hidden" := bool (isEmpty todos) ]
+      [ node "span" [ "id" := "todo-count" ] []
+          [ node "strong" [] [] [ text (show todosLeft) ]
           , let item_ = if todosLeft == 1 then " item" else " items"
             in  text (item_ ++ " left")
           ]
-      , node "ul" [ "id" := "filters.filters" ] []
+      , node "ul" [ "id" := "filters" ] []
           [ link "#/" "All" (route == All)
           , link "#/active" "Active" (route == Active)
           , link "#/completed" "Completed" (route == Completed)
@@ -122,13 +151,13 @@ link uri words isSelected =
 
 infoFooter : Html
 infoFooter =
-    node "footer" [ "className" := "info.info" ] []
+    node "footer" [ "id" := "info" ] []
       [ node "p" [] []
           [ text "Double-click to edit a todo"
           ]
       , node "p" [] []
           [ text "Written by "
-          , node "a" [ "href" := "https://github.com/evancz" ] [] [ text "Evan Czaplicki")
+          , node "a" [ "href" := "https://github.com/evancz" ] [] [ text "Evan Czaplicki" ]
           ]
       , node "p" [] []
           [ text "Part of "
