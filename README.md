@@ -49,8 +49,8 @@ listing users =
 font : [(String,String)]
 font =
     [ "font-family" := "futura, sans-serif"
-    , "color" := Html.color charcoal
-    , "font-size" := em 1.2
+    , "color"       := Html.color charcoal
+    , "font-size"   := em 1.2
     ]
 
 background : [(String,String)]
