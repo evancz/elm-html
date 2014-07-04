@@ -21,16 +21,18 @@ make your view code modular. Creating a list of user profiles is a matter of can
 be nicely abstracted with something like this:
 
 ```haskell
+import Html (..)
+
+listing : [User] -> Html
+listing users =
+    node "div" [] [] (map profile users)
+
 profile : User -> Html
 profile user =
     node "div" [] []
     [ node "img" [ "src" := user.picture ] [] []
     , text user.name
     ]
-
-listing : [User] -> Html
-listing users =
-    node "div" [] [] (map profile users)
 ```
 
 Of course you may want to use more complex styles, but those can be abstracted
@@ -38,6 +40,13 @@ out and reused too!
 
 ```haskell
 import Html
+import Html (..)
+
+listing : [User] -> Html
+listing users =
+    let style = font ++ background
+    in
+        node "div" [] style (map profile users)
 
 font : [(String,String)]
 font =
@@ -49,12 +58,6 @@ font =
 background : [(String,String)]
 background =
     [ "background-color" := Html.color lightGrey ]
-
-listing : [User] -> Html
-listing users =
-    let style = font ++ background
-    in
-        node "div" [] style (map profile users)
 ```
 
 With these basic building blocks, it becomes possible to start building stronger
