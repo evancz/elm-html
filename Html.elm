@@ -1,5 +1,6 @@
 module Html where
 
+import Color
 import Native.Html
 import String (show, append)
 
@@ -31,3 +32,12 @@ pct n = append (show n) "%"
 
 bool : Bool -> String
 bool b = if b then "true" else "false"
+
+color : Color -> String
+color clr = 
+    let c = Color.toRgb clr
+        rgb = show c.red ++ ", " ++ show c.green ++ ", " ++ show c.blue
+    in
+        if c.alpha == 1
+        then "rgb(" ++ rgb ++ ")"
+        else "rgba(" ++ rgb ++ ", " ++ show c.alpha ++ ")"
