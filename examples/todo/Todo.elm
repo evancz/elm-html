@@ -1,7 +1,12 @@
 
 import Html
 import Html (..)
+import Html.Optimize.RefEq as Ref
 import Window
+import Graphics.Input.Field as Field
+
+port title : String
+port title = "Elm • TodoMVC"
 
 data Route = All | Completed | Active
 
@@ -15,7 +20,7 @@ type Todo =
 type State =
     { todos : [Todo]
     , route : Route
-    , field : { text : String }
+    , field : Field.Content
     }
 
 main = scene <~ Window.dimensions
@@ -24,11 +29,11 @@ scene (w,h) =
     let state =
             { todos = [ Todo False False "Buy milk" 42 ]
             , route = All
-            , field = { text = "Hello" }
+            , field = Field.noContent
             }
 
     in
-        Html.toElement w h (render state)
+        container w h midTop (Html.toElement 550 h (render state))
 
 render : State -> Html
 render state =
@@ -40,8 +45,8 @@ render state =
           [ "id" := "todoapp" ]
           []
           [ header state
-          , mainSection state
-          , statsSection state
+          , Ref.lazy2 mainSection state.route state.todos
+          , Ref.lazy statsSection state
           ]
       , infoFooter
       ]
@@ -56,29 +61,29 @@ header state =
           [ "id"          := "new-todo"
           , "placeholder" := "What needs to be done?"
           , "autofocus"   := "true"
-          , "value"       := state.field.text
+          , "value"       := state.field.string
           , "name"        := "newTodo"
           ]
           []
           []
       ]
 
-mainSection : State -> Html
-mainSection state =
+mainSection : Route -> [Todo] -> Html
+mainSection route todos =
     let isVisible todo =
-            case state.route of
+            case route of
               Completed -> todo.completed
               Active -> not todo.completed
               All -> True
     in
     node "section"
       [ "id" := "main" ]
-      [ "visibility" := if isEmpty state.todos then "hidden" else "visible" ]
+      [ "visibility" := if isEmpty todos then "hidden" else "visible" ]
       [ node "input"
           [ "id" := "toggle-all"
           , "type" := "checkbox"
           , "name" := "toggle"
-          , "checked" := bool (all .completed state.todos)
+          , "checked" := bool (all .completed todos)
           ]
           []
           []
@@ -89,7 +94,7 @@ mainSection state =
       , node "ul"
           [ "id" := "todo-list" ]
           []
-          (map todoItem (filter isVisible state.todos))
+          (map todoItem (filter isVisible todos))
       ]
 
 todoItem : Todo -> Html
