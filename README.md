@@ -44,9 +44,7 @@ import Html (..)
 
 listing : [User] -> Html
 listing users =
-    let style = font ++ background
-    in
-        node "div" [] style (map profile users)
+    node "div" [] (font ++ background) (map profile users)
 
 font : [(String,String)]
 font =
