@@ -50,7 +50,7 @@ font : [(String,String)]
 font =
     [ "font-family" := "futura, sans-serif"
     , "color" := Html.color charcoal
-    , "font-size" := "1.2em"
+    , "font-size" := em 1.2
     ]
 
 background : [(String,String)]
