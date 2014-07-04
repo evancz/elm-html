@@ -15,6 +15,8 @@ toElement : Int -> Int -> Html -> Element
 toElement = Native.Html.toElement
 
 
+-- Utilities
+
 (:=) : String -> String -> (String,String)
 (:=) = (,)
 
