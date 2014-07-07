@@ -3,6 +3,8 @@
     "version": "",
     "description": "",
     "dependencies": {
+        "data-set": "^3.0.0",
+        "dom-delegator": "^9.0.0",
         "vtree": "*",
         "virtual-dom": "0.0.8"
     }

@@ -3,11 +3,15 @@ module Html where
 import Color
 import Native.Html
 import String (show, append)
+import Html.Event (EventListener)
 
 data Html = Html
 
 node : String -> [(String,String)] -> [(String,String)] -> [Html] -> Html
 node = Native.Html.node
+
+eventNode : String -> [(String,String)] -> [(String,String)] -> [EventListener] -> [Html] -> Html
+eventNode = Native.Html.eventNode
 
 text : String -> Html
 text = Native.Html.text
@@ -18,7 +22,7 @@ toElement = Native.Html.toElement
 
 -- Utilities
 
-(:=) : String -> String -> (String,String)
+(:=) : String -> String -> (String, String)
 (:=) = (,)
 
 px : Float -> String
