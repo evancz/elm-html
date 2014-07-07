@@ -72,4 +72,5 @@ Fill in as soon as I get TodoMVC working.
 
 [React](http://facebook.github.io/react/),
 [Om](https://github.com/swannodette/om),
-[virtual-dom](https://github.com/Matt-Esch/virtual-dom)
+[virtual-dom](https://github.com/Matt-Esch/virtual-dom),
+[mercury](https://github.com/Raynos/mercury)
