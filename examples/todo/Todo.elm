@@ -1,8 +1,12 @@
-
+import Debug
+import String
 import Html
 import Html (..)
 import Html.Optimize.RefEq as Ref
 import Window
+
+import Graphics.Input (..)
+import Graphics.Input as Input
 import Graphics.Input.Field as Field
 
 port title : String
@@ -23,11 +27,18 @@ type State =
     , field : Field.Content
     }
 
+actions : Input Int
+actions = Input.input 0
+
+foo = Debug.log "click" <~ actions.signal
+
 main = scene <~ Window.dimensions
 
 scene (w,h) =
     let state =
-            { todos = [ Todo False False "Buy milk" 42 ]
+            { todos = [ Todo False False "Buy milk" 1
+                      , Todo False False "Eat milk" 2
+                      ]
             , route = All
             , field = Field.noContent
             }
@@ -57,7 +68,7 @@ header state =
       [ "id" := "header" ]
       []
       [ node "h1" [] [] [ text "Todos" ]
-      , node "input"
+      , eventNode "input"
           [ "id"          := "new-todo"
           , "placeholder" := "What needs to be done?"
           , "autofocus"   := "true"
@@ -65,6 +76,7 @@ header state =
           , "name"        := "newTodo"
           ]
           []
+          [ Html.input actions.handle (String.length . Debug.log "input") ]
           []
       ]
 
@@ -113,7 +125,9 @@ todoItem todo =
               []
               []
           , node "label" [] [] [ text todo.title ]
-          , node "button" [ "className" := "destroy" ] [] []
+          , eventNode "button" [ "className" := "destroy" ] []
+              [ click actions.handle (always todo.id) ] []
+
           ]
       , node "input"
           [ "className" := "edit" ]
