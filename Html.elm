@@ -20,7 +20,6 @@ this will come in a future release!
 import Color
 import Native.Html
 import String (show, append)
-import Html.Event (EventListener)
 
 data Html = Html
 
@@ -37,9 +36,6 @@ Notice we use the `(:=)` infix operator to make things look a bit more familiar.
 -}
 node : String -> [(String,String)] -> [(String,String)] -> [Html] -> Html
 node = Native.Html.node
-
-eventNode : String -> [(String,String)] -> [(String,String)] -> [EventListener] -> [Html] -> Html
-eventNode = Native.Html.eventNode
 
 {-| Just put plain text in the DOM. It will escape the string so that it appears
 exactly as you specify.

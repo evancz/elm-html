@@ -68,7 +68,7 @@ header state =
       [ "id" := "header" ]
       []
       [ node "h1" [] [] [ text "Todos" ]
-      , eventNode "input"
+      , node "input"
           [ "id"          := "new-todo"
           , "placeholder" := "What needs to be done?"
           , "autofocus"   := "true"
@@ -76,7 +76,6 @@ header state =
           , "name"        := "newTodo"
           ]
           []
-          [ Html.input actions.handle (String.length . Debug.log "input") ]
           []
       ]
 
@@ -125,8 +124,7 @@ todoItem todo =
               []
               []
           , node "label" [] [] [ text todo.title ]
-          , eventNode "button" [ "className" := "destroy" ] []
-              [ click actions.handle (always todo.id) ] []
+          , node "button" [ "className" := "destroy" ] [] []
 
           ]
       , node "input"
