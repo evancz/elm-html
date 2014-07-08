@@ -4,8 +4,6 @@ var VText = require('vtree/vtext');
 var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
-var DataSet = require("data-set");
-var Delegator = require("dom-delegator");
 
 Elm.Native.Html = {};
 Elm.Native.Html.make = function(elm) {
@@ -15,18 +13,11 @@ Elm.Native.Html.make = function(elm) {
     if ('values' in Elm.Native.Html)
         return elm.Native.Html.values = Elm.Native.Html.values;
 
-    // This manages event listeners. Somehow...
-    Delegator();
-
     var newElement = Elm.Graphics.Element.make(elm).newElement;
     var List = Elm.Native.List.make(elm);
     var eq = Elm.Native.Utils.make(elm).eq;
 
     function node(name, attributes, properties, contents) {
-        return eventNode(name, attributes, properties, List.Nil, contents);
-    }
-
-    function eventNode(name, attributes, properties, handlers, contents) {
         var attrs = {};
         while (attributes.ctor !== '[]') {
             var attribute = attributes._0;
@@ -40,26 +31,7 @@ Elm.Native.Html.make = function(elm) {
             properties = properties._1;
         }
         attrs.style = props;
-        while (handlers.ctor !== '[]') {
-            var handler = handlers._0;
-            attrs[handler.eventName] = DataSetHook(handler.eventHandler);
-            handlers = handlers._1;
-        }
         return new VNode(name, attrs, List.toArray(contents));
-    }
-
-    function on(name, coerce) {
-        function createListener(handle, convert) {
-            function eventHandler(event) {
-                console.log(event);
-                elm.notify(handle.id, convert(coerce(event)));
-            }
-            return {
-                eventName: name,
-                eventHandler: eventHandler
-            };                
-        }
-        return F2(createListener);
     }
 
     function DataSetHook(value) {
@@ -208,9 +180,7 @@ Elm.Native.Html.make = function(elm) {
 
     return Elm.Native.Html.values = {
         node: F4(node),
-        eventNode: F5(eventNode),
         text: text,
-        on: F2(on),
         lazyRef : F2(lazyRef ),
         lazyRef2: F3(lazyRef2),
         lazyRef3: F4(lazyRef3),
