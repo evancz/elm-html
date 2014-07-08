@@ -23,8 +23,8 @@ be nicely abstracted with something like this:
 ```haskell
 import Html (..)
 
-listing : [User] -> Html
-listing users =
+profiles : [User] -> Html
+profiles users =
     node "div" [] [] (map profile users)
 
 profile : User -> Html
@@ -42,8 +42,8 @@ out and reused too!
 import Html
 import Html (..)
 
-listing : [User] -> Html
-listing users =
+profiles : [User] -> Html
+profiles users =
     node "div" [] (font ++ background) (map profile users)
 
 font : [(String,String)]
