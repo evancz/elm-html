@@ -2,6 +2,7 @@ import Debug
 import String
 import Html
 import Html (..)
+import Html.Events (..)
 import Html.Optimize.RefEq as Ref
 import Window
 
@@ -68,7 +69,7 @@ header state =
       [ "id" := "header" ]
       []
       [ node "h1" [] [] [ text "Todos" ]
-      , node "input"
+      , eventNode "input"
           [ "id"          := "new-todo"
           , "placeholder" := "What needs to be done?"
           , "autofocus"   := "true"
@@ -76,6 +77,8 @@ header state =
           , "name"        := "newTodo"
           ]
           []
+          [ on "input" value actions.handle (String.length . Debug.log "input")
+          ]
           []
       ]
 
@@ -124,7 +127,8 @@ todoItem todo =
               []
               []
           , node "label" [] [] [ text todo.title ]
-          , node "button" [ "className" := "destroy" ] [] []
+          , eventNode "button" [ "className" := "destroy" ] []
+              [ click actions.handle (always todo.id) ] []
 
           ]
       , node "input"
