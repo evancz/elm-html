@@ -4,7 +4,10 @@
     "description": "This library gives you raw bindings to HTML, allowing you to reuse existing CSS with Elm. It uses the same diffing technique for rendering as seen in Facebook's React library and in Elm's core rendering system.\n\nThere currently is no support for handling DOM events. That will come in later releases!",
     "license": "BSD3",
     "exposed-modules": [
-        "Html"
+        "Html",
+        "Html.Events",
+        "Html.Optimize.RefEq",
+        "Html.Optimize.StructEq"
     ],
     "native-modules": [
         "Native.Html"
