@@ -28,24 +28,55 @@ type State =
     , field : Field.Content
     }
 
-actions : Input Int
-actions = Input.input 0
+actions : Input Action
+actions = Input.input NoOp
 
-foo = Debug.log "click" <~ actions.signal
+data Action
+    = NoOp
+    | Enter
+    | Delete Int
+    | DeleteComplete
+    | Check Int Bool
+    | CheckAll Bool
+    | ChangeRoute Route
 
-main = scene <~ Window.dimensions
+step : Action -> State -> State
+step action state =
+    case action of
+      NoOp -> state
+--      Enter -> 
+      Delete id ->
+          { state | todos <- filter (\t -> t.id /= id) state.todos }
 
-scene (w,h) =
-    let state =
-            { todos = [ Todo False False "Buy milk" 1
-                      , Todo False False "Eat milk" 2
-                      ]
-            , route = All
-            , field = Field.noContent
-            }
+      DeleteComplete ->
+          { state | todos <- filter (not . .completed) state.todos }
 
-    in
-        container w h midTop (Html.toElement 550 h (render state))
+      Check id isCompleted ->
+          let update t = if t.id == id then { t | completed <- isCompleted } else t
+          in
+              { state | todos <- map update state.todos }
+
+      CheckAll isCompleted ->
+          let update t = { t | completed <- isCompleted } in
+          { state | todos <- map update state.todos }
+
+      ChangeRoute route ->
+          { state | route <- route }
+
+state =
+    { todos = [ Todo True False "Buy milk" 1
+              , Todo False False "Eat milk" 2
+              ]
+    , route = All
+    , field = Field.noContent
+    }
+
+foo = Debug.log "history" <~ foldp (::) [] actions.signal
+
+main = lift2 scene (foldp step state actions.signal) Window.dimensions
+
+scene state (w,h) =
+    container w h midTop (Html.toElement 550 h (render state))
 
 render : State -> Html
 render state =
@@ -57,8 +88,8 @@ render state =
           [ "id" := "todoapp" ]
           []
           [ header state
-          , Ref.lazy2 mainSection state.route state.todos
-          , Ref.lazy statsSection state
+          , mainSection state.route state.todos
+          , statsSection state
           ]
       , infoFooter
       ]
@@ -79,8 +110,8 @@ header state =
           , "name"        := "newTodo"
           ]
           []
-          [ on "input" value actions.handle (String.length . Debug.log "input")
-          , onEnter actions.handle (always -999)
+          [ on "input" value actions.handle (always NoOp)
+          , onEnter actions.handle (always Enter)
           ]
           []
       ]
@@ -92,17 +123,20 @@ mainSection route todos =
               Completed -> todo.completed
               Active -> not todo.completed
               All -> True
+
+        allCompleted = all .completed todos
     in
     node "section"
       [ "id" := "main" ]
       [ "visibility" := if isEmpty todos then "hidden" else "visible" ]
-      [ node "input"
+      [ eventNode "input"
           [ "id" := "toggle-all"
           , "type" := "checkbox"
           , "name" := "toggle"
-          , "checked" := bool (all .completed todos)
+          , "checked" := bool allCompleted
           ]
           []
+          [ onclick actions.handle (\_ -> CheckAll (not allCompleted)) ]
           []
       , node "label"
           [ "htmlFor" := "toggle-all" ]
@@ -122,16 +156,17 @@ todoItem todo =
 
     node "li" [ "className" := className ] []
       [ node "div" [ "className" := "view" ] []
-          [ node "input"
+          [ eventNode "input"
               [ "className" := "toggle"
               , "type" := "checkbox"
               , "checked" := bool todo.completed
               ]
               []
+              [ onclick actions.handle (\_ -> Check todo.id (not todo.completed)) ]
               []
           , node "label" [] [] [ text todo.title ]
           , eventNode "button" [ "className" := "destroy" ] []
-              [ onclick actions.handle (always todo.id) ] []
+              [ onclick actions.handle (always (Delete todo.id)) ] []
 
           ]
       , node "input"
@@ -154,23 +189,25 @@ statsSection {todos,route} =
             in  text (item_ ++ " left")
           ]
       , node "ul" [ "id" := "filters" ] []
-          [ link "#/" "All" (route == All)
-          , link "#/active" "Active" (route == Active)
-          , link "#/completed" "Completed" (route == Completed)
+          [ routeSwap "#/"          All       route
+          , routeSwap "#/active"    Active    route
+          , routeSwap "#/completed" Completed route
           ]
-      , node "button"
+      , eventNode "button"
           [ "className" := "clear-completed"
           , "id" := "clear-completed"
           ]
           [ "hidden" := bool (todosCompleted == 0) ]
+          [ onclick actions.handle (always DeleteComplete) ]
           [ text ("Clear completed (" ++ show todosCompleted ++ ")") ]
       ]
 
-link : String -> String -> Bool -> Html
-link uri words isSelected =
-    let className = if isSelected then "selected" else "" in
-    node "li" [] []
-      [ node "a" [ "className" := className, "href" := uri ] [] [ text words ]
+routeSwap : String -> Route -> Route -> Html
+routeSwap uri route actualRoute =
+    let className = if route == actualRoute then "selected" else "" in
+    eventNode "li" [] []
+      [ onclick actions.handle (always (ChangeRoute route)) ]
+      [ node "a" [ "className" := className, "href" := uri ] [] [ text (show route) ]
       ]
 
 infoFooter : Html
