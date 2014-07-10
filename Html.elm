@@ -12,8 +12,16 @@ this will come in a future release!
 # Embed
 @docs toElement
 
-# Helpers
-@docs (:=), px, em, pct, bool, color
+# Attributes and Properties
+We start with two type aliases that allow us to share some useful functions:
+@docs Attribute, Property
+
+With the common `Fact` type, it is possible to use the same convenience
+functions for both attributes and properties.
+@docs (:=), toggle
+
+## Attribute and Property Helpers
+@docs px, em, pct, color
 
 -}
 
@@ -35,10 +43,10 @@ of child nodes.
 
 Notice we use the `(:=)` infix operator to make things look a bit more familiar.
 -}
-node : String -> [(String,String)] -> [(String,String)] -> [Html] -> Html
+node : String -> [Attribute] -> [Property] -> [Html] -> Html
 node = Native.Html.node
 
-eventNode : String -> [(String,String)] -> [(String,String)] -> [EventListener] -> [Html] -> Html
+eventNode : String -> [Attribute] -> [Property] -> [EventListener] -> [Html] -> Html
 eventNode = Native.Html.eventNode
 
 {-| Just put plain text in the DOM. It will escape the string so that it appears
@@ -59,16 +67,34 @@ toElement = Native.Html.toElement
 
 -- Utilities
 
-{-| An infix operator to make creating tuples more pleasant. The following
-expressions are equivalent:
+data Fact = Fact
+type Attribute = Fact
+type Property = Fact
 
-    "color" := "red"
-    ("color", "red")
+{-| Create a basic HTML attribute or CSS property. Best used with helper
+functions that make string generation easier:
 
-This is a trick to make HTML attributes and CSS properties look more familiar.
+    "visibility" := "hidden"
+
+    "width" := "40px"
+    "width" := px 40
+
+    "color" := "rgb(204, 0, 0)"
+    "color" := color red
 -}
-(:=) : String -> String -> (String, String)
-(:=) = (,)
+(:=) : String -> String -> Fact 
+(:=) = Native.Html.pair
+
+{-| Create a basic HTML attribute or CSS property that has a boolean value.
+This is needed for HTML attributes such as `hidden` and `allowfullscreen` which
+are not associated with any value:
+
+    toggle "allowfullscreen" True
+
+    toggle "hidden" (isMinimized || isComplete)
+-}
+toggle : String -> Bool -> Fact
+toggle = Native.Html.pair
 
 {-| Turn a float into a properly formatted CSS pixel value:
 
@@ -93,14 +119,6 @@ em n = append (show n) "em"
 -}
 pct : Float -> String
 pct n = append (show (100 * n)) "%"
-
-{-| Turn a boolean into the CSS equivalent:
-
-    bool True == "true"
-    bool False == "false"
--}
-bool : Bool -> String
-bool b = if b then "true" else "false"
 
 {-| Turn an Elm color into the equivalent CSS value:
 
