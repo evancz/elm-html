@@ -33,9 +33,12 @@ actions = Input.input NoOp
 
 data Action
     = NoOp
-    | Add
     | UpdateField String
+
+    | EditingTask Int Bool
     | UpdateTask Int String
+
+    | Add
     | Delete Int
     | DeleteComplete
     | Check Int Bool
@@ -49,13 +52,17 @@ step action state =
 
       Add ->
           let newTodo = Todo False False state.field state.guid in
-          { state | todos <- newTodo :: state.todos
-                  , guid <- Debug.log "guid" (state.guid + 1)
+          { state | todos <- state.todos ++ [newTodo]
+                  , guid <- state.guid + 1
                   , field <- ""
           }
 
       UpdateField str ->
           { state | field <- str }
+
+      EditingTask id isEditing ->
+          let update t = if t.id == id then { t | editing <- isEditing } else t
+          in  { state | todos <- map update state.todos }
 
       UpdateTask id task ->
           let update t = if t.id == id then { t | title <- task } else t
@@ -109,7 +116,9 @@ render state =
       , infoFooter
       ]
 
-onEnter = on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent)
+onEnter : Handle a -> a -> EventListener
+onEnter handle value =
+    on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent) handle (always value)
 
 header : State -> Html
 header state =
@@ -126,7 +135,7 @@ header state =
           ]
           []
           [ on "input" getValue actions.handle UpdateField
-          , onEnter actions.handle (always Add)
+          , onEnter actions.handle Add
           ]
           []
       ]
@@ -179,15 +188,21 @@ todoItem todo =
               []
               [ onclick actions.handle (\_ -> Check todo.id (not todo.completed)) ]
               []
-          , node "label" [] [] [ text todo.title ]
+          , eventNode "label" [] []
+              [ ondblclick actions.handle (\_ -> EditingTask todo.id True) ]
+              [ text todo.title ]
           , eventNode "button" [ "className" := "destroy" ] []
               [ onclick actions.handle (always (Delete todo.id)) ] []
 
           ]
-      , node "input"
+      , eventNode "input"
           [ "className" := "edit" ]
           [ "value" := todo.title
           , "name" := "title"
+          ]
+          [ on "input" getValue actions.handle (UpdateTask todo.id)
+          , onblur actions.handle (EditingTask todo.id False)
+          , onEnter actions.handle (EditingTask todo.id False)
           ]
           []
       ]
