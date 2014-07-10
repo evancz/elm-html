@@ -20,7 +20,7 @@ this will come in a future release!
 import Color
 import Native.Html
 import String (show, append)
-import Html.Event (EventListener)
+import Html.Events (EventListener)
 
 data Html = Html
 
