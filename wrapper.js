@@ -19,6 +19,7 @@ Elm.Native.Html.make = function(elm) {
     Delegator();
 
     var newElement = Elm.Graphics.Element.make(elm).newElement;
+    var Utils = Elm.Native.Utils.make(elm);
     var List = Elm.Native.List.make(elm);
     var Maybe = Elm.Maybe.make(elm);
     var eq = Elm.Native.Utils.make(elm).eq;
@@ -31,13 +32,13 @@ Elm.Native.Html.make = function(elm) {
         var attrs = {};
         while (attributes.ctor !== '[]') {
             var attribute = attributes._0;
-            attrs[attribute._0] = attribute._1;
+            attrs[attribute.key] = attribute.value;
             attributes = attributes._1;
         }
         var props = {};
         while (properties.ctor !== '[]') {
             var property = properties._0;
-            props[property._0] = property._1;
+            props[property.key] = property.value;
             properties = properties._1;
         }
         attrs.style = props;
@@ -47,6 +48,13 @@ Elm.Native.Html.make = function(elm) {
             handlers = handlers._1;
         }
         return new VNode(name, attrs, List.toArray(contents));
+    }
+
+    function pair(key,value) {
+        return {
+            key: key,
+            value: value
+        };
     }
 
     function on(name, coerce) {
@@ -65,6 +73,11 @@ Elm.Native.Html.make = function(elm) {
         return F2(createListener);
     }
 
+    function filterMap(f, getter) {
+        return function(event) {
+            return f(getter(event));
+        };
+    }
     function getMouseEvent(event) {
         return !(event._rawEvent instanceof MouseEvent) ?
             Maybe.Nothing :
@@ -77,23 +90,17 @@ Elm.Native.Html.make = function(elm) {
                 shiftKey: event.shiftKey
             });
     }
-    function alwaysTrue(v) { return true; }
     function getKeyboardEvent(event) {
-        return getKeyboardEventIf(alwaysTrue, event);
-    }
-    function getKeyboardEventIf(isOkay, event) {
-        if (!(event._rawEvent instanceof KeyboardEvent)) {
-            return Maybe.Nothing;
-        }
-        var value = {
-            _: {},
-            keyCode: event.keyCode,
-            altKey: event.altKey,
-            ctrlKey: event.ctrlKey,
-            metaKey: event.metaKey,
-            shiftKey: event.shiftKey
-        };
-        return isOkay(value) ? Maybe.Just(value) : Maybe.Nothing;
+        return !(event._rawEvent instanceof KeyboardEvent) ?
+            Maybe.Nothing :
+            Maybe.Just({
+                _: {},
+                keyCode: event.keyCode,
+                altKey: event.altKey,
+                ctrlKey: event.ctrlKey,
+                metaKey: event.metaKey,
+                shiftKey: event.shiftKey
+            });
     }
     function getChecked(event) {
         return 'checked' in event.target ?
@@ -122,7 +129,7 @@ Elm.Native.Html.make = function(elm) {
                 }
             });
     }
-    function getIgnore(event) {
+    function getAnything(event) {
         return Maybe.Just(Utils._Tuple0);
     }
 
@@ -276,13 +283,15 @@ Elm.Native.Html.make = function(elm) {
         text: text,
         on: F2(on),
 
+        pair: F2(pair),
+
         getMouseEvent: getMouseEvent,
         getKeyboardEvent: getKeyboardEvent,
-        getKeyboardEventIf: F2(getKeyboardEventIf),
         getChecked: getChecked,
         getValue: getValue,
         getValueAndSelection: getValueAndSelection,
-        getIgnore: getIgnore,
+        getAnything: getAnything,
+        filterMap: F2(filterMap),
 
         lazyRef : F2(lazyRef ),
         lazyRef2: F3(lazyRef2),

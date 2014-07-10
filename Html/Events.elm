@@ -9,10 +9,12 @@ module Html.Events
     , onkeyup, onkeydown, onkeypress
     , onblur, onfocus, onsubmit
     , on
-    , checked
-    , value, valueAndSelection
-    , mouseEvent, keyboardEvent, keyboardEventIf
-    , ignore
+    , getChecked
+    , getValue, getValueAndSelection
+    , Direction
+    , getMouseEvent, getKeyboardEvent
+    , getAnything
+    , when, filterMap
     ) where
 {-|
 
@@ -32,8 +34,14 @@ module Html.Events
 # General Events
 @docs on
 
-## Extractors
-@docs checked, value, valueAndSelection, Direction, mouseEvent, keyboardEvent, ignore
+## Getters
+Getters are used to take a raw JavaScript event and safely turn it into an Elm
+value. Accessing fields like `event.target.checked` can fail, so getters let
+you ask for these fields without risk of runtime errors. If the getter fails,
+the event is skipped.
+
+@docs getChecked, getValue, getValueAndSelection, Direction,
+      getMouseEvent, getKeyboardEvent, getAnything, when, filterMap
 -}
 
 
@@ -132,54 +140,79 @@ onsubmit handle value =
 
 -- General Events
 
-data Extract a = Extract
+data Get a = Get
 
-on : String -> Extract value -> Handle a -> (value -> a) -> EventListener
+on : String -> Get value -> Handle a -> (value -> a) -> EventListener
 on name coerce handle convert =
     Native.Html.on name coerce handle convert
 
-{-| Attempt to access `event.target.checked`. Only works with checkboxes.
--}
-checked : Extract Bool
-checked = Native.Html.getChecked
+{-| This lets us create custom getters that require that certain conditions
+are met. For example, we can create an event that only triggers if the user
+releases the ENTER key:
 
-{-| Attempt to access `event.target.value`. Best used with text fields and
+    onEnter : Handle a -> a -> EventListener
+    onEnter handle value =
+        on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent) handle (always value)
+
+If the condition is not met, the event does not trigger.
+-}
+when : (a -> Bool) -> Get a -> Get a
+when pred getter =
+    Native.Html.filterMap (\v -> if pred v then Just v else Nothing) getter
+
+{-| Gives the ability to create new getters from the existing primitives. For
+example, if you want only the `keyCode` from a `KeyboardEvent` you can create
+a new getter:
+
+    getKeyCode : Get Int
+    getKeyCode =
+        filterMap (\ke -> Just ke.keyCode) getKeyboardEvent
+
+-}
+filterMap : (a -> Maybe b) -> Get a -> Get b
+filterMap = Native.Html.filterMap
+
+{-| Attempt to get `event.target.checked`. Only works with checkboxes.
+-}
+getChecked : Get Bool
+getChecked = Native.Html.getChecked
+
+{-| Attempt to get `event.target.value`. Best used with text fields and
 text areas.
 -}
-value : Extract String
-value = Native.Html.getValue
+getValue : Get String
+getValue = Native.Html.getValue
 
 {-| Whether a selection goes forward or backward.
 -}
 data Direction = Forward | Backward
 
-{-| Attempt to access `event.target.value` and selection information held in
+{-| Attempt to get `event.target.value` and selection information held in
 `event.target.selectionStart`, `event.target.selectionEnd`, and
 `event.target.selectionDirection`. Only works with text fields and text areas.
 
 This is useful when you want your model to fully capture what the user is
 typing and highlighting.
 -}
-valueAndSelection : Extract { value : String
-                            , selection : { start:Int, end:Int, direction:Direction }
-                            }
-valueAndSelection = Native.Html.getValueAndSelection
+getValueAndSelection : Get { value : String
+                           , selection : { start:Int, end:Int, direction:Direction }
+                           }
+getValueAndSelection = Native.Html.getValueAndSelection
 
 {-| Attempt to interpret the event as a `MouseEvent`.
 -}
-mouseEvent : Extract MouseEvent
-mouseEvent = Native.Html.getMouseEvent
+getMouseEvent : Get MouseEvent
+getMouseEvent = Native.Html.getMouseEvent
 
 {-| Attempt to interpret the event as a `KeyboardEvent`.
 -}
-keyboardEvent : Extract KeyboardEvent
-keyboardEvent = Native.Html.getKeyboardEvent
+getKeyboardEvent : Get KeyboardEvent
+getKeyboardEvent = Native.Html.getKeyboardEvent
 
-keyboardEventIf : (KeyboardEvent -> Bool) -> Extract KeyboardEvent
-keyboardEventIf = Native.Html.getKeyboardEventIf
-
-{-| Ignore the value. This extraction always succeeds.
+{-| Ignore the event entirely. This extraction always succeeds, returning a unit
+value. This is useful for things like click events where you just need to know
+that the click occured.
 -}
-ignore : Extract ()
-ignore = Native.Html.getIgnore
+getAnything : Get ()
+getAnything = Native.Html.getAnything
 
