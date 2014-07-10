@@ -63,6 +63,8 @@ render state =
       , infoFooter
       ]
 
+onEnter = on "keyup" (keyboardEventIf (\kbdEvent -> kbdEvent.keyCode == 13))
+
 header : State -> Html
 header state =
     node "header" 
@@ -78,6 +80,7 @@ header state =
           ]
           []
           [ on "input" value actions.handle (String.length . Debug.log "input")
+          , onEnter actions.handle (always -999)
           ]
           []
       ]
@@ -128,7 +131,7 @@ todoItem todo =
               []
           , node "label" [] [] [ text todo.title ]
           , eventNode "button" [ "className" := "destroy" ] []
-              [ click actions.handle (always todo.id) ] []
+              [ onclick actions.handle (always todo.id) ] []
 
           ]
       , node "input"
