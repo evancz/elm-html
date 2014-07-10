@@ -94,7 +94,7 @@ render state =
       , infoFooter
       ]
 
-onEnter = on "keyup" (keyboardEventIf (\kbdEvent -> kbdEvent.keyCode == 13))
+onEnter = on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent)
 
 header : State -> Html
 header state =
@@ -110,7 +110,7 @@ header state =
           , "name"        := "newTodo"
           ]
           []
-          [ on "input" value actions.handle (always NoOp)
+          [ on "input" getValue actions.handle (always NoOp . Debug.log "stuff")
           , onEnter actions.handle (always Enter)
           ]
           []
@@ -133,7 +133,7 @@ mainSection route todos =
           [ "id" := "toggle-all"
           , "type" := "checkbox"
           , "name" := "toggle"
-          , "checked" := bool allCompleted
+          , toggle "checked" allCompleted
           ]
           []
           [ onclick actions.handle (\_ -> CheckAll (not allCompleted)) ]
@@ -159,7 +159,7 @@ todoItem todo =
           [ eventNode "input"
               [ "className" := "toggle"
               , "type" := "checkbox"
-              , "checked" := bool todo.completed
+              , toggle "checked" todo.completed
               ]
               []
               [ onclick actions.handle (\_ -> Check todo.id (not todo.completed)) ]
@@ -182,7 +182,7 @@ statsSection {todos,route} =
     let todosLeft = length (filter .completed todos)
         todosCompleted = length todos - todosLeft
     in
-    node "footer" [ "id" := "footer" ] [ "hidden" := bool (isEmpty todos) ]
+    node "footer" [ "id" := "footer", toggle "hidden" (isEmpty todos) ] []
       [ node "span" [ "id" := "todo-count" ] []
           [ node "strong" [] [] [ text (show todosLeft) ]
           , let item_ = if todosLeft == 1 then " item" else " items"
@@ -196,8 +196,9 @@ statsSection {todos,route} =
       , eventNode "button"
           [ "className" := "clear-completed"
           , "id" := "clear-completed"
+          , toggle "hidden" (todosCompleted == 0)
           ]
-          [ "hidden" := bool (todosCompleted == 0) ]
+          []
           [ onclick actions.handle (always DeleteComplete) ]
           [ text ("Clear completed (" ++ show todosCompleted ++ ")") ]
       ]
