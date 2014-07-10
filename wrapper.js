@@ -75,7 +75,8 @@ Elm.Native.Html.make = function(elm) {
 
     function filterMap(f, getter) {
         return function(event) {
-            return f(getter(event));
+            var maybeValue = getter(event);
+            return maybeValue.ctor === 'Nothing' ? maybeValue : f(maybeValue._0);
         };
     }
     function getMouseEvent(event) {
