@@ -77,17 +77,23 @@ Elm.Native.Html.make = function(elm) {
                 shiftKey: event.shiftKey
             });
     }
+    function alwaysTrue(v) { return true; }
     function getKeyboardEvent(event) {
-        return !(event._rawEvent instanceof KeyboardEvent) ?
-            Maybe.Nothing :
-            Maybe.Just({
-                _: {},
-                keyCode: event.keyCode,
-                altKey: event.altKey,
-                ctrlKey: event.ctrlKey,
-                metaKey: event.metaKey,
-                shiftKey: event.shiftKey
-            });
+        return getKeyboardEventIf(alwaysTrue, event);
+    }
+    function getKeyboardEventIf(isOkay, event) {
+        if (!(event._rawEvent instanceof KeyboardEvent)) {
+            return Maybe.Nothing;
+        }
+        var value = {
+            _: {},
+            keyCode: event.keyCode,
+            altKey: event.altKey,
+            ctrlKey: event.ctrlKey,
+            metaKey: event.metaKey,
+            shiftKey: event.shiftKey
+        };
+        return isOkay(value) ? Maybe.Just(value) : Maybe.Nothing;
     }
     function getChecked(event) {
         return 'checked' in event.target ?
@@ -272,6 +278,7 @@ Elm.Native.Html.make = function(elm) {
 
         getMouseEvent: getMouseEvent,
         getKeyboardEvent: getKeyboardEvent,
+        getKeyboardEventIf: F2(getKeyboardEventIf),
         getChecked: getChecked,
         getValue: getValue,
         getValueAndSelection: getValueAndSelection,

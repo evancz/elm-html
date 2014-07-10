@@ -1,29 +1,33 @@
-module Html.Event ( click, dblclick, mousemove
-                  , mousedown, mouseup
-                  , mouseenter, mouseleave
-                  , mouseover, mouseout
-                  , keyup, keydown, keypress
-                  , blur, focus, submit
-                  , on
-                  , checked
-                  , value, valueAndSelection
-                  , mouseEvent, keyboardEvent
-                  , ignore
-                  ) where
+module Html.Events
+    ( EventListener
+--    , MouseEvent
+--    , KeyboardEvent
+    , onclick, ondblclick, onmousemove
+    , onmousedown, onmouseup
+    , onmouseenter, onmouseleave
+    , onmouseover, onmouseout
+    , onkeyup, onkeydown, onkeypress
+    , onblur, onfocus, onsubmit
+    , on
+    , checked
+    , value, valueAndSelection
+    , mouseEvent, keyboardEvent, keyboardEventIf
+    , ignore
+    ) where
 {-|
 
 # Mouse Events
 @docs MouseEvent,
-      click, dblclick, mousemove,
-      mousedown, mouseup,
-      mouseenter, mouseleave,
-      mouseover, mouseout
+      onclick, ondblclick, onmousemove,
+      onmousedown, onmouseup,
+      onmouseenter, onmouseleave,
+      onmouseover, onmouseout
 
 # Keyboard Events
-@docs KeyboardEvent, keyup, keydown, keypress
+@docs KeyboardEvent, onkeyup, onkeydown, onkeypress
 
 # Simple Events
-@docs blur, focus, submit
+@docs onblur, onfocus, onsubmit
 
 # General Events
 @docs on
@@ -57,32 +61,32 @@ onMouse : String -> Handle a -> (MouseEvent -> a) -> EventListener
 onMouse name =
     Native.Html.on name Native.Html.getMouseEvent
 
-click      : Handle a -> (MouseEvent -> a) -> EventListener
-click      = onMouse "click"
+onclick      : Handle a -> (MouseEvent -> a) -> EventListener
+onclick      = onMouse "click"
 
-dblclick   : Handle a -> (MouseEvent -> a) -> EventListener
-dblclick   = onMouse "dblclick"
+ondblclick   : Handle a -> (MouseEvent -> a) -> EventListener
+ondblclick   = onMouse "dblclick"
 
-mousemove  : Handle a -> (MouseEvent -> a) -> EventListener
-mousemove  = onMouse "mousemove"
+onmousemove  : Handle a -> (MouseEvent -> a) -> EventListener
+onmousemove  = onMouse "mousemove"
 
-mousedown  : Handle a -> (MouseEvent -> a) -> EventListener
-mousedown  = onMouse "mousedown"
+onmousedown  : Handle a -> (MouseEvent -> a) -> EventListener
+onmousedown  = onMouse "mousedown"
 
-mouseup    : Handle a -> (MouseEvent -> a) -> EventListener
-mouseup    = onMouse "mouseup"
+onmouseup    : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseup    = onMouse "mouseup"
 
-mouseenter : Handle a -> (MouseEvent -> a) -> EventListener
-mouseenter = onMouse "mouseenter"
+onmouseenter : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseenter = onMouse "mouseenter"
 
-mouseleave : Handle a -> (MouseEvent -> a) -> EventListener
-mouseleave = onMouse "mouseleave"
+onmouseleave : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseleave = onMouse "mouseleave"
 
-mouseover  : Handle a -> (MouseEvent -> a) -> EventListener
-mouseover  = onMouse "mouseover"
+onmouseover  : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseover  = onMouse "mouseover"
 
-mouseout   : Handle a -> (MouseEvent -> a) -> EventListener
-mouseout   = onMouse "mouseout"
+onmouseout   : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseout   = onMouse "mouseout"
 
 
 -- KeyboardEvent
@@ -101,28 +105,28 @@ onKey : String -> Handle a -> (KeyboardEvent -> a) -> EventListener
 onKey name =
     Native.Html.on name Native.Html.getKeyboardEvent
 
-keyup    : Handle a -> (KeyboardEvent -> a) -> EventListener
-keyup    = onKey "keyup"
+onkeyup    : Handle a -> (KeyboardEvent -> a) -> EventListener
+onkeyup    = onKey "keyup"
 
-keydown  : Handle a -> (KeyboardEvent -> a) -> EventListener
-keydown  = onKey "keydown"
+onkeydown  : Handle a -> (KeyboardEvent -> a) -> EventListener
+onkeydown  = onKey "keydown"
 
-keypress : Handle a -> (KeyboardEvent -> a) -> EventListener
-keypress = onKey "keypress"
+onkeypress : Handle a -> (KeyboardEvent -> a) -> EventListener
+onkeypress = onKey "keypress"
 
 
 -- Simple Events
 
-blur : Handle a -> a -> EventListener
-blur handle value =
+onblur : Handle a -> a -> EventListener
+onblur handle value =
     Native.Html.on "blur" id handle (always value)
 
-focus : Handle a -> a -> EventListener
-focus handle value =
+onfocus : Handle a -> a -> EventListener
+onfocus handle value =
     Native.Html.on "focus" id handle (always value)
 
-submit : Handle a -> a -> EventListener
-submit handle value =
+onsubmit : Handle a -> a -> EventListener
+onsubmit handle value =
     Native.Html.on "submit" id handle (always value)
 
 
@@ -170,6 +174,9 @@ mouseEvent = Native.Html.getMouseEvent
 -}
 keyboardEvent : Extract KeyboardEvent
 keyboardEvent = Native.Html.getKeyboardEvent
+
+keyboardEventIf : (KeyboardEvent -> Bool) -> Extract KeyboardEvent
+keyboardEventIf = Native.Html.getKeyboardEventIf
 
 {-| Ignore the value. This extraction always succeeds.
 -}
