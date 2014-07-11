@@ -50,11 +50,13 @@ step action state =
       NoOp -> state
 
       Add ->
-          let newTodo = Todo False False state.field state.guid in
-          { state | todos <- state.todos ++ [newTodo]
-                  , guid <- state.guid + 1
-                  , field <- ""
-          }
+          let newTodo = Todo False False state.field state.guid
+              newItems = if String.isEmpty state.field then [] else [newTodo]
+          in
+              { state | todos <- state.todos ++ newItems
+                      , guid <- state.guid + 1
+                      , field <- ""
+              }
 
       UpdateField str ->
           { state | field <- str }
