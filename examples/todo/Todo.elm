@@ -125,7 +125,7 @@ header state =
     node "header" 
       [ "id" := "header" ]
       []
-      [ node "h1" [] [] [ text "Todos" ]
+      [ node "h1" [] [] [ text "todos" ]
       , eventNode "input"
           [ "id"          := "new-todo"
           , "placeholder" := "What needs to be done?"
