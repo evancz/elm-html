@@ -209,8 +209,8 @@ todoItem todo =
 
 statsSection : State -> Html
 statsSection {todos,route} =
-    let todosLeft = length (filter .completed todos)
-        todosCompleted = length todos - todosLeft
+    let todosCompleted = length (filter .completed todos)
+        todosLeft = length todos - todosCompleted
     in
     node "footer" [ "id" := "footer", toggle "hidden" (isEmpty todos) ] []
       [ node "span" [ "id" := "todo-count" ] []
