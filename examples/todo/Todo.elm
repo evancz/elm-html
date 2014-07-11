@@ -1,4 +1,3 @@
-import Debug
 import String
 import Html
 import Html (..)
@@ -92,8 +91,6 @@ state =
     , field = ""
     , guid = 0
     }
-
-foo = Debug.log "history" <~ foldp (::) [] actions.signal
 
 main = lift2 scene (foldp step state actions.signal) Window.dimensions
 
