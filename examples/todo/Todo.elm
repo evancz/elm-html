@@ -219,7 +219,9 @@ statsSection {todos,route} =
           ]
       , node "ul" [ "id" := "filters" ] []
           [ routeSwap "#/"          All       route
+          , text " "
           , routeSwap "#/active"    Active    route
+          , text " "
           , routeSwap "#/completed" Completed route
           ]
       , eventNode "button"
