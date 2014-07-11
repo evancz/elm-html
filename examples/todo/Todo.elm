@@ -108,19 +108,19 @@ render state =
       , node "section"
           [ "id" := "todoapp" ]
           []
-          [ header state
-          , mainSection state.route state.todos
-          , statsSection state
+          [ Ref.lazy header state.field
+          , Ref.lazy2 mainSection state.route state.todos
+          , Ref.lazy2 statsSection state.route state.todos
           ]
       , infoFooter
       ]
 
 onEnter : Handle a -> a -> EventListener
 onEnter handle value =
-    on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent) handle (always value)
+    on "keydown" (when (\k -> k.keyCode == 13) getKeyboardEvent) handle (always value)
 
-header : State -> Html
-header state =
+header : String -> Html
+header value =
     node "header" 
       [ "id" := "header" ]
       []
@@ -129,7 +129,7 @@ header state =
           [ "id"          := "new-todo"
           , "placeholder" := "What needs to be done?"
           , "autofocus"   := "true"
-          , "value"       := state.field
+          , "value"       := value
           , "name"        := "newTodo"
           ]
           []
@@ -206,8 +206,8 @@ todoItem todo =
           []
       ]
 
-statsSection : State -> Html
-statsSection {todos,route} =
+statsSection : Route -> [Todo] -> Html
+statsSection route todos =
     let todosCompleted = length (filter .completed todos)
         todosLeft = length todos - todosCompleted
     in

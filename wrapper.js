@@ -80,7 +80,7 @@ Elm.Native.Html.make = function(elm) {
         };
     }
     function getMouseEvent(event) {
-        return !(event._rawEvent instanceof MouseEvent) ?
+        return !('button' in event) ?
             Maybe.Nothing :
             Maybe.Just({
                 _: {},
@@ -92,7 +92,7 @@ Elm.Native.Html.make = function(elm) {
             });
     }
     function getKeyboardEvent(event) {
-        return !(event._rawEvent instanceof KeyboardEvent) ?
+        return !('keyCode' in event) ?
             Maybe.Nothing :
             Maybe.Just({
                 _: {},
