@@ -195,10 +195,11 @@ todoItem todo =
 
           ]
       , eventNode "input"
-          [ "className" := "edit" ]
-          [ "value" := todo.title
+          [ "className" := "edit"
+          , "value" := todo.title
           , "name" := "title"
           ]
+          []
           [ on "input" getValue actions.handle (UpdateTask todo.id)
           , onblur actions.handle (EditingTask todo.id False)
           , onEnter actions.handle (EditingTask todo.id False)
