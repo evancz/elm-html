@@ -127,15 +127,15 @@ onkeypress = onKey "keypress"
 
 onblur : Handle a -> a -> EventListener
 onblur handle value =
-    Native.Html.on "blur" id handle (always value)
+    Native.Html.on "blur" Native.Html.getAnything handle (always value)
 
 onfocus : Handle a -> a -> EventListener
 onfocus handle value =
-    Native.Html.on "focus" id handle (always value)
+    Native.Html.on "focus" Native.Html.getAnything handle (always value)
 
 onsubmit : Handle a -> a -> EventListener
 onsubmit handle value =
-    Native.Html.on "submit" id handle (always value)
+    Native.Html.on "submit" Native.Html.getAnything handle (always value)
 
 
 -- General Events
