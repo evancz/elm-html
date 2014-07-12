@@ -8,9 +8,6 @@ import Window
 import Graphics.Input (..)
 import Graphics.Input as Input
 
-port title : String
-port title = "Elm • TodoMVC"
-
 data Route = All | Completed | Active
 
 type Todo =
@@ -29,6 +26,17 @@ type State =
 
 actions : Input Action
 actions = Input.input NoOp
+
+port focus : Signal String
+port focus =
+    let needsFocus act =
+            case act of
+              EditingTask id bool -> bool
+              _ -> False
+
+        toSelector (EditingTask id _) = ("#todo-" ++ show id)
+    in
+        toSelector <~ keepIf needsFocus (EditingTask 0 True) actions.signal
 
 data Action
     = NoOp
@@ -104,8 +112,7 @@ render state =
     node "div"
       [ "className" := "todomvc-wrapper" ]
       [ "visibility" := "hidden" ]
-      [ node "link" [ "rel" := "stylesheet", "href" := "style.css" ] [] []
-      , node "section"
+      [ node "section"
           [ "id" := "todoapp" ]
           []
           [ Ref.lazy header state.field
@@ -198,6 +205,7 @@ todoItem todo =
           [ "className" := "edit"
           , "value" := todo.title
           , "name" := "title"
+          , "id" := ("todo-" ++ show todo.id)
           ]
           []
           [ on "input" getValue actions.handle (UpdateTask todo.id)
