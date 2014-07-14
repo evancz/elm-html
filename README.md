@@ -72,6 +72,7 @@ really fast, thanks entirely to the [virtual-dom][] project it is built on
 top of.
 
 [todo]: https://github.com/evancz/elm-html/tree/master/examples/todo
+[bench]: http://evancz.github.io/todomvc-perf-comparison/
 
 ## Influences
 
