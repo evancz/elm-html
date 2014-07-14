@@ -5,7 +5,7 @@ lets you:
 
   * Render really freakin' fast 
   * Reuse existing CSS
-  * Use all the latest standards, such as [flexbox][]
+  * Use all the latest standards, such as [flexbox][flexbox]
 
 [flexbox]: (http://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
@@ -66,11 +66,21 @@ pleasant to specify.
 
 ## Performance
 
-Fill in as soon as I get TodoMVC working.
+We have written a [TodoMVC app][todo] with this library and benchmarked it
+against other popular entries. [The benchmark][bench] shows that elm-html is
+really fast, thanks entirely to the [virtual-dom][] project it is built on
+top of.
+
+[todo]: https://github.com/evancz/elm-html/tree/master/examples/todo
 
 ## Influences
 
-[React](http://facebook.github.io/react/),
-[Om](https://github.com/swannodette/om),
-[virtual-dom](https://github.com/Matt-Esch/virtual-dom),
-[mercury](https://github.com/Raynos/mercury)
+Huge thanks to [React][] and [Om][] which popularized the idea of virtual DOM
+and came up with optimizations to make it really fast. Another huge thanks to
+Matt Esch and Jake Verbaten who created [virtual-dom][] and [mercury][] which
+this library is based on!
+
+[React]: http://facebook.github.io/react/
+[Om]: https://github.com/swannodette/om
+[virtual-dom]: https://github.com/Matt-Esch/virtual-dom
+[mercury]: https://github.com/Raynos/mercury
