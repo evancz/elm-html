@@ -14,7 +14,7 @@ this will come in a future release!
 
 # Attributes and Properties
 We start with two type aliases that allow us to share some useful functions:
-@docs Attribute, Property
+@docs Attribute, CssProperty
 
 With the common `Fact` type, it is possible to use the same convenience
 functions for both attributes and properties.
@@ -43,10 +43,10 @@ of child nodes.
 
 Notice we use the `(:=)` infix operator to make things look a bit more familiar.
 -}
-node : String -> [Attribute] -> [Property] -> [Html] -> Html
+node : String -> [Attribute] -> [CssProperty] -> [Html] -> Html
 node = Native.Html.node
 
-eventNode : String -> [Attribute] -> [Property] -> [EventListener] -> [Html] -> Html
+eventNode : String -> [Attribute] -> [CssProperty] -> [EventListener] -> [Html] -> Html
 eventNode = Native.Html.eventNode
 
 {-| Just put plain text in the DOM. It will escape the string so that it appears
@@ -69,7 +69,7 @@ toElement = Native.Html.toElement
 
 data Fact = Fact
 type Attribute = Fact
-type Property = Fact
+type CssProperty = Fact
 
 {-| Create a basic HTML attribute or CSS property. Best used with helper
 functions that make string generation easier:
