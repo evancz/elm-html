@@ -3,7 +3,7 @@
 Create composable widgets with the full power of HTML and CSS. This library
 lets you:
 
-  * Render really freakin' fast 
+  * Render [really freakin' fast][bench]
   * Reuse existing CSS
   * Use all the latest standards, such as [flexbox][flexbox]
 
