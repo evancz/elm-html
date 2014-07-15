@@ -163,7 +163,7 @@ mainSection route todos =
           [ "id" := "toggle-all"
           , "type" := "checkbox"
           , "name" := "toggle"
-          , toggle "checked" allCompleted
+          , bool "checked" allCompleted
           ]
           []
           [ onclick actions.handle (\_ -> CheckAll (not allCompleted)) ]
@@ -189,7 +189,7 @@ todoItem todo =
           [ eventNode "input"
               [ "className" := "toggle"
               , "type" := "checkbox"
-              , toggle "checked" todo.completed
+              , bool "checked" todo.completed
               ]
               []
               [ onclick actions.handle (\_ -> Check todo.id (not todo.completed)) ]
@@ -220,7 +220,7 @@ statsSection route todos =
     let todosCompleted = length (filter .completed todos)
         todosLeft = length todos - todosCompleted
     in
-    node "footer" [ "id" := "footer", toggle "hidden" (isEmpty todos) ] []
+    node "footer" [ "id" := "footer", bool "hidden" (isEmpty todos) ] []
       [ node "span" [ "id" := "todo-count" ] []
           [ node "strong" [] [] [ text (show todosLeft) ]
           , let item_ = if todosLeft == 1 then " item" else " items"
@@ -236,7 +236,7 @@ statsSection route todos =
       , eventNode "button"
           [ "className" := "clear-completed"
           , "id" := "clear-completed"
-          , toggle "hidden" (todosCompleted == 0)
+          , bool "hidden" (todosCompleted == 0)
           ]
           []
           [ onclick actions.handle (always DeleteComplete) ]

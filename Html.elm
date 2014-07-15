@@ -18,7 +18,7 @@ We start with two type aliases that allow us to share some useful functions:
 
 With the common `Fact` type, it is possible to use the same convenience
 functions for both attributes and properties.
-@docs (:=), toggle
+@docs (:=), bool
 
 ## Attribute and Property Helpers
 @docs px, em, pct, color
@@ -91,12 +91,12 @@ infixr 0 :=
 This is needed for HTML attributes such as `hidden` and `allowfullscreen` which
 are not associated with any value:
 
-    toggle "allowfullscreen" True
+    bool "allowfullscreen" True
 
-    toggle "hidden" (isMinimized || isComplete)
+    bool "hidden" (isMinimized || isComplete)
 -}
-toggle : String -> Bool -> Fact
-toggle = Native.Html.pair
+bool : String -> Bool -> Fact
+bool = Native.Html.pair
 
 {-| Turn a float into a properly formatted CSS pixel value:
 
