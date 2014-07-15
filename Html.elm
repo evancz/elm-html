@@ -85,6 +85,8 @@ functions that make string generation easier:
 (:=) : String -> String -> Fact 
 (:=) = Native.Html.pair
 
+infixr 0 :=
+
 {-| Create a basic HTML attribute or CSS property that has a boolean value.
 This is needed for HTML attributes such as `hidden` and `allowfullscreen` which
 are not associated with any value:
