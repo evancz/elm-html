@@ -125,11 +125,11 @@ onkeypress = onKey "keypress"
 
 -- Simple Events
 
-onblur : Handle a -> a -> EventListener
+onblur   : Handle a -> a -> EventListener
 onblur handle value =
     Native.Html.on "blur" Native.Html.getAnything handle (always value)
 
-onfocus : Handle a -> a -> EventListener
+onfocus  : Handle a -> a -> EventListener
 onfocus handle value =
     Native.Html.on "focus" Native.Html.getAnything handle (always value)
 
