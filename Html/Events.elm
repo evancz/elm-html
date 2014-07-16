@@ -1,7 +1,7 @@
 module Html.Events
     ( EventListener
---    , MouseEvent
---    , KeyboardEvent
+    , MouseEvent
+    , KeyboardEvent
     , onclick, ondblclick, onmousemove
     , onmousedown, onmouseup
     , onmouseenter, onmouseleave
