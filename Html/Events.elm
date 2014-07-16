@@ -50,7 +50,7 @@ import Json
 import Native.Html
 import Native.Json
 
-data EventListener = Listener
+data EventListener = EventListener
 
 
 -- MouseEvent
