@@ -7,12 +7,12 @@ There currently is **no support for handling DOM events**. We are working on it,
 this will come in a future release!
 
 # Create
-@docs text, node
+@docs text, node, eventNode
 
 # Embed
 @docs toElement
 
-# Attributes and Properties
+# HTML Attributes and CSS Properties
 We start with two type aliases that allow us to share some useful functions:
 @docs Attribute, CssProperty
 
@@ -20,7 +20,7 @@ With the common `Fact` type, it is possible to use the same convenience
 functions for both attributes and properties.
 @docs (:=), bool
 
-## Attribute and Property Helpers
+### Fact Helpers
 @docs px, em, pct, color
 
 -}
@@ -32,20 +32,29 @@ import Html.Events (EventListener)
 
 data Html = Html
 
-{-| Create an arbitrary DOM node with a tag name, a list of HTML attributes
-like `className` and `id`, a list of CSS properties like `color`, and a list
-of child nodes.
+{-| Create a DOM node with a tag name, a list of HTML attributes like
+`className` and `id`, a list of CSS properties like `color`, and a list of
+child nodes.
 
-    node "div"
-         [ "className" := "intro" ]
-         [ "border" := "1px solid red" ]
-         [ text "hello" ]
+      node "div"
+          [ "className" := "intro" ]
+          [ "border" := "1px solid red" ]
+          [ text "hello" ]
 
 Notice we use the `(:=)` infix operator to make things look a bit more familiar.
 -}
 node : String -> [Attribute] -> [CssProperty] -> [Html] -> Html
 node = Native.Html.node
 
+{-| Create a DOM node, just like with the `node` function, but you can add event
+listeners. See the `Html.Events` library for more details.
+
+      eventNode "button"
+          [ "className" := "clear-completed" ]
+          []
+          [ onclick actions.handle (\mouseEvent -> mouseEvent.button) ]
+          [ text "Clear Completed Tasks" ]
+-}
 eventNode : String -> [Attribute] -> [CssProperty] -> [EventListener] -> [Html] -> Html
 eventNode = Native.Html.eventNode
 
