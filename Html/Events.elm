@@ -11,7 +11,7 @@ module Html.Events
     , on
     , getChecked
     , getValue, getValueAndSelection
-    , Direction
+    , Forward, Backward
     , getMouseEvent, getKeyboardEvent
     , getAnything
     , when, filterMap
