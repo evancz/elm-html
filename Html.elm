@@ -1,10 +1,7 @@
 module Html where
 {-| This library gives you raw bindings to HTML, allowing you to reuse existing
-CSS with Elm. It uses the same diffing technique for rendering as seen in Facebook
-s React library and in Elm's core rendering system.
-
-There currently is **no support for handling DOM events**. We are working on it,
-this will come in a future release!
+CSS with Elm. It uses the same diffing technique for rendering as seen in
+Facebook's React library and in Elm's core rendering system.
 
 # Create
 @docs text, node, eventNode
@@ -37,11 +34,19 @@ data Html = Html
 child nodes.
 
       node "div"
-          [ "className" := "intro" ]
-          [ "border" := "1px solid red" ]
-          [ text "hello" ]
+          [ "className" := "message"
+          , "id" := "greeting"
+          ]
+          [ "border" := "1px solid red"
+          , "width"  := "100px"
+          , "height" := "100px"
+          ]
+          [ text "hello"
+          ]
 
-Notice we use the `(:=)` infix operator to make things look a bit more familiar.
+Notice that we use `className` to set the class of the div. All HTML attributes
+and CSS properties must be set using the JavaScript version of their name, so
+`class` becomes `className`, `float` becomes `cssFloat`, etc.
 -}
 node : String -> [Attribute] -> [CssProperty] -> [Html] -> Html
 node = Native.Html.node
