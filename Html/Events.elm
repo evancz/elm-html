@@ -1,21 +1,4 @@
-module Html.Events
-    ( EventListener
-    , MouseEvent
-    , KeyboardEvent
-    , onclick, ondblclick, onmousemove
-    , onmousedown, onmouseup
-    , onmouseenter, onmouseleave
-    , onmouseover, onmouseout
-    , onkeyup, onkeydown, onkeypress
-    , onblur, onfocus, onsubmit
-    , on
-    , getChecked
-    , getValue, getValueAndSelection
-    , Forward, Backward
-    , getMouseEvent, getKeyboardEvent
-    , getAnything
-    , when, filterMap
-    ) where
+module Html.Events where
 {-|
 
 # Mouse Events
