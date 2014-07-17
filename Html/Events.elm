@@ -1,5 +1,15 @@
 module Html.Events where
-{-|
+{-| A way to handle any DOM events. The general approach is to set up an input
+as defined in `Graphics.Input` and then have each event handler send messages
+to one particular input.
+
+It is often helpful to create an [ADT][] so you can have many different kinds
+of events as seen in the [TodoMVC][] example. A possibly ill-advised trick is
+to report functions with type `(state -> state)` so you can use a small ADT or
+extend it easily. 
+
+[ADT]: http://elm-lang.org/learn/Pattern-Matching.elm
+[TodoMVC]: https://github.com/evancz/elm-todomvc/blob/master/Todo.elm
 
 # Mouse Events
 @docs MouseEvent,
