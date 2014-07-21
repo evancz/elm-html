@@ -14,6 +14,8 @@ applications and [JS interop](http://elm-lang.org/learn/Ports.elm) are both
 really easy, so this library takes the next logical step in improving Elm's
 interop story.
 
+Check out the [TodoMVC app][todo] for a larger example.
+
 ## Reusable Widgets
 
 With this library, you have the full power of Elm to create nice abstractions to
