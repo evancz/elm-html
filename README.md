@@ -71,7 +71,7 @@ against other popular entries. [The benchmark][bench] shows that elm-html is
 really fast, thanks entirely to the [virtual-dom][] project it is built on
 top of.
 
-[todo]: https://github.com/evancz/elm-html/tree/master/examples/todo
+[todo]: https://github.com/evancz/elm-todomvc
 [bench]: http://evancz.github.io/todomvc-perf-comparison/
 
 ## Influences
