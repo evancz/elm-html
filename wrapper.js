@@ -170,7 +170,10 @@ Elm.Native.Html.make = function(elm) {
 
     function update(node, oldModel, newModel) {
         var patches = diff(oldModel, newModel);
-        node.firstChild = patch(node.firstChild, patches);
+        var newNode = patch(node.firstChild, patches)
+        if (newNode !== node.firstChild) {
+            node.replaceChild(newNode, node.firstChild)
+        }
     }
 
     function lazyRef(fn, a) {
