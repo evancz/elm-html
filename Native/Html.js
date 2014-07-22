@@ -1479,6 +1479,7 @@ Elm.Native.Html.make = function(elm) {
     // This manages event listeners. Somehow...
     Delegator();
 
+    var RenderUtils = ElmRuntime.use(ElmRuntime.Render.Utils);
     var newElement = Elm.Graphics.Element.make(elm).newElement;
     var Utils = Elm.Native.Utils.make(elm);
     var List = Elm.Native.List.make(elm);
@@ -1616,15 +1617,21 @@ Elm.Native.Html.make = function(elm) {
         return A3(newElement, width, height,
                   { ctor: 'Custom'
                   , type: 'evancz/elm-html'
-                  , render: createElement
+                  , render: render
                   , update: update
                   , model: html
                   });
     }
 
+    function render(model) {
+        var element = RenderUtils.newElement('div');
+        element.appendChild(createElement(model));
+        return element;
+    }
+
     function update(node, oldModel, newModel) {
         var patches = diff(oldModel, newModel);
-        node = patch(node, patches);
+        node.firstChild = patch(node.firstChild, patches);
     }
 
     function lazyRef(fn, a) {
