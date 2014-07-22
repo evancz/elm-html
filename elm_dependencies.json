@@ -1,5 +1,5 @@
 {
-    "version": "0.1",
+    "version": "0.1.1",
     "summary": "Fast HTML, rendered with virtual DOM diffing",
     "description": "This library gives you raw bindings to HTML, allowing you to reuse existing CSS with Elm. Based on the [virtual-dom](https://github.com/Matt-Esch/virtual-dom) library, it uses the same diffing techniques as Facebook's React and ClojureScript's Om.",
     "license": "BSD3",
