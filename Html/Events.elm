@@ -12,14 +12,15 @@ extend it easily.
 [TodoMVC]: https://github.com/evancz/elm-todomvc/blob/master/Todo.elm
 
 # Mouse Events
-@docs MouseEvent,
-      onclick, ondblclick, onmousemove,
+The `MouseEvent` type is defined in the `Html` module.
+@docs onclick, ondblclick, onmousemove,
       onmousedown, onmouseup,
       onmouseenter, onmouseleave,
       onmouseover, onmouseout
 
 # Keyboard Events
-@docs KeyboardEvent, onkeyup, onkeydown, onkeypress
+The `KeyboardEvent` type is defined in the `Html` module.
+@docs onkeyup, onkeydown, onkeypress
 
 # Simple Events
 @docs onblur, onfocus, onsubmit
@@ -47,16 +48,6 @@ data EventListener = EventListener
 
 
 -- MouseEvent
-
-{-| Determine which button was clicked and with which modifiers.
--}
-type MouseEvent =
-    { button   : Int
-    , altKey   : Bool
-    , ctrlKey  : Bool
-    , metaKey  : Bool
-    , shiftKey : Bool
-    }
 
 onMouse : String -> Handle a -> (MouseEvent -> a) -> EventListener
 onMouse name =
@@ -92,16 +83,6 @@ onmouseout   = onMouse "mouseout"
 
 -- KeyboardEvent
 
-{-| Determine which key was pressed and with which modifiers.
--}
-type KeyboardEvent =
-    { keyCode  : Int
-    , altKey   : Bool
-    , ctrlKey  : Bool
-    , metaKey  : Bool
-    , shiftKey : Bool
-    }
-
 onKey : String -> Handle a -> (KeyboardEvent -> a) -> EventListener
 onKey name =
     Native.Html.on name Native.Html.getKeyboardEvent
@@ -130,82 +111,4 @@ onsubmit : Handle a -> a -> EventListener
 onsubmit handle value =
     Native.Html.on "submit" Native.Html.getAnything handle (always value)
 
-
--- General Events
-
-data Get a = Get
-
-on : String -> Get value -> Handle a -> (value -> a) -> EventListener
-on name coerce handle convert =
-    Native.Html.on name coerce handle convert
-
-{-| This lets us create custom getters that require that certain conditions
-are met. For example, we can create an event that only triggers if the user
-releases the ENTER key:
-
-    onEnter : Handle a -> a -> EventListener
-    onEnter handle value =
-        on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent) handle (always value)
-
-If the condition is not met, the event does not trigger.
--}
-when : (a -> Bool) -> Get a -> Get a
-when pred getter =
-    Native.Html.filterMap (\v -> if pred v then Just v else Nothing) getter
-
-{-| Gives the ability to create new getters from the existing primitives. For
-example, if you want only the `keyCode` from a `KeyboardEvent` you can create
-a new getter:
-
-    getKeyCode : Get Int
-    getKeyCode =
-        filterMap (\ke -> Just ke.keyCode) getKeyboardEvent
-
--}
-filterMap : (a -> Maybe b) -> Get a -> Get b
-filterMap = Native.Html.filterMap
-
-{-| Attempt to get `event.target.checked`. Only works with checkboxes.
--}
-getChecked : Get Bool
-getChecked = Native.Html.getChecked
-
-{-| Attempt to get `event.target.value`. Best used with text fields and
-text areas.
--}
-getValue : Get String
-getValue = Native.Html.getValue
-
-{-| Whether a selection goes forward or backward.
--}
-data Direction = Forward | Backward
-
-{-| Attempt to get `event.target.value` and selection information held in
-`event.target.selectionStart`, `event.target.selectionEnd`, and
-`event.target.selectionDirection`. Only works with text fields and text areas.
-
-This is useful when you want your model to fully capture what the user is
-typing and highlighting.
--}
-getValueAndSelection : Get { value : String
-                           , selection : { start:Int, end:Int, direction:Direction }
-                           }
-getValueAndSelection = Native.Html.getValueAndSelection
-
-{-| Attempt to interpret the event as a `MouseEvent`.
--}
-getMouseEvent : Get MouseEvent
-getMouseEvent = Native.Html.getMouseEvent
-
-{-| Attempt to interpret the event as a `KeyboardEvent`.
--}
-getKeyboardEvent : Get KeyboardEvent
-getKeyboardEvent = Native.Html.getKeyboardEvent
-
-{-| Ignore the event entirely. This extraction always succeeds, returning a unit
-value. This is useful for things like click events where you just need to know
-that the click occured.
--}
-getAnything : Get ()
-getAnything = Native.Html.getAnything
 
