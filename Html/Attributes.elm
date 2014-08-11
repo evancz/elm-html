@@ -11,19 +11,57 @@ many categories and may not appear where you expect.
 Common attributes that can be attached to any HTML tag.
 @docs class, id, title, hidden
 
-# Embedded Content
-@docs src, height, width
 
-# Audio and Video
+# Inputs
+@docs type', value, checked, placeholder, selected
+
+## Input Helpers
+@docs accept, acceptCharset, action, autocomplete, autofocus, autosave,
+    disabled, enctype, formaction, list, maxlength, method, multiple, name,
+    novalidate, pattern, readonly, required, size, for, form
+
+## Input Ranges
+@docs max, min, step
+
+## Input Text Areas
+@docs cols, rows, wrap
+
+
+# Links and Areas
+@docs href, target, download, downloadAs, hreflang, media, ping, rel
+
+## Maps
+@docs ismap, usemap, shape, coords
+
+
+# Embedded Content
+@docs src, height, width, alt
+
+## Audio and Video
 @docs autoplay, controls, loop, preload, poster, default, kind, label, srclang
+
+## iframes
+@docs sandbox, seamless, srcdoc
+
+# Ordered Lists
+@docs reversed, start
+
+# Tables
+@docs colspan, headers, rowspan, scope, summary
 
 # Header Stuff
 @docs async, charset, content, defer, httpEquiv, language, scoped
+
+# Key Generation
+@docs challenge, keytype
 
 # Less Common Global Attributes
 Attributes that can be attached to any HTML tag but are less commonly used.
 @docs accesskey, contenteditable, contextmenu, dir, draggable, dropzone,
       itemprop, lang, spellcheck, tabindex
+
+# Miscellaneous
+@docs align, cite, datetime, pubdate, manifest, span, open
 -}
 
 import String
@@ -659,7 +697,7 @@ pubdate value =
     attr "pubdate" value
 
 
--- LISTS
+-- ORDERED LISTS
 
 {-| Indicates whether an ordered list <ol> should be displayed in a descending
 order instead of a ascending.
