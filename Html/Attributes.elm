@@ -52,13 +52,13 @@ Common attributes that can be attached to any HTML tag.
 # Header Stuff
 @docs async, charset, content, defer, httpEquiv, language, scoped
 
-# Key Generation
-@docs challenge, keytype
-
 # Less Common Global Attributes
 Attributes that can be attached to any HTML tag but are less commonly used.
 @docs accesskey, contenteditable, contextmenu, dir, draggable, dropzone,
       itemprop, lang, spellcheck, tabindex
+
+# Key Generation
+@docs challenge, keytype
 
 # Miscellaneous
 @docs align, cite, datetime, pubdate, manifest, span, open
