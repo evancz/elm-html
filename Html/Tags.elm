@@ -61,7 +61,7 @@ topic of the section it introduces.
 @docs details, summary, menuitem, menu
 -}
 
-import Html (node)
+import Html (Html, Attribute, node)
 
 
 -- SECTIONS
@@ -132,6 +132,7 @@ address = node "address"
 `<main>` element in the document.
 -}
 main' : [Attribute] -> [Html] -> Html
+main' = node "main"
 
 
 -- GROUPING CONTENT
