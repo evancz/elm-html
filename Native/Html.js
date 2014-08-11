@@ -1486,37 +1486,30 @@ Elm.Native.Html.make = function(elm) {
     var Maybe = Elm.Maybe.make(elm);
     var eq = Elm.Native.Utils.make(elm).eq;
 
-    function node(name, attributes, properties, contents) {
-        return eventNode(name, attributes, properties, List.Nil, contents);
+    function listToObject(list) {
+        var object = {};
+        while (list.ctor !== '[]') {
+            var entry = list._0;
+            object[entry.key] = entry.value;
+            list = list._1;
+        }
+        return object;
     }
 
-    function eventNode(name, attributes, properties, handlers, contents) {
-        var attrs = {};
-        while (attributes.ctor !== '[]') {
-            var attribute = attributes._0;
-            attrs[attribute.key] = attribute.value;
-            attributes = attributes._1;
-        }
-        var props = {};
-        while (properties.ctor !== '[]') {
-            var property = properties._0;
-            props[property.key] = property.value;
-            properties = properties._1;
-        }
-        attrs.style = props;
-        while (handlers.ctor !== '[]') {
-            var handler = handlers._0;
-            attrs[handler.eventName] = DataSetHook(handler.eventHandler);
-            handlers = handlers._1;
-        }
+    function node(name, attributes, contents) {
+        var attrs = listToObject(attributes);
         return new VNode(name, attrs, List.toArray(contents));
     }
 
-    function pair(key,value) {
+    function pair(key, value) {
         return {
             key: key,
             value: value
         };
+    }
+
+    function style(properties) {
+        return pair('style', listToObject(properties));
     }
 
     function on(name, coerce) {
@@ -1527,10 +1520,7 @@ Elm.Native.Html.make = function(elm) {
                     elm.notify(handle.id, convert(value._0));
                 }
             }
-            return {
-                eventName: name,
-                eventHandler: eventHandler
-            };                
+            return pair(name, DataSetHook(eventHandler));
         }
         return F2(createListener);
     }
@@ -1750,9 +1740,9 @@ Elm.Native.Html.make = function(elm) {
     }
 
     return Elm.Native.Html.values = {
-        node: F4(node),
-        eventNode: F5(eventNode),
+        node: F3(node),
         text: text,
+        style: style,
         on: F2(on),
 
         pair: F2(pair),

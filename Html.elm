@@ -31,6 +31,7 @@ dependencies.
 -}
 
 import Color
+import Graphics.Input (Handle)
 import Native.Html
 import String (show, append)
 
@@ -86,6 +87,7 @@ and CSS properties must be set using the JavaScript version of their name, so
 `class` becomes `className`, `float` becomes `cssFloat`, etc.
 -}
 attr : String -> String -> Attribute
+attr = Native.Html.pair
 
 {-| Some HTML attributes are not associated with a value, they are either there
 or not. The `toggle` function lets create this kind of attribute.
@@ -100,6 +102,7 @@ See `Html.Attributes` for helper functions like
 `(autofocus : Bool -> Attribute)` and `(readonly : Bool -> Attribute)`.
 -}
 toggle : String -> Bool -> Attribute
+toggle = Native.Html.pair
 
 
 -- STYLES
@@ -122,9 +125,11 @@ suggest that this should primarily be specified in CSS files. So the general
 recommendation is to use this function lightly.
 -}
 style : [CssProperty] -> Attribute
+style = Native.Html.style
 
 {-| Create a CSS property. -}
 prop : String -> String -> CssProperty
+prop = Native.Html.pair
 
 
 -- EVENTS
@@ -157,15 +162,14 @@ an ID to these events so that you can distinguish between them.
 Again, take a look at `Html.Events` for a much easier introduction to these
 ideas.
 -}
-on : String -> Get value -> Handle a -> (value -> a) -> EventListener
-on name coerce handle convert =
-    Native.Html.on name coerce handle convert
+on : String -> Get value -> Handle a -> (value -> a) -> Attribute
+on = Native.Html.on
 
 {-| This lets us create custom getters that require that certain conditions
 are met. For example, we can create an event that only triggers if the user
 releases the ENTER key:
 
-    onEnter : Handle a -> a -> EventListener
+    onEnter : Handle a -> a -> Attribute
     onEnter handle value =
         on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent) handle (always value)
 
