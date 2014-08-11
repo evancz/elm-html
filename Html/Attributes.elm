@@ -61,10 +61,10 @@ Attributes that can be attached to any HTML tag but are less commonly used.
 @docs challenge, keytype
 
 # Miscellaneous
-@docs align, cite, datetime, pubdate, manifest, span, open
+@docs align, cite, datetime, pubdate, manifest, span
 -}
 
-import Html (attr, toggle)
+import Html (attr, toggle, Attribute)
 import String
 
 -- This library does not include low, high, or optimum because the idea of a
@@ -99,7 +99,7 @@ title name =
 {-| Defines a keyboard shortcut to activate or add focus to the element. -}
 accesskey : Char -> Attribute
 accesskey char =
-    attr "accesskey" (String.cons char String.empty)
+    attr "accesskey" (String.fromList [char])
 
 {-| Indicates whether the element's content is editable. -}
 contenteditable : Bool -> Attribute
@@ -108,8 +108,8 @@ contenteditable bool =
 
 {-| Defines the ID of a <menu> element which will serve as the element's context menu. -}
 contextmenu : String -> Attribute
-centextmenu value =
-    attr "centextmenu" value
+contextmenu value =
+    attr "contextmenu" value
 
 {-| Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl (Right-To-Left) -}
 dir : String -> Attribute
@@ -144,9 +144,6 @@ spellcheck bool =
 tabindex : Int -> Attribute
 tabindex n =
     attr "tabindex" (show n)
-
-data <object> Specifies the URL of the resource.
-data-* Global attribute Lets you attach custom attributes to an HTML element.
 
 
 -- HEADER STUFF
@@ -753,24 +750,12 @@ summary value =
     attr "summary" value
 
 
-{-| Specifies the URL of the document's cache manifest.
-For <html>.
--}
+{-| Specifies the URL of the cache manifest for an <html> tag. -}
 manifest : String -> Attribute
 manifest value =
     attr "manifest" value
 
-{-|  
-For <col>, <colgroup>.
--}
-span : String -> Attribute
-span value =
-    attr "span" value
-
-{-| Indicates whether the details will be shown on page load.
-For <details>.
--}
-open : String -> Attribute
-open value =
-    attr "open" value
-
+{-| The number of columns a <col> or <colgroup> should span. -}
+span : Int -> Attribute
+span n =
+    attr "span" (show n)
