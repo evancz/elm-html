@@ -64,6 +64,7 @@ Attributes that can be attached to any HTML tag but are less commonly used.
 @docs align, cite, datetime, pubdate, manifest, span, open
 -}
 
+import Html (attr, toggle)
 import String
 
 -- This library does not include low, high, or optimum because the idea of a
