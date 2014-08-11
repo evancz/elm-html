@@ -5,7 +5,9 @@
     "license": "BSD3",
     "exposed-modules": [
         "Html",
+        "Html.Attributes",
         "Html.Events",
+        "Html.Tags",
         "Html.Optimize.RefEq",
         "Html.Optimize.StructEq"
     ],
