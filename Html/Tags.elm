@@ -1,19 +1,67 @@
-module Html.Tag where
-{-|
+module Html.Tags where
+{-| This file is organized roughly in order of popularity. The tags which you'd
+expect to use frequently will be closer to the top.
 
 # Headers
-
 Heading elements implement six levels of document headings. `<h1>` is the most
 important and `<h6>` is the least. A heading element briefly describes the
 topic of the section it introduces.
-
 @docs h1, h2, h3, h4, h5, h6
 
-# Sections
+# Grouping Content
+@docs div, p, hr, pre, blockquote
 
+# Text
+@docs span, a, code, em, strong, i, b, u, sub, sup, br
+
+# Lists
+@docs ol, ul, li, dl, dt, dd
+
+# Emdedded Content
+@docs img, iframe, canvas, svg, math
+
+# Inputs
+@docs form, input, textarea, button, select, option
+
+# Sections
 @docs section, nav, article, aside, header, footer, address, main', body
+
+# Figures
+@docs figure, figcaption
+
+# Tables
+@docs table, caption, colgroup, col, tbody, thead, tfoot, tr, td, th
+
+
+# Less Common Elements
+
+## Less Common Inputs
+@docs fieldset, legend, label, datalist, optgroup, keygen, output, progress, meter
+
+
+## Audio and Video
+@docs audio, video, source, track
+
+## Embedded Objects
+@docs embed, object, param
+
+## Maps
+@docs map, area
+
+## Text Edits
+@docs ins, del
+
+## Semantic Text
+@docs small, cite, dfn, abbr, time, var, samp, kbd, s, q
+
+## Less Common Text Tags
+@docs mark, ruby, rt, rp, bdi, bdo, wbr
+
+# Interactive Elements
+@docs details, summary, menuitem, menu
 -}
-import Native.Html
+
+import Html (node)
 
 
 -- SECTIONS
@@ -22,7 +70,6 @@ import Native.Html
 element in a document.
 -}
 body : [Attribute] -> [Html] -> Html
-body = node "body"
 body = node "body"
 
 {-| Defines a section in a document.
@@ -49,14 +96,19 @@ aside = node "aside"
 
 h1 : [Attribute] -> [Html] -> Html
 h1 = node "h1"
+
 h2 : [Attribute] -> [Html] -> Html
 h2 = node "h2"
+
 h3 : [Attribute] -> [Html] -> Html
 h3 = node "h3"
+
 h4 : [Attribute] -> [Html] -> Html
 h4 = node "h4"
+
 h5 : [Attribute] -> [Html] -> Html
 h5 = node "h5"
+
 h6 : [Attribute] -> [Html] -> Html
 h6 = node "h6"
 
@@ -207,8 +259,12 @@ samp = node "samp"
 kbd : [Attribute] -> [Html] -> Html
 kbd = node "kbd"
 
-{-| Represent a subscript , or a superscript. -}
-sub>,<sup : [Attribute] -> [Html] -> Html
+{-| Represent a subscript. -}
+sub : [Attribute] -> [Html] -> Html
+sub = node "sub"
+
+{-| Represent a superscript. -}
+sup : [Attribute] -> [Html] -> Html
 sup = node "sup"
 
 {-| Represents some text in an alternate voice or mood, or at least of different quality, such as a taxonomic designation, a technical term, an idiomatic phrase, a thought, or a ship name. -}
