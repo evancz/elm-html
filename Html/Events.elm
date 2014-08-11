@@ -38,77 +38,72 @@ the event is skipped.
       getMouseEvent, getKeyboardEvent, getAnything, when, filterMap
 -}
 
-
 import Graphics.Input (Handle)
-import Json
-import Native.Html
-import Native.Json
-
-data EventListener = EventListener
+import Html (Attribute, MouseEvent, KeyboardEvent, on, getMouseEvent, getKeyboardEvent, getAnything)
 
 
 -- MouseEvent
 
-onMouse : String -> Handle a -> (MouseEvent -> a) -> EventListener
+onMouse : String -> Handle a -> (MouseEvent -> a) -> Attribute
 onMouse name =
-    Native.Html.on name Native.Html.getMouseEvent
+    on name getMouseEvent
 
-onclick      : Handle a -> (MouseEvent -> a) -> EventListener
+onclick      : Handle a -> (MouseEvent -> a) -> Attribute
 onclick      = onMouse "click"
 
-ondblclick   : Handle a -> (MouseEvent -> a) -> EventListener
+ondblclick   : Handle a -> (MouseEvent -> a) -> Attribute
 ondblclick   = onMouse "dblclick"
 
-onmousemove  : Handle a -> (MouseEvent -> a) -> EventListener
+onmousemove  : Handle a -> (MouseEvent -> a) -> Attribute
 onmousemove  = onMouse "mousemove"
 
-onmousedown  : Handle a -> (MouseEvent -> a) -> EventListener
+onmousedown  : Handle a -> (MouseEvent -> a) -> Attribute
 onmousedown  = onMouse "mousedown"
 
-onmouseup    : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseup    : Handle a -> (MouseEvent -> a) -> Attribute
 onmouseup    = onMouse "mouseup"
 
-onmouseenter : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseenter : Handle a -> (MouseEvent -> a) -> Attribute
 onmouseenter = onMouse "mouseenter"
 
-onmouseleave : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseleave : Handle a -> (MouseEvent -> a) -> Attribute
 onmouseleave = onMouse "mouseleave"
 
-onmouseover  : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseover  : Handle a -> (MouseEvent -> a) -> Attribute
 onmouseover  = onMouse "mouseover"
 
-onmouseout   : Handle a -> (MouseEvent -> a) -> EventListener
+onmouseout   : Handle a -> (MouseEvent -> a) -> Attribute
 onmouseout   = onMouse "mouseout"
 
 
 -- KeyboardEvent
 
-onKey : String -> Handle a -> (KeyboardEvent -> a) -> EventListener
+onKey : String -> Handle a -> (KeyboardEvent -> a) -> Attribute
 onKey name =
-    Native.Html.on name Native.Html.getKeyboardEvent
+    on name getKeyboardEvent
 
-onkeyup    : Handle a -> (KeyboardEvent -> a) -> EventListener
+onkeyup    : Handle a -> (KeyboardEvent -> a) -> Attribute
 onkeyup    = onKey "keyup"
 
-onkeydown  : Handle a -> (KeyboardEvent -> a) -> EventListener
+onkeydown  : Handle a -> (KeyboardEvent -> a) -> Attribute
 onkeydown  = onKey "keydown"
 
-onkeypress : Handle a -> (KeyboardEvent -> a) -> EventListener
+onkeypress : Handle a -> (KeyboardEvent -> a) -> Attribute
 onkeypress = onKey "keypress"
 
 
 -- Simple Events
 
-onblur   : Handle a -> a -> EventListener
+onblur   : Handle a -> a -> Attribute
 onblur handle value =
-    Native.Html.on "blur" Native.Html.getAnything handle (always value)
+    on "blur" getAnything handle (always value)
 
-onfocus  : Handle a -> a -> EventListener
+onfocus  : Handle a -> a -> Attribute
 onfocus handle value =
-    Native.Html.on "focus" Native.Html.getAnything handle (always value)
+    on "focus" getAnything handle (always value)
 
-onsubmit : Handle a -> a -> EventListener
+onsubmit : Handle a -> a -> Attribute
 onsubmit handle value =
-    Native.Html.on "submit" Native.Html.getAnything handle (always value)
+    on "submit" getAnything handle (always value)
 
 
