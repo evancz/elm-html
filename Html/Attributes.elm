@@ -38,7 +38,7 @@ Common attributes that can be attached to any HTML tag.
 @docs src, height, width, alt
 
 ## Audio and Video
-@docs autoplay, controls, loop, preload, poster, default, kind, label, srclang
+@docs autoplay, controls, loop, preload, poster, default, kind, srclang
 
 ## iframes
 @docs sandbox, seamless, srcdoc
@@ -47,7 +47,7 @@ Common attributes that can be attached to any HTML tag.
 @docs reversed, start
 
 # Tables
-@docs align, span, colspan, rowspan, headers, scope
+@docs align, colspan, rowspan, headers, scope
 
 # Header Stuff
 @docs async, charset, content, defer, httpEquiv, language, scoped
@@ -282,10 +282,12 @@ kind : String -> Attribute
 kind value =
     attr "kind" value
 
+{-- TODO: maybe reintroduce once there's a better way to disambiguate imports
 {-| Specifies a user-readable title of the text <track>. -}
 label : String -> Attribute
 label value =
     attr "label" value
+--}
 
 {-| A two letter language code indicating the language of the <track> text data.
 -}
@@ -746,7 +748,9 @@ manifest : String -> Attribute
 manifest value =
     attr "manifest" value
 
+{-- TODO: maybe reintroduce once there's a better way to disambiguate imports
 {-| The number of columns a <col> or <colgroup> should span. -}
 span : Int -> Attribute
 span n =
     attr "span" (show n)
+--}
