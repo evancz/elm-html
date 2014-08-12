@@ -240,7 +240,9 @@ abbreviation can be represented in the title attribute.
 abbr : [Attribute] -> [Html] -> Html
 abbr = node "abbr"
 
-{-| Represents a date and time value; the machine-readable equivalent can be represented in the datetime attribute. -}
+{-| Represents a date and time value; the machine-readable equivalent can be
+represented in the datetime attribute.
+-}
 time : [Attribute] -> [Html] -> Html
 time = node "time"
 
@@ -248,7 +250,11 @@ time = node "time"
 code : [Attribute] -> [Html] -> Html
 code = node "code"
 
-{-| Represents a variable, that is, an actual mathematical expression or programming context, an identifier representing a constant, a symbol identifying a physical quantity, a function parameter, or a mere placeholder in prose. -}
+{-| Represents a variable. Specific cases where it should be used include an
+actual mathematical expression or programming context, an identifier
+representing a constant, a symbol identifying a physical quantity, a function
+parameter, or a mere placeholder in prose.
+-}
 var : [Attribute] -> [Html] -> Html
 var = node "var"
 
@@ -256,7 +262,9 @@ var = node "var"
 samp : [Attribute] -> [Html] -> Html
 samp = node "samp"
 
-{-| Represents user input , often from the keyboard, but not necessarily; it may represent other input, like transcribed voice commands. -}
+{-| Represents user input, often from the keyboard, but not necessarily; it
+may represent other input, like transcribed voice commands.
+-}
 kbd : [Attribute] -> [Html] -> Html
 kbd = node "kbd"
 
@@ -268,23 +276,38 @@ sub = node "sub"
 sup : [Attribute] -> [Html] -> Html
 sup = node "sup"
 
-{-| Represents some text in an alternate voice or mood, or at least of different quality, such as a taxonomic designation, a technical term, an idiomatic phrase, a thought, or a ship name. -}
+{-| Represents some text in an alternate voice or mood, or at least of
+different quality, such as a taxonomic designation, a technical term, an
+idiomatic phrase, a thought, or a ship name.
+-}
 i : [Attribute] -> [Html] -> Html
 i = node "i"
 
-{-| Represents a text which to which attention is drawn for utilitarian purposes . It doesn't convey extra importance and doesn't imply an alternate voice. -}
+{-| Represents a text which to which attention is drawn for utilitarian
+purposes. It doesn't convey extra importance and doesn't imply an alternate
+voice.
+-}
 b : [Attribute] -> [Html] -> Html
 b = node "b"
 
-{-| Represents a non-textual annoatation for which the conventional presentation is underlining, such labeling the text as being misspelt or labeling a proper name in Chinese text. -}
+{-| Represents a non-textual annoatation for which the conventional
+presentation is underlining, such labeling the text as being misspelt or
+labeling a proper name in Chinese text.
+-}
 u : [Attribute] -> [Html] -> Html
 u = node "u"
 
-{-| Represents text highlighted for reference purposes, that is for its relevance in another context. -}
+{-| Represents text highlighted for reference purposes, that is for its
+relevance in another context.
+-}
 mark : [Attribute] -> [Html] -> Html
 mark = node "mark"
 
-{-| Represents content to be marked with ruby annotations , short runs of text presented alongside the text. This is often used in conjunction with East Asian language where the annotations act as a guide for pronunciation, like the Japanese furigana . -}
+{-| Represents content to be marked with ruby annotations, short runs of text
+presented alongside the text. This is often used in conjunction with East Asian
+language where the annotations act as a guide for pronunciation, like the
+Japanese furigana.
+-}
 ruby : [Attribute] -> [Html] -> Html
 ruby = node "ruby"
 
@@ -292,19 +315,30 @@ ruby = node "ruby"
 rt : [Attribute] -> [Html] -> Html
 rt = node "rt"
 
-{-| Represents parenthesis around a ruby annotation, used to display the annotation in an alternate way by browsers not supporting the standard display for annotations. -}
+{-| Represents parenthesis around a ruby annotation, used to display the
+annotation in an alternate way by browsers not supporting the standard display
+for annotations.
+-}
 rp : [Attribute] -> [Html] -> Html
 rp = node "rp"
 
-{-| Represents text that must be isolated from its surrounding for bidirectional text formatting. It allows embedding a span of text with a different, or unknown, directionality. -}
+{-| Represents text that must be isolated from its surrounding for
+bidirectional text formatting. It allows embedding a span of text with a
+different, or unknown, directionality.
+-}
 bdi : [Attribute] -> [Html] -> Html
 bdi = node "bdi"
 
-{-| Represents the directionality of its children, in order to explicitly override the Unicode bidirectional algorithm. -}
+{-| Represents the directionality of its children, in order to explicitly
+override the Unicode bidirectional algorithm.
+-}
 bdo : [Attribute] -> [Html] -> Html
 bdo = node "bdo"
 
-{-| Represents text with no specific meaning. This has to be used when no other text-semantic element conveys an adequate meaning, which, in this case, is often brought by global attributes like class, lang, or dir. -}
+{-| Represents text with no specific meaning. This has to be used when no other
+text-semantic element conveys an adequate meaning, which, in this case, is
+often brought by global attributes like class, lang, or dir.
+-}
 span : [Attribute] -> [Html] -> Html
 span = node "span"
 
@@ -312,7 +346,9 @@ span = node "span"
 br : [Attribute] -> [Html] -> Html
 br = node "br"
 
-{-| Represents a line break opportunity , that is a suggested point for wrapping text in order to improve readability of text split on several lines. -}
+{-| Represents a line break opportunity , that is a suggested point for
+wrapping text in order to improve readability of text split on several lines.
+-}
 wbr : [Attribute] -> [Html] -> Html
 wbr = node "wbr"
 
@@ -335,15 +371,19 @@ del = node "del"
 img : [Attribute] -> [Html] -> Html
 img = node "img"
 
-{-| Represents a nested browsing context , that is an embedded HTML document. -}
+{-| Embedded an HTML document. -}
 iframe : [Attribute] -> [Html] -> Html
 iframe = node "iframe"
 
-{-| Represents a integration point for an external, often non-HTML, application or interactive content. -}
+{-| Represents a integration point for an external, often non-HTML,
+application or interactive content.
+-}
 embed : [Attribute] -> [Html] -> Html
 embed = node "embed"
 
-{-| Represents an external resource , which is treated as an image, an HTML sub-document, or an external resource to be processed by a plug-in. -}
+{-| Represents an external resource , which is treated as an image, an HTML
+sub-document, or an external resource to be processed by a plug-in.
+-}
 object : [Attribute] -> [Html] -> Html
 object = node "object"
 
@@ -351,23 +391,27 @@ object = node "object"
 param : [Attribute] -> [Html] -> Html
 param = node "param"
 
-{-| Represents a video , and its associated audio files and captions, with the necessary interface to play it. -}
+{-| Represents a video, the associated audio and captions, and controls. -}
 video : [Attribute] -> [Html] -> Html
 video = node "video"
 
-{-| Represents a sound , or an audio stream. -}
+{-| Represents a sound or audio stream. -}
 audio : [Attribute] -> [Html] -> Html
 audio = node "audio"
 
-{-| Allows authors to specify alternative media resources for media elements like <video> or <audio>. -}
+{-| Allows authors to specify alternative media resources for media elements
+like <video> or <audio>.
+-}
 source : [Attribute] -> [Html] -> Html
 source = node "source"
 
-{-| Allows authors to specify timed text track for media elements like <video> or <audio>. -}
+{-| Allows authors to specify timed text track for media elements like <video>
+or <audio>.
+-}
 track : [Attribute] -> [Html] -> Html
 track = node "track"
 
-{-| Represents a bitmap area that scripts can be used to render graphics, like graphs, game graphics, or any visual images on the fly. -}
+{-| Represents a bitmap area for graphics rendering. -}
 canvas : [Attribute] -> [Html] -> Html
 canvas = node "canvas"
 
@@ -406,15 +450,18 @@ colgroup = node "colgroup"
 col : [Attribute] -> [Html] -> Html
 col = node "col"
 
-{-| Represents the block of rows that describes the concrete data of a table. -}
+{-| Represents the block of rows that describes the concrete data of a table.
+-}
 tbody : [Attribute] -> [Html] -> Html
 tbody = node "tbody"
 
-{-| Represents the block of rows that describes the column labels of a table. -}
+{-| Represents the block of rows that describes the column labels of a table.
+-}
 thead : [Attribute] -> [Html] -> Html
 thead = node "thead"
 
-{-| Represents the block of rows that describes the column summaries of a table. -}
+{-| Represents the block of rows that describes the column summaries of a table.
+-}
 tfoot : [Attribute] -> [Html] -> Html
 tfoot = node "tfoot"
 
@@ -433,7 +480,9 @@ th = node "th"
 
 -- FORMS
 
-{-| Represents a form , consisting of controls, that can be submitted to a server for processing. -}
+{-| Represents a form , consisting of controls, that can be submitted to a
+server for processing.
+-}
 form : [Attribute] -> [Html] -> Html
 form = node "form"
 
@@ -469,7 +518,9 @@ datalist = node "datalist"
 optgroup : [Attribute] -> [Html] -> Html
 optgroup = node "optgroup"
 
-{-| Represents an option in a <select> element, or a suggestion of a <datalist> element. -}
+{-| Represents an option in a <select> element or a suggestion of a <datalist>
+element.
+-}
 option : [Attribute] -> [Html] -> Html
 option = node "option"
 
@@ -489,14 +540,18 @@ output = node "output"
 progress : [Attribute] -> [Html] -> Html
 progress = node "progress"
 
-{-| Represents a scalar measurement (or a fractional value), within a known range. -}
+{-| Represents a scalar measurement (or a fractional value), within a known
+range.
+-}
 meter : [Attribute] -> [Html] -> Html
 meter = node "meter"
 
 
 -- INTERACTIVE ELEMENTS
 
-{-| Represents a widget from which the user can obtain additional information or controls. -}
+{-| Represents a widget from which the user can obtain additional information
+or controls.
+-}
 details : [Attribute] -> [Html] -> Html
 details = node "details"
 
