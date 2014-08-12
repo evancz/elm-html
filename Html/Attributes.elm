@@ -323,7 +323,7 @@ srcdoc value =
 -}
 type' : String -> Attribute
 type' value =
-    attr "value" value
+    attr "type" value
 
 {-| Defines a default value which will be displayed in a <button>, <option>,
 <input>, <li>, <meter>, <progress>, or <param>.
@@ -493,7 +493,7 @@ for an <output>.
 -}
 for : String -> Attribute
 for value =
-    attr "for" value
+    attr "htmlFor" value
 
 {-| Indicates the element ID of the <form> that owns this particular <button>,
 <fieldset>, <input>, <keygen>, <label>, <meter>, <object>, <output>,
