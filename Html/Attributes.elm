@@ -47,7 +47,7 @@ Common attributes that can be attached to any HTML tag.
 @docs reversed, start
 
 # Tables
-@docs colspan, rowspan, summary, headers, scope
+@docs align, span, colspan, rowspan, headers, scope
 
 # Header Stuff
 @docs async, charset, content, defer, httpEquiv, language, scoped
@@ -61,7 +61,7 @@ Attributes that can be attached to any HTML tag but are less commonly used.
 @docs challenge, keytype
 
 # Miscellaneous
-@docs align, span, cite, datetime, pubdate, manifest
+@docs cite, datetime, pubdate, manifest
 -}
 
 import Html (attr, toggle, Attribute)
@@ -720,8 +720,8 @@ colspan : String -> Attribute
 colspan value =
     attr "colspan" value
 
-{-| IDs of the <th> elements which applies to this element.
-For <td> and <th>.
+{-| A space separated list of element IDs indicating which <th> elements are
+headers for this cell. For <td> and <th>.
 -}
 headers : String -> Attribute
 headers value =
@@ -734,19 +734,12 @@ rowspan : String -> Attribute
 rowspan value =
     attr "rowspan" value
 
-{-|  
-For <th>.
+{-| Specifies the scope of a header cell <th>. Possible values are: col, row,
+colgroup, rowgroup.
 -}
 scope : String -> Attribute
 scope value =
     attr "scope" value
-
-{-|  
-For <table>.
--}
-summary : String -> Attribute
-summary value =
-    attr "summary" value
 
 {-| Specifies the URL of the cache manifest for an <html> tag. -}
 manifest : String -> Attribute
