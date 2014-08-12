@@ -45,9 +45,6 @@ topic of the section it introduces.
 ## Embedded Objects
 @docs embed, object, param
 
-## Maps
-@docs map, area
-
 ## Text Edits
 @docs ins, del
 
@@ -415,6 +412,8 @@ track = node "track"
 canvas : [Attribute] -> [Html] -> Html
 canvas = node "canvas"
 
+{-- TODO: get a better way to disambiguate imports
+          then expose these functions
 {-| In conjunction with <area>, defines an image map. -}
 map : [Attribute] -> [Html] -> Html
 map = node "map"
@@ -422,6 +421,7 @@ map = node "map"
 {-| In conjunction with <map>, defines an image map. -}
 area : [Attribute] -> [Html] -> Html
 area = node "area"
+--}
 
 {-| Defines an embedded vectorial image. -}
 svg : [Attribute] -> [Html] -> Html
