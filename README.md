@@ -33,13 +33,17 @@ project.
 
 ### Example
 
-Try out [TodoMVC written in Elm][demo]. Check out the [source code][src]. It
-cannot get much simpler than that.
+Try out [TodoMVC written in Elm][demo] and check out the [source code][src].
 
 [![Live Demo](todo.png)][demo]
 
 [demo]: http://evancz.github.io/elm-todomvc/
 [src]: https://github.com/evancz/elm-todomvc/blob/master/Todo.elm
+
+For information on architecting larger projects, see [this
+document][architecture].
+
+[architecture]: https://gist.github.com/evancz/2b2ba366cae1887fe621
 
 ### Performance
 
