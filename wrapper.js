@@ -6,6 +6,7 @@ var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 var DataSet = require("data-set");
 var Delegator = require("dom-delegator");
+var isHook = require("vtree/is-vhook");
 
 Elm.Native.Html = {};
 Elm.Native.Html.make = function(elm) {
@@ -37,6 +38,18 @@ Elm.Native.Html.make = function(elm) {
 
     function node(name, attributes, contents) {
         var attrs = listToObject(attributes);
+
+        // ensure that setting text of an input does not move the cursor
+        var useSoftSet =
+            name === 'input'
+            && 'value' in attrs
+            && attrs.value !== undefined
+            && !isHook(attrs.value);
+
+        if (useSoftSet) {
+            attrs.value = SoftSetHook(attrs.value);
+        }
+
         return new VNode(name, attrs, List.toArray(contents));
     }
 
@@ -136,6 +149,21 @@ Elm.Native.Html.make = function(elm) {
     DataSetHook.prototype.hook = function (node, propertyName) {
         var ds = DataSet(node);
         ds[propertyName] = this.value;
+    };
+
+
+    function SoftSetHook(value) {
+      if (!(this instanceof SoftSetHook)) {
+        return new SoftSetHook(value);
+      }
+
+      this.value = value;
+    }
+
+    SoftSetHook.prototype.hook = function (node, propertyName) {
+      if (node[propertyName] !== this.value) {
+        node[propertyName] = this.value;
+      }
     };
 
     function text(string) {
