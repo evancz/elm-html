@@ -1467,6 +1467,7 @@ var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 var DataSet = require("data-set");
 var Delegator = require("dom-delegator");
+var isHook = require("vtree/is-vhook");
 
 Elm.Native.Html = {};
 Elm.Native.Html.make = function(elm) {
@@ -1486,37 +1487,42 @@ Elm.Native.Html.make = function(elm) {
     var Maybe = Elm.Maybe.make(elm);
     var eq = Elm.Native.Utils.make(elm).eq;
 
-    function node(name, attributes, properties, contents) {
-        return eventNode(name, attributes, properties, List.Nil, contents);
+    function listToObject(list) {
+        var object = {};
+        while (list.ctor !== '[]') {
+            var entry = list._0;
+            object[entry.key] = entry.value;
+            list = list._1;
+        }
+        return object;
     }
 
-    function eventNode(name, attributes, properties, handlers, contents) {
-        var attrs = {};
-        while (attributes.ctor !== '[]') {
-            var attribute = attributes._0;
-            attrs[attribute.key] = attribute.value;
-            attributes = attributes._1;
+    function node(name, attributes, contents) {
+        var attrs = listToObject(attributes);
+
+        // ensure that setting text of an input does not move the cursor
+        var useSoftSet =
+            name === 'input'
+            && 'value' in attrs
+            && attrs.value !== undefined
+            && !isHook(attrs.value);
+
+        if (useSoftSet) {
+            attrs.value = SoftSetHook(attrs.value);
         }
-        var props = {};
-        while (properties.ctor !== '[]') {
-            var property = properties._0;
-            props[property.key] = property.value;
-            properties = properties._1;
-        }
-        attrs.style = props;
-        while (handlers.ctor !== '[]') {
-            var handler = handlers._0;
-            attrs[handler.eventName] = DataSetHook(handler.eventHandler);
-            handlers = handlers._1;
-        }
+
         return new VNode(name, attrs, List.toArray(contents));
     }
 
-    function pair(key,value) {
+    function pair(key, value) {
         return {
             key: key,
             value: value
         };
+    }
+
+    function style(properties) {
+        return pair('style', listToObject(properties));
     }
 
     function on(name, coerce) {
@@ -1527,10 +1533,7 @@ Elm.Native.Html.make = function(elm) {
                     elm.notify(handle.id, convert(value._0));
                 }
             }
-            return {
-                eventName: name,
-                eventHandler: eventHandler
-            };                
+            return pair(name, DataSetHook(eventHandler));
         }
         return F2(createListener);
     }
@@ -1607,6 +1610,21 @@ Elm.Native.Html.make = function(elm) {
     DataSetHook.prototype.hook = function (node, propertyName) {
         var ds = DataSet(node);
         ds[propertyName] = this.value;
+    };
+
+
+    function SoftSetHook(value) {
+      if (!(this instanceof SoftSetHook)) {
+        return new SoftSetHook(value);
+      }
+
+      this.value = value;
+    }
+
+    SoftSetHook.prototype.hook = function (node, propertyName) {
+      if (node[propertyName] !== this.value) {
+        node[propertyName] = this.value;
+      }
     };
 
     function text(string) {
@@ -1750,9 +1768,9 @@ Elm.Native.Html.make = function(elm) {
     }
 
     return Elm.Native.Html.values = {
-        node: F4(node),
-        eventNode: F5(eventNode),
+        node: F3(node),
         text: text,
+        style: style,
         on: F2(on),
 
         pair: F2(pair),
@@ -1775,6 +1793,6 @@ Elm.Native.Html.make = function(elm) {
     };
 };
 
-},{"data-set":2,"dom-delegator":8,"virtual-dom/create-element":15,"virtual-dom/diff":16,"virtual-dom/patch":20,"vtree/vnode":38,"vtree/vtext":39}],41:[function(require,module,exports){
+},{"data-set":2,"dom-delegator":8,"virtual-dom/create-element":15,"virtual-dom/diff":16,"virtual-dom/patch":20,"vtree/is-vhook":34,"vtree/vnode":38,"vtree/vtext":39}],41:[function(require,module,exports){
 
 },{}]},{},[40]);
