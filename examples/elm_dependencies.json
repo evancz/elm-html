@@ -4,9 +4,9 @@
     "description": "This file is just for downloading dependencies",
     "license": "BSD3",
     "exposed-modules": [],
-    "elm-version": "0.12.3",
+    "elm-version": "0.13",
     "dependencies": {
-        "evancz/elm-html": "0.1.2"
+        "evancz/elm-html": "0.2"
     },
     "repository": "https://github.com/evancz/elm-todomvc.git"
 }
