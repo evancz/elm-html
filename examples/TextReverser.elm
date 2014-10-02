@@ -30,9 +30,7 @@ reversedString string =
 stringInput : String -> Html
 stringInput string =
     input
-        [ id "new-todo"
-        , placeholder "Text to reverse"
-        , autofocus True
+        [ placeholder "Text to reverse"
         , value string
         , on "input" getValue actions.handle identity
         , style myStyle
