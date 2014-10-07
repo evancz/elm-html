@@ -3,8 +3,8 @@ module Html.Tags where
 expect to use frequently will be closer to the top.
 
 # Headers
-Heading elements implement six levels of document headings. `<h1>` is the most
-important and `<h6>` is the least. A heading element briefly describes the
+Heading elements implement six levels of document headings. `h1` is the most
+important and `h6` is the least. A heading element briefly describes the
 topic of the section it introduces.
 @docs h1, h2, h3, h4, h5, h6
 
@@ -63,7 +63,7 @@ import Html (Html, Attribute, node)
 
 -- SECTIONS
 
-{-| Represents the content of an HTML document. There is only one <body>
+{-| Represents the content of an HTML document. There is only one `body`
 element in a document.
 -}
 body : [Attribute] -> [Html] -> Html
@@ -126,7 +126,7 @@ address : [Attribute] -> [Html] -> Html
 address = node "address"
 
 {-| Defines the main or important content in the document. There is only one
-`<main>` element in the document.
+`main` element in the document.
 -}
 main' : [Attribute] -> [Html] -> Html
 main' = node "main"
@@ -172,7 +172,7 @@ definitions.
 dl : [Attribute] -> [Html] -> Html
 dl = node "dl"
 
-{-| Represents a term defined by the next `<dd>`. -}
+{-| Represents a term defined by the next `dd`. -}
 dt : [Attribute] -> [Html] -> Html
 dt = node "dt"
 
@@ -384,7 +384,7 @@ sub-document, or an external resource to be processed by a plug-in.
 object : [Attribute] -> [Html] -> Html
 object = node "object"
 
-{-| Defines parameters for use by plug-ins invoked by <object> elements. -}
+{-| Defines parameters for use by plug-ins invoked by `object` elements. -}
 param : [Attribute] -> [Html] -> Html
 param = node "param"
 
@@ -397,13 +397,13 @@ audio : [Attribute] -> [Html] -> Html
 audio = node "audio"
 
 {-| Allows authors to specify alternative media resources for media elements
-like <video> or <audio>.
+like `video` or `audio`.
 -}
 source : [Attribute] -> [Html] -> Html
 source = node "source"
 
-{-| Allows authors to specify timed text track for media elements like <video>
-or <audio>.
+{-| Allows authors to specify timed text track for media elements like `video`
+or `audio`.
 -}
 track : [Attribute] -> [Html] -> Html
 track = node "track"
@@ -414,11 +414,11 @@ canvas = node "canvas"
 
 {-- TODO: get a better way to disambiguate imports
           then expose these functions
-{-| In conjunction with <area>, defines an image map. -}
+{-| In conjunction with `area`, defines an image map. -}
 map : [Attribute] -> [Html] -> Html
 map = node "map"
 
-{-| In conjunction with <map>, defines an image map. -}
+{-| In conjunction with `map`, defines an image map. -}
 area : [Attribute] -> [Html] -> Html
 area = node "area"
 --}
@@ -490,7 +490,7 @@ form = node "form"
 fieldset : [Attribute] -> [Html] -> Html
 fieldset = node "fieldset"
 
-{-| Represents the caption for a <fieldset>. -}
+{-| Represents the caption for a `fieldset`. -}
 legend : [Attribute] -> [Html] -> Html
 legend = node "legend"
 
@@ -518,7 +518,7 @@ datalist = node "datalist"
 optgroup : [Attribute] -> [Html] -> Html
 optgroup = node "optgroup"
 
-{-| Represents an option in a <select> element or a suggestion of a <datalist>
+{-| Represents an option in a `select` element or a suggestion of a `datalist`
 element.
 -}
 option : [Attribute] -> [Html] -> Html
@@ -555,7 +555,7 @@ or controls.
 details : [Attribute] -> [Html] -> Html
 details = node "details"
 
-{-| Represents a summary , caption , or legend for a given <details>. -}
+{-| Represents a summary , caption , or legend for a given `details`. -}
 summary : [Attribute] -> [Html] -> Html
 summary = node "summary"
 
