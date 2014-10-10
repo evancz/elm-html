@@ -1478,7 +1478,7 @@ Elm.Native.Html.make = function(elm) {
         return elm.Native.Html.values = Elm.Native.Html.values;
 
     // This manages event listeners. Somehow...
-    Delegator();
+    var delegator = Delegator();
 
     var RenderUtils = ElmRuntime.use(ElmRuntime.Render.Utils);
     var newElement = Elm.Graphics.Element.make(elm).newElement;
@@ -1527,6 +1527,7 @@ Elm.Native.Html.make = function(elm) {
 
     function on(name, coerce) {
         function createListener(handle, convert) {
+            delegator.listenTo(name);
             function eventHandler(event) {
                 var value = coerce(event);
                 if (value.ctor === 'Just') {
