@@ -124,10 +124,13 @@ function addEvent(target, type, handler) {
 },{"data-set":2}],7:[function(require,module,exports){
 var globalDocument = require("global/document")
 var DataSet = require("data-set")
+var createStore = require("weakmap-shim/create-store")
 
 var addEvent = require("./add-event.js")
 var removeEvent = require("./remove-event.js")
 var ProxyEvent = require("./proxy-event.js")
+
+var HANDLER_STORE = createStore()
 
 module.exports = DOMDelegator
 
@@ -143,24 +146,40 @@ function DOMDelegator(document) {
 DOMDelegator.prototype.addEventListener = addEvent
 DOMDelegator.prototype.removeEventListener = removeEvent
 
+DOMDelegator.prototype.allocateHandle =
+    function allocateHandle(func) {
+        var handle = new Handle()
+
+        HANDLER_STORE(handle).func = func;
+
+        return handle
+    }
+
+DOMDelegator.prototype.transformHandle =
+    function transformHandle(handle, lambda) {
+        var func = HANDLER_STORE(handle).func
+
+        return this.allocateHandle(function (ev) {
+            var result = lambda(ev)
+            if (result) {
+                func(result)
+            }
+        })
+    }
+
 DOMDelegator.prototype.addGlobalEventListener =
     function addGlobalEventListener(eventName, fn) {
-        var listeners = this.globalListeners[eventName]
-        if (!listeners) {
-            listeners = this.globalListeners[eventName] = []
-        }
-
+        var listeners = this.globalListeners[eventName] || [];
         if (listeners.indexOf(fn) === -1) {
             listeners.push(fn)
         }
+
+        this.globalListeners[eventName] = listeners;
     }
 
 DOMDelegator.prototype.removeGlobalEventListener =
     function removeGlobalEventListener(eventName, fn) {
-        var listeners = this.globalListeners[eventName]
-        if (!listeners) {
-            return
-        }
+        var listeners = this.globalListeners[eventName] || [];
 
         var index = listeners.indexOf(fn)
         if (index !== -1) {
@@ -174,7 +193,14 @@ DOMDelegator.prototype.listenTo = function listenTo(eventName) {
     }
 
     this.events[eventName] = true
-    listen(this, eventName)
+
+    var listener = this.rawEventListeners[eventName]
+    if (!listener) {
+        listener = this.rawEventListeners[eventName] =
+            createHandler(eventName, this)
+    }
+
+    this.target.addEventListener(eventName, listener, true)
 }
 
 DOMDelegator.prototype.unlistenTo = function unlistenTo(eventName) {
@@ -183,50 +209,47 @@ DOMDelegator.prototype.unlistenTo = function unlistenTo(eventName) {
     }
 
     this.events[eventName] = false
-    unlisten(this, eventName)
-}
-
-function listen(delegator, eventName) {
-    var listener = delegator.rawEventListeners[eventName]
-
-    if (!listener) {
-        listener = delegator.rawEventListeners[eventName] =
-            createHandler(eventName, delegator.globalListeners)
-    }
-
-    delegator.target.addEventListener(eventName, listener, true)
-}
-
-function unlisten(delegator, eventName) {
-    var listener = delegator.rawEventListeners[eventName]
+    var listener = this.rawEventListeners[eventName]
 
     if (!listener) {
         throw new Error("dom-delegator#unlistenTo: cannot " +
             "unlisten to " + eventName)
     }
 
-    delegator.target.removeEventListener(eventName, listener, true)
+    this.target.removeEventListener(eventName, listener, true)
 }
 
-function createHandler(eventName, globalListeners) {
+function createHandler(eventName, delegator) {
+    var globalListeners = delegator.globalListeners;
+    var delegatorTarget = delegator.target;
+
     return handler
 
     function handler(ev) {
         var globalHandlers = globalListeners[eventName] || []
-        var listener = getListener(ev.target, eventName)
 
-        var handlers = globalHandlers
-            .concat(listener ? listener.handlers : [])
-        if (handlers.length === 0) {
-            return
+        if (globalHandlers.length > 0) {
+            var globalEvent = new ProxyEvent(ev);
+            globalEvent.currentTarget = delegatorTarget;
+            callListeners(globalHandlers, globalEvent)
         }
 
-        var arg = new ProxyEvent(ev, listener)
+        findAndInvokeListeners(ev.target, ev, eventName)
+    }
+}
 
-        handlers.forEach(function (handler) {
-            typeof handler === "function" ?
-                handler(arg) : handler.handleEvent(arg)
-        })
+function findAndInvokeListeners(elem, ev, eventName) {
+    var listener = getListener(elem, eventName)
+
+    if (listener && listener.handlers.length > 0) {
+        var listenerEvent = new ProxyEvent(ev);
+        listenerEvent.currentTarget = listener.currentTarget
+        callListeners(listener.handlers, listenerEvent)
+
+        if (listenerEvent._bubbles) {
+            var nextTarget = listener.currentTarget.parentNode
+            findAndInvokeListeners(nextTarget, ev, eventName)
+        }
     }
 }
 
@@ -249,12 +272,31 @@ function getListener(target, type) {
     return new Listener(target, handlers)
 }
 
+function callListeners(handlers, ev) {
+    handlers.forEach(function (handler) {
+        if (typeof handler === "function") {
+            handler(ev)
+        } else if (typeof handler.handleEvent === "function") {
+            handler.handleEvent(ev)
+        } else if (handler.type === "dom-delegator-handle") {
+            HANDLER_STORE(handler).func(ev)
+        } else {
+            throw new Error("dom-delegator: unknown handler " +
+                "found: " + JSON.stringify(handlers));
+        }
+    })
+}
+
 function Listener(target, handlers) {
     this.currentTarget = target
     this.handlers = handlers
 }
 
-},{"./add-event.js":6,"./proxy-event.js":13,"./remove-event.js":14,"data-set":2,"global/document":10}],8:[function(require,module,exports){
+function Handle() {
+    this.type = "dom-delegator-handle"
+}
+
+},{"./add-event.js":6,"./proxy-event.js":15,"./remove-event.js":16,"data-set":2,"global/document":10,"weakmap-shim/create-store":13}],8:[function(require,module,exports){
 var Individual = require("individual")
 var cuid = require("cuid")
 var globalDocument = require("global/document")
@@ -268,7 +310,8 @@ var commonEvents = [
     "blur", "change", "click",  "contextmenu", "dblclick",
     "error","focus", "focusin", "focusout", "input", "keydown",
     "keypress", "keyup", "load", "mousedown", "mouseup",
-    "resize", "scroll", "select", "submit", "unload"
+    "resize", "scroll", "select", "submit", "touchcancel",
+    "touchend", "touchstart", "unload"
 ]
 
 /*  Delegator is a thin wrapper around a singleton `DOMDelegator`
@@ -442,7 +485,7 @@ if (typeof document !== 'undefined') {
 }
 
 }).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":41}],11:[function(require,module,exports){
+},{"min-document":43}],11:[function(require,module,exports){
 module.exports=require(3)
 },{}],12:[function(require,module,exports){
 if (typeof Object.create === 'function') {
@@ -470,6 +513,10 @@ if (typeof Object.create === 'function') {
 }
 
 },{}],13:[function(require,module,exports){
+module.exports=require(4)
+},{"./hidden-store.js":14}],14:[function(require,module,exports){
+module.exports=require(5)
+},{}],15:[function(require,module,exports){
 var inherits = require("inherits")
 
 var ALL_PROPS = [
@@ -489,15 +536,15 @@ var rmouseEvent = /^(?:mouse|pointer|contextmenu)|click/
 
 module.exports = ProxyEvent
 
-function ProxyEvent(ev, listener) {
+function ProxyEvent(ev) {
     if (!(this instanceof ProxyEvent)) {
-        return new ProxyEvent(ev, listener)
+        return new ProxyEvent(ev)
     }
 
     if (rkeyEvent.test(ev.type)) {
-        return new KeyEvent(ev, listener)
+        return new KeyEvent(ev)
     } else if (rmouseEvent.test(ev.type)) {
-        return new MouseEvent(ev, listener)
+        return new MouseEvent(ev)
     }
 
     for (var i = 0; i < ALL_PROPS.length; i++) {
@@ -506,14 +553,18 @@ function ProxyEvent(ev, listener) {
     }
 
     this._rawEvent = ev
-    this.currentTarget = listener ? listener.currentTarget : null
+    this._bubbles = false;
 }
 
 ProxyEvent.prototype.preventDefault = function () {
     this._rawEvent.preventDefault()
 }
 
-function MouseEvent(ev, listener) {
+ProxyEvent.prototype.startPropagation = function () {
+    this._bubbles = true;
+}
+
+function MouseEvent(ev) {
     for (var i = 0; i < ALL_PROPS.length; i++) {
         var propKey = ALL_PROPS[i]
         this[propKey] = ev[propKey]
@@ -525,12 +576,11 @@ function MouseEvent(ev, listener) {
     }
 
     this._rawEvent = ev
-    this.currentTarget = listener ? listener.currentTarget : null
 }
 
 inherits(MouseEvent, ProxyEvent)
 
-function KeyEvent(ev, listener) {
+function KeyEvent(ev) {
     for (var i = 0; i < ALL_PROPS.length; i++) {
         var propKey = ALL_PROPS[i]
         this[propKey] = ev[propKey]
@@ -542,12 +592,11 @@ function KeyEvent(ev, listener) {
     }
 
     this._rawEvent = ev
-    this.currentTarget = listener ? listener.currentTarget : null
 }
 
 inherits(KeyEvent, ProxyEvent)
 
-},{"inherits":12}],14:[function(require,module,exports){
+},{"inherits":12}],16:[function(require,module,exports){
 var DataSet = require("data-set")
 
 module.exports = removeEvent
@@ -568,31 +617,31 @@ function removeEvent(target, type, handler) {
     }
 }
 
-},{"data-set":2}],15:[function(require,module,exports){
+},{"data-set":2}],17:[function(require,module,exports){
 var createElement = require("./vdom/create-element")
 
 module.exports = createElement
 
-},{"./vdom/create-element":22}],16:[function(require,module,exports){
+},{"./vdom/create-element":24}],18:[function(require,module,exports){
 var diff = require("./vtree/diff")
 
 module.exports = diff
 
-},{"./vtree/diff":27}],17:[function(require,module,exports){
+},{"./vtree/diff":29}],19:[function(require,module,exports){
 if (typeof document !== "undefined") {
     module.exports = document;
 } else {
     module.exports = require("min-document");
 }
 
-},{"min-document":41}],18:[function(require,module,exports){
+},{"min-document":43}],20:[function(require,module,exports){
 module.exports = isObject
 
 function isObject(x) {
     return typeof x === "object" && x !== null
 }
 
-},{}],19:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var nativeIsArray = Array.isArray
 var toString = Object.prototype.toString
 
@@ -602,12 +651,12 @@ function isArray(obj) {
     return toString.call(obj) === "[object Array]"
 }
 
-},{}],20:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var patch = require("./vdom/patch")
 
 module.exports = patch
 
-},{"./vdom/patch":25}],21:[function(require,module,exports){
+},{"./vdom/patch":27}],23:[function(require,module,exports){
 var isObject = require("is-object")
 
 var isHook = require("../vtree/is-vhook")
@@ -638,7 +687,7 @@ function applyProperties(node, props, previous) {
     }
 }
 
-},{"../vtree/is-vhook":28,"is-object":18}],22:[function(require,module,exports){
+},{"../vtree/is-vhook":30,"is-object":20}],24:[function(require,module,exports){
 var document = require("global/document")
 
 var applyProperties = require("./apply-properties")
@@ -683,7 +732,7 @@ function createElement(vnode, opts) {
     return node
 }
 
-},{"../vtree/is-vnode":29,"../vtree/is-vtext":30,"../vtree/is-widget":31,"./apply-properties":21,"global/document":17}],23:[function(require,module,exports){
+},{"../vtree/is-vnode":31,"../vtree/is-vtext":32,"../vtree/is-widget":33,"./apply-properties":23,"global/document":19}],25:[function(require,module,exports){
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
 // We don't want to read all of the DOM nodes in the tree so we use
 // the in-order tree indexing to eliminate recursion down certain branches.
@@ -770,7 +819,7 @@ function ascending(a, b) {
     return a > b ? 1 : -1
 }
 
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var applyProperties = require("./apply-properties")
 
 var isWidget = require("../vtree/is-widget")
@@ -906,7 +955,7 @@ function reorderChildren(domNode, bIndex) {
     }
 }
 
-},{"../vtree/is-widget":31,"../vtree/vpatch":33,"./apply-properties":21,"./create-element":22,"./update-widget":26}],25:[function(require,module,exports){
+},{"../vtree/is-widget":33,"../vtree/vpatch":35,"./apply-properties":23,"./create-element":24,"./update-widget":28}],27:[function(require,module,exports){
 var document = require("global/document")
 var isArray = require("x-is-array")
 
@@ -981,7 +1030,7 @@ function patchIndices(patches) {
     return indices
 }
 
-},{"./dom-index":23,"./patch-op":24,"global/document":17,"x-is-array":19}],26:[function(require,module,exports){
+},{"./dom-index":25,"./patch-op":26,"global/document":19,"x-is-array":21}],28:[function(require,module,exports){
 var isWidget = require("../vtree/is-widget")
 
 module.exports = updateWidget
@@ -998,7 +1047,7 @@ function updateWidget(a, b) {
     return false
 }
 
-},{"../vtree/is-widget":31}],27:[function(require,module,exports){
+},{"../vtree/is-widget":33}],29:[function(require,module,exports){
 var isArray = require("x-is-array")
 var isObject = require("is-object")
 
@@ -1294,7 +1343,7 @@ function appendPatch(apply, patch) {
     }
 }
 
-},{"./is-vnode":29,"./is-vtext":30,"./is-widget":31,"./vpatch":33,"is-object":18,"x-is-array":19}],28:[function(require,module,exports){
+},{"./is-vnode":31,"./is-vtext":32,"./is-widget":33,"./vpatch":35,"is-object":20,"x-is-array":21}],30:[function(require,module,exports){
 module.exports = isHook
 
 function isHook(hook) {
@@ -1302,7 +1351,7 @@ function isHook(hook) {
         !hook.hasOwnProperty("hook")
 }
 
-},{}],29:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualNode
@@ -1315,7 +1364,7 @@ function isVirtualNode(x) {
     return x.type === "VirtualNode" && x.version === version
 }
 
-},{"./version":32}],30:[function(require,module,exports){
+},{"./version":34}],32:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualText
@@ -1328,17 +1377,17 @@ function isVirtualText(x) {
     return x.type === "VirtualText" && x.version === version
 }
 
-},{"./version":32}],31:[function(require,module,exports){
+},{"./version":34}],33:[function(require,module,exports){
 module.exports = isWidget
 
 function isWidget(w) {
     return w && typeof w.init === "function" && typeof w.update === "function"
 }
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = "1"
 
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var version = require("./version")
 
 VirtualPatch.NONE = 0
@@ -1361,9 +1410,9 @@ function VirtualPatch(type, vNode, patch) {
 VirtualPatch.prototype.version = version.split(".")
 VirtualPatch.prototype.type = "VirtualPatch"
 
-},{"./version":32}],34:[function(require,module,exports){
-module.exports=require(28)
-},{}],35:[function(require,module,exports){
+},{"./version":34}],36:[function(require,module,exports){
+module.exports=require(30)
+},{}],37:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualNode
@@ -1372,16 +1421,16 @@ function isVirtualNode(x) {
     return x && x.type === "VirtualNode" && x.version === version
 }
 
-},{"./version":37}],36:[function(require,module,exports){
+},{"./version":39}],38:[function(require,module,exports){
 module.exports = isWidget
 
 function isWidget(w) {
     return w && w.type === "Widget"
 }
 
-},{}],37:[function(require,module,exports){
-module.exports=require(32)
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
+module.exports=require(34)
+},{}],40:[function(require,module,exports){
 var version = require("./version")
 var isVNode = require("./is-vnode")
 var isWidget = require("./is-widget")
@@ -1446,7 +1495,7 @@ function VirtualNode(tagName, properties, children, key, namespace) {
 VirtualNode.prototype.version = version
 VirtualNode.prototype.type = "VirtualNode"
 
-},{"./is-vhook":34,"./is-vnode":35,"./is-widget":36,"./version":37}],39:[function(require,module,exports){
+},{"./is-vhook":36,"./is-vnode":37,"./is-widget":38,"./version":39}],41:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = VirtualText
@@ -1458,7 +1507,7 @@ function VirtualText(text) {
 VirtualText.prototype.version = version
 VirtualText.prototype.type = "VirtualText"
 
-},{"./version":37}],40:[function(require,module,exports){
+},{"./version":39}],42:[function(require,module,exports){
 
 var VNode = require('vtree/vnode');
 var VText = require('vtree/vtext');
@@ -1500,6 +1549,19 @@ Elm.Native.Html.make = function(elm) {
     function node(name, attributes, contents) {
         var attrs = listToObject(attributes);
 
+        var key, namespace;
+        // support keys
+        if ("key" in attrs) {
+            key = attrs.key;
+            attrs.key = undefined;
+        }
+
+        // support namespace
+        if ("namespace" in attrs) {
+            namespace = attrs.namespace;
+            attrs.namespace = undefined;
+        }
+
         // ensure that setting text of an input does not move the cursor
         var useSoftSet =
             name === 'input'
@@ -1511,7 +1573,7 @@ Elm.Native.Html.make = function(elm) {
             attrs.value = SoftSetHook(attrs.value);
         }
 
-        return new VNode(name, attrs, List.toArray(contents));
+        return new VNode(name, attrs, List.toArray(contents), key, namespace);
     }
 
     function pair(key, value) {
@@ -1794,6 +1856,6 @@ Elm.Native.Html.make = function(elm) {
     };
 };
 
-},{"data-set":2,"dom-delegator":8,"virtual-dom/create-element":15,"virtual-dom/diff":16,"virtual-dom/patch":20,"vtree/is-vhook":34,"vtree/vnode":38,"vtree/vtext":39}],41:[function(require,module,exports){
+},{"data-set":2,"dom-delegator":8,"virtual-dom/create-element":17,"virtual-dom/diff":18,"virtual-dom/patch":22,"vtree/is-vhook":36,"vtree/vnode":40,"vtree/vtext":41}],43:[function(require,module,exports){
 
-},{}]},{},[40]);
+},{}]},{},[42]);

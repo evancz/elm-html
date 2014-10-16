@@ -18,7 +18,7 @@ dependencies.
 @docs toElement
 
 # HTML Attributes
-@docs attr, toggle
+@docs attr, toggle, key
 
 # CSS Properties
 @docs style, prop
@@ -103,6 +103,15 @@ See `Html.Attributes` for helper functions like
 -}
 toggle : String -> Bool -> Attribute
 toggle = Native.Html.pair
+
+
+{-| A special attribute that uniquely identifies a node during the diffing
+process. If you have a list of 20 items and want to remove the 4th one, adding
+keys ensures that you do not end up doing misaligned diffs on the following 15
+items.
+-}
+key : String -> Attribute
+key k = Native.Html.pair "key" k
 
 
 -- STYLES
