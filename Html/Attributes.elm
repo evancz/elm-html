@@ -106,7 +106,7 @@ accesskey char =
 {-| Indicates whether the element's content is editable. -}
 contentEditable : Bool -> Attribute
 contentEditable bool =
-    attr "contentEditable" (if bool then "true" else "false")
+    toggle "contentEditable" bool
 
 {-| Defines the ID of a `menu` element which will serve as the element's
 context menu.
