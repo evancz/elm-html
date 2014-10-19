@@ -39,6 +39,19 @@ Elm.Native.Html.make = function(elm) {
     function node(name, attributes, contents) {
         var attrs = listToObject(attributes);
 
+        var key, namespace;
+        // support keys
+        if ("key" in attrs) {
+            key = attrs.key;
+            attrs.key = undefined;
+        }
+
+        // support namespace
+        if ("namespace" in attrs) {
+            namespace = attrs.namespace;
+            attrs.namespace = undefined;
+        }
+
         // ensure that setting text of an input does not move the cursor
         var useSoftSet =
             name === 'input'
@@ -50,7 +63,7 @@ Elm.Native.Html.make = function(elm) {
             attrs.value = SoftSetHook(attrs.value);
         }
 
-        return new VNode(name, attrs, List.toArray(contents));
+        return new VNode(name, attrs, List.toArray(contents), key, namespace);
     }
 
     function pair(key, value) {
