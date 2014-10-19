@@ -144,7 +144,7 @@ lang value =
 {-| Indicates whether spell checking is allowed for the element. -}
 spellcheck : Bool -> Attribute
 spellcheck bool =
-    attr "spellcheck" (if bool then "true" else "false")
+    toggle "spellcheck" bool
 
 {-| Overrides the browser's default tab order and follows the one specified
 instead.
