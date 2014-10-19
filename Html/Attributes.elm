@@ -54,7 +54,7 @@ Common attributes that can be attached to any HTML tag.
 
 # Less Common Global Attributes
 Attributes that can be attached to any HTML tag but are less commonly used.
-@docs accesskey, contenteditable, contextmenu, dir, draggable, dropzone,
+@docs accesskey, contentEditable, contextmenu, dir, draggable, dropzone,
       itemprop, lang, spellcheck, tabindex
 
 # Key Generation
@@ -104,9 +104,9 @@ accesskey char =
     attr "accesskey" (String.fromList [char])
 
 {-| Indicates whether the element's content is editable. -}
-contenteditable : Bool -> Attribute
-contenteditable bool =
-    attr "contenteditable" (if bool then "true" else "false")
+contentEditable : Bool -> Attribute
+contentEditable bool =
+    attr "contentEditable" (if bool then "true" else "false")
 
 {-| Defines the ID of a `menu` element which will serve as the element's
 context menu.
