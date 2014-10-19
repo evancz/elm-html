@@ -1,5 +1,5 @@
 {
-    "version": "0.2.1",
+    "version": "0.3",
     "summary": "Fast HTML, rendered with virtual DOM diffing",
     "description": "This library lets you use HTML in Elm. This makes it easy to existing CSS.\n\nUse `Html.Tags`, `Html.Attributes`, and `Html.Events` for convenient functions like `div` to make your code more type-safe and nicer to read.\n\nThe `Html.Optimize` modules give you tools to make rendering a lot faster, as described in [this post](http://elm-lang.org/blog/Blazing-Fast-Html.elm).\n\nThe core `Html` module has everything you need to work with HTML, but it is very bare bones. It is useful if you need to go outside the other modules for some reason.\n\nIn future releases, we plan to break out the core `Html` module and the diffing algorithm so that anyone can build on top of it without any helper functions.\n\nThis library is based on the [virtual-dom](https://github.com/Matt-Esch/virtual-dom) library and uses the same general diffing techniques as Facebook's React and ClojureScript's Om.",
     "license": "BSD3",
