@@ -77,18 +77,14 @@ Elm.Native.Html.make = function(elm) {
         return pair('style', listToObject(properties));
     }
 
-    function on(name, coerce) {
-        function createListener(handle, convert) {
-            delegator.listenTo(name);
-            function eventHandler(event) {
-                var value = coerce(event);
-                if (value.ctor === 'Just') {
-                    elm.notify(handle.id, convert(value._0));
-                }
+    function on(name, getSomething, createMessage) {
+        function eventHandler(event) {
+            var value = getSomething(event);
+            if (value.ctor === 'Just') {
+                createMessage(value._0)();
             }
-            return pair(name, DataSetHook(eventHandler));
         }
-        return F2(createListener);
+        return pair(name, DataSetHook(eventHandler));
     }
 
     function filterMap(f, getter) {
@@ -324,7 +320,7 @@ Elm.Native.Html.make = function(elm) {
         node: F3(node),
         text: text,
         style: style,
-        on: F2(on),
+        on: F3(on),
 
         pair: F2(pair),
 

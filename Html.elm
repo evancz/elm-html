@@ -31,8 +31,8 @@ dependencies.
 -}
 
 import Color
-import Graphics.Input (Handle)
 import Native.Html
+import Signal
 import String (show, append)
 
 data Html = Html
@@ -171,7 +171,7 @@ an ID to these events so that you can distinguish between them.
 Again, take a look at `Html.Events` for a much easier introduction to these
 ideas.
 -}
-on : String -> Get value -> Handle a -> (value -> a) -> Attribute
+on : String -> Get a -> (a -> Signal.Message) -> Attribute
 on = Native.Html.on
 
 {-| This lets us create custom getters that require that certain conditions

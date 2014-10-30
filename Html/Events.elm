@@ -27,71 +27,71 @@ The `MouseEvent` type is defined in the `Html` module.
       onmouseover, onmouseout
 -}
 
-import Graphics.Input (Handle)
 import Html (Attribute, MouseEvent, KeyboardEvent, on, getMouseEvent, getKeyboardEvent, getAnything)
+import Signal
 
 
 -- MouseEvent
 
-onMouse : String -> Handle a -> (MouseEvent -> a) -> Attribute
+onMouse : String -> (MouseEvent -> Signal.Message) -> Attribute
 onMouse name =
     on name getMouseEvent
 
-onclick      : Handle a -> (MouseEvent -> a) -> Attribute
-onclick      = onMouse "click"
+onclick : (MouseEvent -> Signal.Message) -> Attribute
+onclick = onMouse "click"
 
-ondblclick   : Handle a -> (MouseEvent -> a) -> Attribute
-ondblclick   = onMouse "dblclick"
+ondblclick : (MouseEvent -> Signal.Message) -> Attribute
+ondblclick = onMouse "dblclick"
 
-onmousemove  : Handle a -> (MouseEvent -> a) -> Attribute
-onmousemove  = onMouse "mousemove"
+onmousemove : (MouseEvent -> Signal.Message) -> Attribute
+onmousemove = onMouse "mousemove"
 
-onmousedown  : Handle a -> (MouseEvent -> a) -> Attribute
-onmousedown  = onMouse "mousedown"
+onmousedown : (MouseEvent -> Signal.Message) -> Attribute
+onmousedown = onMouse "mousedown"
 
-onmouseup    : Handle a -> (MouseEvent -> a) -> Attribute
-onmouseup    = onMouse "mouseup"
+onmouseup : (MouseEvent -> Signal.Message) -> Attribute
+onmouseup = onMouse "mouseup"
 
-onmouseenter : Handle a -> (MouseEvent -> a) -> Attribute
+onmouseenter : (MouseEvent -> Signal.Message) -> Attribute
 onmouseenter = onMouse "mouseenter"
 
-onmouseleave : Handle a -> (MouseEvent -> a) -> Attribute
+onmouseleave : (MouseEvent -> Signal.Message) -> Attribute
 onmouseleave = onMouse "mouseleave"
 
-onmouseover  : Handle a -> (MouseEvent -> a) -> Attribute
-onmouseover  = onMouse "mouseover"
+onmouseover : (MouseEvent -> Signal.Message) -> Attribute
+onmouseover = onMouse "mouseover"
 
-onmouseout   : Handle a -> (MouseEvent -> a) -> Attribute
-onmouseout   = onMouse "mouseout"
+onmouseout : (MouseEvent -> Signal.Message) -> Attribute
+onmouseout = onMouse "mouseout"
 
 
 -- KeyboardEvent
 
-onKey : String -> Handle a -> (KeyboardEvent -> a) -> Attribute
+onKey : String -> (KeyboardEvent -> Signal.Message) -> Attribute
 onKey name =
     on name getKeyboardEvent
 
-onkeyup    : Handle a -> (KeyboardEvent -> a) -> Attribute
-onkeyup    = onKey "keyup"
+onkeyup : (KeyboardEvent -> Signal.Message) -> Attribute
+onkeyup = onKey "keyup"
 
-onkeydown  : Handle a -> (KeyboardEvent -> a) -> Attribute
-onkeydown  = onKey "keydown"
+onkeydown : (KeyboardEvent -> Signal.Message) -> Attribute
+onkeydown = onKey "keydown"
 
-onkeypress : Handle a -> (KeyboardEvent -> a) -> Attribute
+onkeypress : (KeyboardEvent -> Signal.Message) -> Attribute
 onkeypress = onKey "keypress"
 
 
 -- Simple Events
 
-onblur   : Handle a -> a -> Attribute
+onblur : Signal.Message -> Attribute
 onblur handle value =
     on "blur" getAnything handle (always value)
 
-onfocus  : Handle a -> a -> Attribute
+onfocus : Signal.Message -> Attribute
 onfocus handle value =
     on "focus" getAnything handle (always value)
 
-onsubmit : Handle a -> a -> Attribute
+onsubmit : Signal.Message -> Attribute
 onsubmit handle value =
     on "submit" getAnything handle (always value)
 
