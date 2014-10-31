@@ -20,48 +20,47 @@ The `KeyboardEvent` type is defined in the `Html` module.
 @docs onkeyup, onkeydown, onkeypress
 
 # Mouse Events
-The `MouseEvent` type is defined in the `Html` module.
 @docs onclick, ondblclick, onmousemove,
       onmousedown, onmouseup,
       onmouseenter, onmouseleave,
       onmouseover, onmouseout
 -}
 
-import Html (Attribute, MouseEvent, KeyboardEvent, on, getMouseEvent, getKeyboardEvent, getAnything)
+import Html (Attribute, KeyboardEvent, on, getKeyboardEvent, getAnything)
 import Signal
 
 
 -- MouseEvent
 
-onMouse : String -> (MouseEvent -> Signal.Message) -> Attribute
-onMouse name =
-    on name getMouseEvent
+onMouse : String -> Signal.Message -> Attribute
+onMouse name value =
+    on name getAnything (always value)
 
-onclick : (MouseEvent -> Signal.Message) -> Attribute
+onclick : Signal.Message -> Attribute
 onclick = onMouse "click"
 
-ondblclick : (MouseEvent -> Signal.Message) -> Attribute
+ondblclick : Signal.Message -> Attribute
 ondblclick = onMouse "dblclick"
 
-onmousemove : (MouseEvent -> Signal.Message) -> Attribute
+onmousemove : Signal.Message -> Attribute
 onmousemove = onMouse "mousemove"
 
-onmousedown : (MouseEvent -> Signal.Message) -> Attribute
+onmousedown : Signal.Message -> Attribute
 onmousedown = onMouse "mousedown"
 
-onmouseup : (MouseEvent -> Signal.Message) -> Attribute
+onmouseup : Signal.Message -> Attribute
 onmouseup = onMouse "mouseup"
 
-onmouseenter : (MouseEvent -> Signal.Message) -> Attribute
+onmouseenter : Signal.Message -> Attribute
 onmouseenter = onMouse "mouseenter"
 
-onmouseleave : (MouseEvent -> Signal.Message) -> Attribute
+onmouseleave : Signal.Message -> Attribute
 onmouseleave = onMouse "mouseleave"
 
-onmouseover : (MouseEvent -> Signal.Message) -> Attribute
+onmouseover : Signal.Message -> Attribute
 onmouseover = onMouse "mouseover"
 
-onmouseout : (MouseEvent -> Signal.Message) -> Attribute
+onmouseout : Signal.Message -> Attribute
 onmouseout = onMouse "mouseout"
 
 
