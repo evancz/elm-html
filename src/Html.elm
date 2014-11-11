@@ -24,9 +24,7 @@ dependencies.
 @docs style, prop
 
 # Events
-@docs on, getChecked, getValue, getValueAndSelection, Direction,
-      getMouseEvent, MouseEvent, getKeyboardEvent, KeyboardEvent,
-      getAnything, when, filterMap
+@docs on
 
 -}
 
