@@ -1,5 +1,4 @@
 #!/bin/bash
 
-mkdir -p Native
-browserify wrapper.js -o Native/Html.js
-echo ";" >> Native/Html.js
+browserify src/wrapper.js -o src/Native/Html.js
+echo ";" >> src/Native/Html.js
