@@ -151,7 +151,7 @@ instead.
 -}
 tabindex : Int -> Attribute
 tabindex n =
-    attr "tabindex" (show n)
+    attr "tabindex" (toString n)
 
 
 -- HEADER STUFF
@@ -432,7 +432,7 @@ list value =
 -}
 maxlength : Int -> Attribute
 maxlength n =
-    attr "maxlength" (show n)
+    attr "maxlength" (toString n)
 
 {-| Defines which HTTP method to use when submitting a `form`. Can be GET
 (default) or POST.
@@ -488,7 +488,7 @@ For `select` specifies the number of visible options in a drop-down list.
 -}
 size : Int -> Attribute
 size n =
-    attr "size" (show n)
+    attr "size" (toString n)
 
 {-| The element ID described by this `label` or the element IDs that are used
 for an `output`.
@@ -525,7 +525,7 @@ min value =
 {-| Add a step size to an `input`. -}
 step : Int -> Attribute
 step n =
-    attr "step" (show n)
+    attr "step" (toString n)
 
 
 --------------------------
@@ -534,12 +534,12 @@ step n =
 {-| Defines the number of columns in a `textarea`. -}
 cols : Int -> Attribute
 cols n =
-    attr "cols" (show n)
+    attr "cols" (toString n)
 
 {-| Defines the number of rows in a `textarea`. -}
 rows : Int -> Attribute
 rows n =
-    attr "rows" (show n)
+    attr "rows" (toString n)
 
 {-| Indicates whether the text should be wrapped in a `textarea`. Possible
 values are "hard" and "soft".
@@ -710,7 +710,7 @@ besides 1.
 -}
 start : Int -> Attribute
 start n =
-    attr "start" (show n)
+    attr "start" (toString n)
 
 
 -- TABLES
@@ -752,5 +752,5 @@ manifest value =
 {-| The number of columns a `col` or `colgroup` should span. -}
 span : Int -> Attribute
 span n =
-    attr "span" (show n)
+    attr "span" (toString n)
 --}

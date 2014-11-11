@@ -83,15 +83,15 @@ onkeypress = onKey "keypress"
 -- Simple Events
 
 onblur : Signal.Message -> Attribute
-onblur handle value =
-    on "blur" getAnything handle (always value)
+onblur message =
+    on "blur" getAnything (always message)
 
 onfocus : Signal.Message -> Attribute
-onfocus handle value =
-    on "focus" getAnything handle (always value)
+onfocus message =
+    on "focus" getAnything (always message)
 
 onsubmit : Signal.Message -> Attribute
-onsubmit handle value =
-    on "submit" getAnything handle (always value)
+onsubmit message =
+    on "submit" getAnything (always message)
 
 

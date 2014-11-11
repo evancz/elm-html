@@ -32,10 +32,10 @@ dependencies.
 
 import Color
 import Native.Html
+import Graphics.Element (Element)
 import Signal
-import String (show, append)
 
-data Html = Html
+type Html = Html
 
 {-| Create a DOM node with a tag name, a list of HTML attributes that can
 include styles and event listeners, a list of CSS properties like `color`, and
@@ -68,7 +68,7 @@ toElement = Native.Html.toElement
 
 -- ATTRIBUTES
 
-data Attribute = Attribute
+type Attribute = Attribute
 
 {-| Create a basic HTML attribute.
 
@@ -116,7 +116,7 @@ key k = Native.Html.pair "key" k
 
 -- STYLES
 
-data CssProperty = CssProperty
+type CssProperty = CssProperty
 
 {-| This function makes it easier to specify a set of styles.
 
@@ -143,7 +143,7 @@ prop = Native.Html.pair
 
 -- EVENTS
 
-data Get a = Get
+type Get a = Get
 
 {-| This is the most general way to handle events. Check out `Html.Events` for
 a gentler introduction to event handlers.
@@ -213,7 +213,7 @@ getValue = Native.Html.getValue
 
 {-| Whether a selection goes forward or backward.
 -}
-data Direction = Forward | Backward
+type Direction = Forward | Backward
 
 {-| Attempt to get `event.target.value` and selection information held in
 `event.target.selectionStart`, `event.target.selectionEnd`, and
@@ -234,7 +234,7 @@ getMouseEvent = Native.Html.getMouseEvent
 
 {-| Determine which button was clicked and with which modifiers.
 -}
-type MouseEvent =
+type alias MouseEvent =
     { button   : Int
     , altKey   : Bool
     , ctrlKey  : Bool
@@ -249,7 +249,7 @@ getKeyboardEvent = Native.Html.getKeyboardEvent
 
 {-| Determine which key was pressed and with which modifiers.
 -}
-type KeyboardEvent =
+type alias KeyboardEvent =
     { keyCode  : Int
     , altKey   : Bool
     , ctrlKey  : Bool
