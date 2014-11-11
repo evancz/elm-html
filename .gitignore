@@ -1,4 +1,3 @@
 node_modules
-build
+elm_packages
 cache
-examples/Todo/todo.js
