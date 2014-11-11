@@ -31,8 +31,9 @@ dependencies.
 -}
 
 import Color
-import Native.Html
+import Json.Decode as Json
 import Graphics.Element (Element)
+import Native.Html
 import Signal
 
 type Html = Html
@@ -136,6 +137,7 @@ recommendation is to use this function lightly.
 style : [CssProperty] -> Attribute
 style = Native.Html.style
 
+
 {-| Create a CSS property. -}
 prop : String -> String -> CssProperty
 prop = Native.Html.pair
@@ -143,124 +145,5 @@ prop = Native.Html.pair
 
 -- EVENTS
 
-type Get a = Get
-
-{-| This is the most general way to handle events. Check out `Html.Events` for
-a gentler introduction to event handlers.
-
-The `on` function takes four arguments:
-
-      on "click" getMouseEvent actions.handle (\mc -> mc.button)
-
-The first is an event name like "mousemove" or "click". These names match the
-standard HTML names for events.
-
-Second is a "getter". Getters are used to take a raw JavaScript event and safely
-turn it into an Elm value. Accessing fields like `event.target.checked` can
-fail, so getters let you ask for these fields without risk of runtime errors.
-If the getter fails, the event is skipped.
-
-Third is an input handle. Handles are defined in `Graphics.Input` and are a
-general purpose way to route events to particular signals. So this argument
-lets us declare who we are going to tell about a particular event.
-
-Fourth we have a function to augment the event value with extra information.
-Say you have forty check boxes reporting to the same signal. You need to add
-an ID to these events so that you can distinguish between them.
-
-Again, take a look at `Html.Events` for a much easier introduction to these
-ideas.
--}
-on : String -> Get a -> (a -> Signal.Message) -> Attribute
+on : String -> Json.Decoder a -> (a -> Signal.Message) -> Attribute
 on = Native.Html.on
-
-{-| This lets us create custom getters that require that certain conditions
-are met. For example, we can create an event that only triggers if the user
-releases the ENTER key:
-
-    onEnter : Handle a -> a -> Attribute
-    onEnter handle value =
-        on "keyup" (when (\k -> k.keyCode == 13) getKeyboardEvent) handle (always value)
-
-If the condition is not met, the event does not trigger.
--}
-when : (a -> Bool) -> Get a -> Get a
-when pred getter =
-    Native.Html.filterMap (\v -> if pred v then Just v else Nothing) getter
-
-{-| Gives the ability to create new getters from the existing primitives. For
-example, if you want only the `keyCode` from a `KeyboardEvent` you can create
-a new getter:
-
-    getKeyCode : Get Int
-    getKeyCode =
-        filterMap (\ke -> Just ke.keyCode) getKeyboardEvent
-
--}
-filterMap : (a -> Maybe b) -> Get a -> Get b
-filterMap = Native.Html.filterMap
-
-{-| Attempt to get `event.target.checked`. Only works with checkboxes.
--}
-getChecked : Get Bool
-getChecked = Native.Html.getChecked
-
-{-| Attempt to get `event.target.value`. Best used with text fields and
-text areas.
--}
-getValue : Get String
-getValue = Native.Html.getValue
-
-{-| Whether a selection goes forward or backward.
--}
-type Direction = Forward | Backward
-
-{-| Attempt to get `event.target.value` and selection information held in
-`event.target.selectionStart`, `event.target.selectionEnd`, and
-`event.target.selectionDirection`. Only works with text fields and text areas.
-
-This is useful when you want your model to fully capture what the user is
-typing and highlighting.
--}
-getValueAndSelection : Get { value : String
-                           , selection : { start:Int, end:Int, direction:Direction }
-                           }
-getValueAndSelection = Native.Html.getValueAndSelection
-
-{-| Attempt to interpret the event as a `MouseEvent`.
--}
-getMouseEvent : Get MouseEvent
-getMouseEvent = Native.Html.getMouseEvent
-
-{-| Determine which button was clicked and with which modifiers.
--}
-type alias MouseEvent =
-    { button   : Int
-    , altKey   : Bool
-    , ctrlKey  : Bool
-    , metaKey  : Bool
-    , shiftKey : Bool
-    }
-
-{-| Attempt to interpret the event as a `KeyboardEvent`.
--}
-getKeyboardEvent : Get KeyboardEvent
-getKeyboardEvent = Native.Html.getKeyboardEvent
-
-{-| Determine which key was pressed and with which modifiers.
--}
-type alias KeyboardEvent =
-    { keyCode  : Int
-    , altKey   : Bool
-    , ctrlKey  : Bool
-    , metaKey  : Bool
-    , shiftKey : Bool
-    }
-
-{-| Ignore the event entirely. This extraction always succeeds, returning a unit
-value. This is useful for things like click events where you just need to know
-that the click occured.
--}
-getAnything : Get ()
-getAnything = Native.Html.getAnything
-

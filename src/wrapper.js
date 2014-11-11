@@ -87,67 +87,6 @@ Elm.Native.Html.make = function(elm) {
         return pair(name, DataSetHook(eventHandler));
     }
 
-    function filterMap(f, getter) {
-        return function(event) {
-            var maybeValue = getter(event);
-            return maybeValue.ctor === 'Nothing' ? maybeValue : f(maybeValue._0);
-        };
-    }
-    function getMouseEvent(event) {
-        return !('button' in event) ?
-            Maybe.Nothing :
-            Maybe.Just({
-                _: {},
-                button: event.button,
-                altKey: event.altKey,
-                ctrlKey: event.ctrlKey,
-                metaKey: event.metaKey,
-                shiftKey: event.shiftKey
-            });
-    }
-    function getKeyboardEvent(event) {
-        return !('keyCode' in event) ?
-            Maybe.Nothing :
-            Maybe.Just({
-                _: {},
-                keyCode: event.keyCode,
-                altKey: event.altKey,
-                ctrlKey: event.ctrlKey,
-                metaKey: event.metaKey,
-                shiftKey: event.shiftKey
-            });
-    }
-    function getChecked(event) {
-        return 'checked' in event.target ?
-            Maybe.Just(event.target.checked) :
-            Maybe.Nothing;
-    }
-    function getValue(event) {
-        var node = event.target;
-        return 'value' in node ?
-            Maybe.Just(event.target.value) :
-            Maybe.Nothing;
-    }
-    function getValueAndSelection(event) {
-        var node = event.target;
-        return !('selectionStart' in node) ?
-            Maybe.Nothing :
-            Maybe.Just({
-                _: {},
-                value: node.value,
-                selection: {
-                    start: node.selectionStart,
-                    end: node.selectionEnd,
-                    direction: {
-                        ctor: node.selectionDirection === 'forward' ? 'Forward' : 'Backward'
-                    }
-                }
-            });
-    }
-    function getAnything(event) {
-        return Maybe.Just(Utils._Tuple0);
-    }
-
     function DataSetHook(value) {
         if (!(this instanceof DataSetHook)) {
             return new DataSetHook(value);
@@ -323,14 +262,6 @@ Elm.Native.Html.make = function(elm) {
         on: F3(on),
 
         pair: F2(pair),
-
-        getMouseEvent: getMouseEvent,
-        getKeyboardEvent: getKeyboardEvent,
-        getChecked: getChecked,
-        getValue: getValue,
-        getValueAndSelection: getValueAndSelection,
-        getAnything: getAnything,
-        filterMap: F2(filterMap),
 
         lazyRef : F2(lazyRef ),
         lazyRef2: F3(lazyRef2),

@@ -12,29 +12,50 @@ If you need to create an event listener that is not covered here, use the
 [ADT]: http://elm-lang.org/learn/Pattern-Matching.elm
 [TodoMVC]: https://github.com/evancz/elm-todomvc/blob/master/Todo.elm
 
-# Simple Events
+# All Events
+@docs on, value, checked
+
+# Focus Helpers
 @docs onblur, onfocus, onsubmit
 
-# Keyboard Events
-The `KeyboardEvent` type is defined in the `Html` module.
+# Keyboard Helpers
 @docs onkeyup, onkeydown, onkeypress
 
-# Mouse Events
+# Mouse Helpers
 @docs onclick, ondblclick, onmousemove,
       onmousedown, onmouseup,
       onmouseenter, onmouseleave,
       onmouseover, onmouseout
 -}
 
-import Html (Attribute, KeyboardEvent, on, getKeyboardEvent, getAnything)
+import Html
+import Html (Attribute)
+import Json.Decode as Json
+import Json.Decode (..)
 import Signal
+
+
+on : String -> Json.Decoder a -> (a -> Signal.Message) -> Attribute
+on = Html.on
+
+
+-- COMMON DECODERS
+
+value : Json.Decoder String
+value =
+    at ["target", "value"] string
+
+
+checked : Json.Decoder Bool
+checked =
+    at ["target", "checked"] bool
 
 
 -- MouseEvent
 
 onMouse : String -> Signal.Message -> Attribute
 onMouse name value =
-    on name getAnything (always value)
+    on name raw (always value)
 
 onclick : Signal.Message -> Attribute
 onclick = onMouse "click"
@@ -66,17 +87,17 @@ onmouseout = onMouse "mouseout"
 
 -- KeyboardEvent
 
-onKey : String -> (KeyboardEvent -> Signal.Message) -> Attribute
+onKey : String -> (Int -> Signal.Message) -> Attribute
 onKey name =
-    on name getKeyboardEvent
+    on name ("keyCode" := int)
 
-onkeyup : (KeyboardEvent -> Signal.Message) -> Attribute
+onkeyup : (Int -> Signal.Message) -> Attribute
 onkeyup = onKey "keyup"
 
-onkeydown : (KeyboardEvent -> Signal.Message) -> Attribute
+onkeydown : (Int -> Signal.Message) -> Attribute
 onkeydown = onKey "keydown"
 
-onkeypress : (KeyboardEvent -> Signal.Message) -> Attribute
+onkeypress : (Int -> Signal.Message) -> Attribute
 onkeypress = onKey "keypress"
 
 
@@ -84,14 +105,14 @@ onkeypress = onKey "keypress"
 
 onblur : Signal.Message -> Attribute
 onblur message =
-    on "blur" getAnything (always message)
+    on "blur" raw (always message)
 
 onfocus : Signal.Message -> Attribute
 onfocus message =
-    on "focus" getAnything (always message)
+    on "focus" raw (always message)
 
 onsubmit : Signal.Message -> Attribute
 onsubmit message =
-    on "submit" getAnything (always message)
+    on "submit" raw (always message)
 
 
