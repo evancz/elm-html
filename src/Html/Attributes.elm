@@ -139,8 +139,7 @@ style props =
 
 -- CUSTOM ATTRIBUTES
 
-{-| Create arbitrary HTML properties. Useful if you need a property that does
-not appear in this library.
+{-| Create arbitrary *properties*.
 
     import Json.Encode (string)
 
@@ -158,6 +157,20 @@ property =
     VirtualDom.property
 
 
+{-| Create arbitrary HTML *attributes*. Maps onto JavaScript&rsquo;s
+`setAttribute` function under the hood.
+
+    import Json.Encode (string)
+
+    greeting : Html
+    greeting =
+        div [ attribute "class" (string "greeting") ] [
+          text "Hello!"
+        ]
+
+Notice that you must give the *attribute* name, so we use `class` as it would
+be in HTML, not `className` as it would appear in JS.
+-}
 attribute : String -> String -> Attribute
 attribute =
     VirtualDom.attribute
