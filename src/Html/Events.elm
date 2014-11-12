@@ -10,16 +10,16 @@ of events as seen in the [TodoMVC][] example.
 @docs on, value, checked
 
 # Focus Helpers
-@docs onblur, onfocus, onsubmit
+@docs onBlur, onFocus, onSubmit
 
 # Keyboard Helpers
-@docs onkeyup, onkeydown, onkeypress
+@docs onKeyUp, onKeyDown, onKeyPress
 
 # Mouse Helpers
-@docs onclick, ondblclick, onmousemove,
-      onmousedown, onmouseup,
-      onmouseenter, onmouseleave,
-      onmouseover, onmouseout
+@docs onClick, onDoubleClick, onMouseMove,
+      onMouseDown, onMouseUp,
+      onMouseEnter, onMouseLeave,
+      onMouseOver, onMouseOut
 -}
 
 import Html (Attribute)
@@ -51,32 +51,32 @@ messageOn : String -> Signal.Message -> Attribute
 messageOn name value =
     on name raw (always value)
 
-onclick : Signal.Message -> Attribute
-onclick = messageOn "click"
+onClick : Signal.Message -> Attribute
+onClick = messageOn "click"
 
-ondblclick : Signal.Message -> Attribute
-ondblclick = messageOn "dblclick"
+onDoubleClick : Signal.Message -> Attribute
+onDoubleClick = messageOn "dblclick"
 
-onmousemove : Signal.Message -> Attribute
-onmousemove = messageOn "mousemove"
+onMouseMove : Signal.Message -> Attribute
+onMouseMove = messageOn "mousemove"
 
-onmousedown : Signal.Message -> Attribute
-onmousedown = messageOn "mousedown"
+onMouseDown : Signal.Message -> Attribute
+onMouseDown = messageOn "mousedown"
 
-onmouseup : Signal.Message -> Attribute
-onmouseup = messageOn "mouseup"
+onMouseUp : Signal.Message -> Attribute
+onMouseUp = messageOn "mouseup"
 
-onmouseenter : Signal.Message -> Attribute
-onmouseenter = messageOn "mouseenter"
+onMouseEnter : Signal.Message -> Attribute
+onMouseEnter = messageOn "mouseenter"
 
-onmouseleave : Signal.Message -> Attribute
-onmouseleave = messageOn "mouseleave"
+onMouseLeave : Signal.Message -> Attribute
+onMouseLeave = messageOn "mouseleave"
 
-onmouseover : Signal.Message -> Attribute
-onmouseover = messageOn "mouseover"
+onMouseOver : Signal.Message -> Attribute
+onMouseOver = messageOn "mouseover"
 
-onmouseout : Signal.Message -> Attribute
-onmouseout = messageOn "mouseout"
+onMouseOut : Signal.Message -> Attribute
+onMouseOut = messageOn "mouseout"
 
 
 -- KeyboardEvent
@@ -85,28 +85,28 @@ onKey : String -> (Int -> Signal.Message) -> Attribute
 onKey name =
     on name ("keyCode" := int)
 
-onkeyup : (Int -> Signal.Message) -> Attribute
-onkeyup = onKey "keyup"
+onKeyUp : (Int -> Signal.Message) -> Attribute
+onKeyUp = onKey "keyup"
 
-onkeydown : (Int -> Signal.Message) -> Attribute
-onkeydown = onKey "keydown"
+onKeyDown : (Int -> Signal.Message) -> Attribute
+onKeyDown = onKey "keydown"
 
-onkeypress : (Int -> Signal.Message) -> Attribute
-onkeypress = onKey "keypress"
+onKeyPress : (Int -> Signal.Message) -> Attribute
+onKeyPress = onKey "keypress"
 
 
 -- Simple Events
 
-onblur : Signal.Message -> Attribute
-onblur message =
+onBlur : Signal.Message -> Attribute
+onBlur message =
     messageOn "blur"
 
-onfocus : Signal.Message -> Attribute
-onfocus message =
+onFocus : Signal.Message -> Attribute
+onFocus message =
     messageOn "focus"
 
-onsubmit : Signal.Message -> Attribute
-onsubmit message =
+onSubmit : Signal.Message -> Attribute
+onSubmit message =
     messageOn "submit"
 
 
