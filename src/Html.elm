@@ -1,11 +1,11 @@
-module Html.Tags where
+module Html where
 {-| This file is organized roughly in order of popularity. The tags which you'd
 expect to use frequently will be closer to the top.
 
+# Custom Nodes
+@docs node, text
+
 # Headers
-Heading elements implement six levels of document headings. `h1` is the most
-important and `h6` is the least. A heading element briefly describes the
-topic of the section it introduces.
 @docs h1, h2, h3, h4, h5, h6
 
 # Grouping Content
@@ -56,9 +56,39 @@ topic of the section it introduces.
 
 # Interactive Elements
 @docs details, summary, menuitem, menu
+
 -}
 
-import Html (Html, Attribute, node)
+import VirtualDom
+
+
+type alias Html = VirtualDom.Node
+
+type alias Attribute = VirtualDom.Property
+
+
+{-| General way to create HTML nodes. It is used to define all of the helper
+functions in this library.
+
+    div : [Attribute] -> [Html] -> Html
+    div attributes children =
+        node "div" attributes children
+
+You can use this to create custom nodes if you need to create something that
+is not covered by the helper functions in this library.
+-}
+node : String -> [Attribute] -> [Html] -> Html
+node =
+    VirtualDom.node
+
+{-| Just put plain text in the DOM. It will escape the string so that it appears
+exactly as you specify.
+
+      text "Hello World!"
+-}
+text : String -> Html
+text =
+    VirtualDom.text
 
 
 -- SECTIONS

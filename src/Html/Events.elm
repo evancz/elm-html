@@ -1,13 +1,7 @@
 module Html.Events where
-{-| A way to handle any DOM events. The general approach is to set up an input
-as defined in `Graphics.Input` and then have each event handler send messages
-to one particular input.
-
+{-| 
 It is often helpful to create an [ADT][] so you can have many different kinds
 of events as seen in the [TodoMVC][] example.
-
-If you need to create an event listener that is not covered here, use the
-`Html.on` function which can create any kind of event listener.
 
 [ADT]: http://elm-lang.org/learn/Pattern-Matching.elm
 [TodoMVC]: https://github.com/evancz/elm-todomvc/blob/master/Todo.elm
@@ -28,15 +22,15 @@ If you need to create an event listener that is not covered here, use the
       onmouseover, onmouseout
 -}
 
-import Html
 import Html (Attribute)
 import Json.Decode as Json
 import Json.Decode (..)
 import Signal
+import VirtualDom
 
 
 on : String -> Json.Decoder a -> (a -> Signal.Message) -> Attribute
-on = Html.on
+on = VirtualDom.on
 
 
 -- COMMON DECODERS
@@ -53,36 +47,36 @@ checked =
 
 -- MouseEvent
 
-onMouse : String -> Signal.Message -> Attribute
-onMouse name value =
+messageOn : String -> Signal.Message -> Attribute
+messageOn name value =
     on name raw (always value)
 
 onclick : Signal.Message -> Attribute
-onclick = onMouse "click"
+onclick = messageOn "click"
 
 ondblclick : Signal.Message -> Attribute
-ondblclick = onMouse "dblclick"
+ondblclick = messageOn "dblclick"
 
 onmousemove : Signal.Message -> Attribute
-onmousemove = onMouse "mousemove"
+onmousemove = messageOn "mousemove"
 
 onmousedown : Signal.Message -> Attribute
-onmousedown = onMouse "mousedown"
+onmousedown = messageOn "mousedown"
 
 onmouseup : Signal.Message -> Attribute
-onmouseup = onMouse "mouseup"
+onmouseup = messageOn "mouseup"
 
 onmouseenter : Signal.Message -> Attribute
-onmouseenter = onMouse "mouseenter"
+onmouseenter = messageOn "mouseenter"
 
 onmouseleave : Signal.Message -> Attribute
-onmouseleave = onMouse "mouseleave"
+onmouseleave = messageOn "mouseleave"
 
 onmouseover : Signal.Message -> Attribute
-onmouseover = onMouse "mouseover"
+onmouseover = messageOn "mouseover"
 
 onmouseout : Signal.Message -> Attribute
-onmouseout = onMouse "mouseout"
+onmouseout = messageOn "mouseout"
 
 
 -- KeyboardEvent
@@ -105,14 +99,14 @@ onkeypress = onKey "keypress"
 
 onblur : Signal.Message -> Attribute
 onblur message =
-    on "blur" raw (always message)
+    messageOn "blur"
 
 onfocus : Signal.Message -> Attribute
 onfocus message =
-    on "focus" raw (always message)
+    messageOn "focus"
 
 onsubmit : Signal.Message -> Attribute
 onsubmit message =
-    on "submit" raw (always message)
+    messageOn "submit"
 
 
