@@ -87,7 +87,9 @@ we need to know about this silly stuff. So here we are.
 Pretty much all of the functions in `Html.Attributes` are defined with
 `property` and that is generally the preferred approach.
 
-@docs property, attribute
+@docs property
+
+The `attribute` function is coming soon!
 
 -}
 
