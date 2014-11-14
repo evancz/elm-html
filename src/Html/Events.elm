@@ -98,15 +98,15 @@ onKeyPress = onKey "keypress"
 -- Simple Events
 
 onBlur : Signal.Message -> Attribute
-onBlur message =
+onBlur =
     messageOn "blur"
 
 onFocus : Signal.Message -> Attribute
-onFocus message =
+onFocus =
     messageOn "focus"
 
 onSubmit : Signal.Message -> Attribute
-onSubmit message =
+onSubmit =
     messageOn "submit"
 
 
