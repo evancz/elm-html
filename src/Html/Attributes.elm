@@ -97,6 +97,7 @@ import Html (Attribute)
 import Json.Encode as Json
 import List
 import String
+import VirtualDom
 
 -- This library does not include low, high, or optimum because the idea of a
 -- `meter` is just too crazy.
@@ -110,7 +111,8 @@ keys ensures that you do not end up doing misaligned diffs on the following 15
 items.
 -}
 key : String -> Attribute
-key k = property "key" k
+key k =
+    stringProperty "key" k
 
 
 {-| This function makes it easier to specify a set of styles.
@@ -159,6 +161,16 @@ property =
     VirtualDom.property
 
 
+stringProperty : String -> String -> Attribute
+stringProperty name string =
+    property name (Json.string string)
+
+
+boolProperty : String -> Bool -> Attribute
+boolProperty name bool =
+    property name (Json.bool bool)
+
+
 {-| Create arbitrary HTML *attributes*. Maps onto JavaScript&rsquo;s
 `setAttribute` function under the hood.
 
@@ -173,9 +185,9 @@ property =
 Notice that you must give the *attribute* name, so we use `class` as it would
 be in HTML, not `className` as it would appear in JS.
 -}
-attribute : String -> String -> Attribute
-attribute =
-    VirtualDom.attribute
+--attribute : String -> String -> Attribute
+--attribute =
+--    VirtualDom.attribute
 
 
 -- GLOBAL ATTRIBUTES
@@ -188,7 +200,7 @@ class name =
 {-| Indicates the relevance of an element. -}
 hidden : Bool -> Attribute
 hidden bool =
-    toggle "hidden" bool
+    boolProperty "hidden" bool
 
 {-| Often used with CSS to style a specific element. The value of this
 attribute must be unique.
@@ -266,7 +278,7 @@ tabindex n =
 {-| Indicates that the `script` should be executed asynchronously. -}
 async : Bool -> Attribute
 async bool =
-    toggle "async" bool
+    boolProperty "async" bool
 
 {-| Declares the character encoding of the page or script. Common values include:
 
@@ -290,7 +302,7 @@ parsed.
 -}
 defer : Bool -> Attribute
 defer bool =
-    toggle "defer" bool
+    boolProperty "defer" bool
 
 {-| This attribute is an indicator that is paired with the `content` attribute,
 indicating what that content means. `httpEquiv` can take on three different
@@ -310,7 +322,7 @@ parents children.
 -}
 scoped : Bool -> Attribute
 scoped bool =
-    toggle "scoped" bool
+    boolProperty "scoped" bool
 
 
 -- EMBEDDED CONTENT
@@ -349,26 +361,26 @@ alt value =
 {-| The `audio` or `video` should play as soon as possible. -}
 autoplay : Bool -> Attribute
 autoplay bool =
-    toggle "autoplay" bool
+    boolProperty "autoplay" bool
 
 {-| Indicates whether the browser should show playback controls for the `audio`
 or `video`.
 -}
 controls : Bool -> Attribute
 controls bool =
-    toggle "controls" bool
+    boolProperty "controls" bool
 
 {-| Indicates whether the `audio` or `video` should start playing from the
 start when it's finished.
 -}
 loop : Bool -> Attribute
 loop bool =
-    toggle "loop" bool
+    boolProperty "loop" bool
 
 {-| Control how much of an `audio` or `video` resource should be preloaded. -}
 preload : Bool -> Attribute
 preload bool =
-    toggle "preload" bool
+    boolProperty "preload" bool
 
 {-| A URL indicating a poster frame to show until the user plays or seeks the
 `video`.
@@ -382,7 +394,7 @@ indicate something different.
 -}
 default : Bool -> Attribute
 default bool =
-    toggle "default" bool
+    boolProperty "default" bool
 
 {-| Specifies the kind of text `track`. -}
 kind : String -> Attribute
@@ -415,7 +427,7 @@ sandbox value =
 {-|  Make an `iframe` look like part of the containing document. -}
 seamless : Bool -> Attribute
 seamless bool =
-    toggle "seamless" bool
+    boolProperty "seamless" bool
 
 {-| An HTML document that will be displayed as the body of an `iframe`. It will
 override the content of the `src` attribute if it has been specified.
@@ -444,7 +456,7 @@ value value =
 {-| Indicates whether an `input` of type checkbox is checked. -}
 checked : Bool -> Attribute
 checked bool =
-    toggle "checked" bool
+    boolProperty "checked" bool
 
 {-| Provides a hint to the user of what can be entered into an `input` or
 `textarea`.
@@ -456,7 +468,7 @@ placeholder value =
 {-| Defines which `option` will be selected on page load. -}
 selected : Bool -> Attribute
 selected bool =
-    toggle "selected" bool
+    boolProperty "selected" bool
 
 
 -- INPUT HELPERS
@@ -492,7 +504,7 @@ For `button`, `input`, `keygen`, `select`, and `textarea`.
 -}
 autofocus : Bool -> Attribute
 autofocus bool =
-    toggle "autofocus" bool
+    boolProperty "autofocus" bool
 
 {-| Previous entries into an `input` will be persisted across page loads,
 associated with a unique ID. The previous entries will be displayed as
@@ -508,7 +520,7 @@ autosave value =
 -}
 disabled : Bool -> Attribute
 disabled bool =
-    toggle "disabled" bool
+    boolProperty "disabled" bool
 
 {-| How `form` data should be encoded when submitted with the POST method.
 Options include: application/x-www-form-urlencoded, multipart/form-data, and
@@ -553,7 +565,7 @@ email or file. Can also indicate that you can `select` many options.
 -}
 multiple : Bool -> Attribute
 multiple bool =
-    toggle "multiple" bool
+    boolProperty "multiple" bool
 
 {-| Name of the element. For example used by the server to identify the fields
 in form submits. For `button`, `form`, `fieldset`, `iframe`, `input`, `keygen`,
@@ -568,7 +580,7 @@ submitted.
 -}
 novalidate : Bool -> Attribute
 novalidate bool =
-    toggle "novalidate" bool
+    boolProperty "novalidate" bool
 
 {-| Defines a regular expression which an `input`'s value will be validated
 against.
@@ -580,14 +592,14 @@ pattern value =
 {-| Indicates whether an `input` or `textarea` can be edited. -}
 readonly : Bool -> Attribute
 readonly bool =
-    toggle "readonly" bool
+    boolProperty "readonly" bool
 
 {-| Indicates whether this element is required to fill out or not.
 For `input`, `select`, and `textarea`.
 -}
 required : Bool -> Attribute
 required bool =
-    toggle "required" bool
+    boolProperty "required" bool
 
 {-| For `input` specifies the width of an input in characters.
 
@@ -749,7 +761,7 @@ directly.
 -}
 download : Bool -> Attribute
 download bool =
-    toggle "download" bool
+    boolProperty "download" bool
 
 {-| Indicates that clicking an `a` and `area` will download the resource
 directly, and that the downloaded resource with have the given filename.
@@ -810,7 +822,7 @@ order instead of a ascending.
 -}
 reversed : Bool -> Attribute
 reversed bool =
-    toggle "reversed" bool
+    boolProperty "reversed" bool
 
 {-| Defines the first number of an ordered list if you want it to be something
 besides 1.
