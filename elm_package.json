@@ -10,9 +10,7 @@
         "Html",
         "Html.Attributes",
         "Html.Events",
-        "Html.Tags",
-        "Html.Optimize.RefEq",
-        "Html.Optimize.StructEq"
+        "Html.Lazy"
     ],
     "dependencies": {
         "elm-lang/core": "1.0.0",
