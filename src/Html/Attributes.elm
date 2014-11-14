@@ -67,10 +67,10 @@ Attributes that can be attached to any HTML tag but are less commonly used.
 
 When using HTML and JS, there are two ways to specify parts of a DOM node.
 
-  1. **Attributes** &mdash; You can set things in HTML itself. So the `class`
+  1. Attributes &mdash; You can set things in HTML itself. So the `class`
      in `<div class="greeting"></div>` is called an *attribute*.
 
-  2. **Properties** &mdash; You can also set things in JS. So the `className`
+  2. Properties &mdash; You can also set things in JS. So the `className`
      in `div.className = 'greeting'` is called a *property*.
 
 So the `class` attribute corresponds to the `className` property. At first
@@ -78,11 +78,8 @@ glance, perhaps this distinction is defensible, but it gets much crazier.
 *There is not always a one-to-one mapping between attributes and properties!*
 Yes, that is a true fact. Sometimes an attribute exists, but there is no
 corresponding property. Sometimes changing an attribute does not change the
-underlying property.
-
-For example, as of this writing the `webkit-playsinline` attribute can be used
-in HTML, but there is no corresponding property! To use every part of the DOM,
-we need to know about this silly stuff. So here we are.
+underlying property. For example, as of this writing the `webkit-playsinline`
+attribute can be used in HTML, but there is no corresponding property!
 
 Pretty much all of the functions in `Html.Attributes` are defined with
 `property` and that is generally the preferred approach.
