@@ -20,12 +20,12 @@ import VirtualDom
 
 lazy : (a -> Html) -> a -> Html
 lazy =
-    VirtualDom.lazyRef
+    VirtualDom.lazy
 
 lazy2 : (a -> b -> Html) -> a -> b -> Html
 lazy2 =
-    VirtualDom.lazyRef2
+    VirtualDom.lazy2
 
 lazy3 : (a -> b -> c -> Html) -> a -> b -> c -> Html
 lazy3 =
-    VirtualDom.lazyRef3
+    VirtualDom.lazy3
