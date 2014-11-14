@@ -67,11 +67,11 @@ Attributes that can be attached to any HTML tag but are less commonly used.
 
 When using HTML and JS, there are two ways to specify parts of a DOM node.
 
-    1. **Attributes** &mdash; You can set things in HTML itself. So the `class`
-    in `<div class="greeting"></div>` is called an *attribute*.
+  1. **Attributes** &mdash; You can set things in HTML itself. So the `class`
+     in `<div class="greeting"></div>` is called an *attribute*.
 
-    2. **Properties** &mdash; You can also set things in JS. So the `className`
-      in `div.className = 'greeting'` is called a *property*.
+  2. **Properties** &mdash; You can also set things in JS. So the `className`
+     in `div.className = 'greeting'` is called a *property*.
 
 So the `class` attribute corresponds to the `className` property. At first
 glance, perhaps this distinction is defensible, but it gets much crazier.
