@@ -48,8 +48,8 @@ checked =
 -- MouseEvent
 
 messageOn : String -> Signal.Message -> Attribute
-messageOn name value =
-    on name raw (always value)
+messageOn name msg =
+    on name value (always msg)
 
 onClick : Signal.Message -> Attribute
 onClick = messageOn "click"

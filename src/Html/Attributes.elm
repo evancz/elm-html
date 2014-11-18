@@ -130,7 +130,7 @@ There is no `Html.Styles` module because best practices for working with HTML
 suggest that this should primarily be specified in CSS files. So the general
 recommendation is to use this function lightly.
 -}
-style : [(String, String)] -> Attribute
+style : List (String, String) -> Attribute
 style props =
   props
     |> List.map (\(key,value) -> (key, Json.string value))
@@ -153,7 +153,7 @@ style props =
 Notice that you must give the *property* name, so we use `className` as it
 would be in JavaScript, not `class` as it would appear in HTML.
 -}
-property : String -> Json.Json -> Attribute
+property : String -> Json.Value -> Attribute
 property =
     VirtualDom.property
 
