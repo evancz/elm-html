@@ -5,6 +5,9 @@ expect to use frequently will be closer to the top.
 # Custom Nodes
 @docs node, text
 
+# Conversions
+@docs toElement, fromElement
+
 # Headers
 @docs h1, h2, h3, h4, h5, h6
 
@@ -89,6 +92,23 @@ exactly as you specify.
 text : String -> Html
 text =
     VirtualDom.text
+
+
+{-| Embed HTML in Elements. Useful if your app is written primarily with
+Elements, but you need to switch over to HTML for some small section.
+-}
+toElement : Int -> Int -> Html -> Element
+toElement =
+    VirtualDom.toElement
+
+
+{-| Embed Elements in HTML. Useful if you have some component written with
+Elements or that uses `collage` that you want to embed in a larger HTML
+component.
+-}
+fromElement : Element -> Html
+fromElement =
+    VirtualDom.fromElement
 
 
 -- SECTIONS
