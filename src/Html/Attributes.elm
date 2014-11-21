@@ -267,7 +267,7 @@ instead.
 -}
 tabindex : Int -> Attribute
 tabindex n =
-    stringProperty "tabindex" (toString n)
+    stringProperty "tabIndex" (toString n)
 
 
 -- HEADER STUFF
@@ -548,7 +548,7 @@ list value =
 -}
 maxlength : Int -> Attribute
 maxlength n =
-    stringProperty "maxlength" (toString n)
+    stringProperty "maxLength" (toString n)
 
 {-| Defines which HTTP method to use when submitting a `form`. Can be GET
 (default) or POST.
@@ -836,7 +836,7 @@ For `td` and `th`.
 -}
 colspan : String -> Attribute
 colspan value =
-    stringProperty "colspan" value
+    stringProperty "colSpan" value
 
 {-| A space separated list of element IDs indicating which `th` elements are
 headers for this cell. For `td` and `th`.
@@ -850,7 +850,7 @@ For `td` and `th`.
 -}
 rowspan : String -> Attribute
 rowspan value =
-    stringProperty "rowspan" value
+    stringProperty "rowSpan" value
 
 {-| Specifies the scope of a header cell `th`. Possible values are: col, row,
 colgroup, rowgroup.
