@@ -7,7 +7,7 @@ of events as seen in the [TodoMVC][] example.
 [TodoMVC]: https://github.com/evancz/elm-todomvc/blob/master/Todo.elm
 
 # All Events
-@docs on, value, checked
+@docs on, targetValue, targetChecked, keyCode
 
 # Focus Helpers
 @docs onBlur, onFocus, onSubmit
@@ -35,14 +35,19 @@ on = VirtualDom.on
 
 -- COMMON DECODERS
 
-value : Json.Decoder String
-value =
+targetValue : Json.Decoder String
+targetValue =
     at ["target", "value"] string
 
 
-checked : Json.Decoder Bool
-checked =
+targetChecked : Json.Decoder Bool
+targetChecked =
     at ["target", "checked"] bool
+
+
+keyCode : Json.Decoder Int
+keyCode =
+    ("keyCode" := int)
 
 
 -- MouseEvent
@@ -83,7 +88,7 @@ onMouseOut = messageOn "mouseout"
 
 onKey : String -> (Int -> Signal.Message) -> Attribute
 onKey name =
-    on name ("keyCode" := int)
+    on name keyCode
 
 onKeyUp : (Int -> Signal.Message) -> Attribute
 onKeyUp = onKey "keyup"
