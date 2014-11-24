@@ -222,7 +222,7 @@ accesskey char =
 {-| Indicates whether the element's content is editable. -}
 contenteditable : Bool -> Attribute
 contenteditable bool =
-    stringProperty "contenteditable" (if bool then "true" else "false")
+    boolProperty "contentEditable" bool
 
 {-| Defines the ID of a `menu` element which will serve as the element's
 context menu.
@@ -260,7 +260,7 @@ lang value =
 {-| Indicates whether spell checking is allowed for the element. -}
 spellcheck : Bool -> Attribute
 spellcheck bool =
-    stringProperty "spellcheck" (if bool then "true" else "false")
+    boolProperty "spellcheck" bool
 
 {-| Overrides the browser's default tab order and follows the one specified
 instead.
