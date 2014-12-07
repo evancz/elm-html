@@ -334,16 +334,16 @@ src value =
 {-| Declare the height of a `canvas`, `embed`, `iframe`, `img`, `input`,
 `object`, or `video`.
 -}
-height : String -> Attribute
+height : Int -> Attribute
 height value =
-    stringProperty "height" value
+    stringProperty "height" (toString value)
 
 {-| Declare the width of a `canvas`, `embed`, `iframe`, `img`, `input`,
 `object`, or `video`.
 -}
-width : String -> Attribute
+width : Int -> Attribute
 width value =
-    stringProperty "width" value
+    stringProperty "width" (toString value)
 
 {-| Alternative text in case an image can't be displayed. Works with `img`,
 `area`, and `input`.
