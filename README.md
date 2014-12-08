@@ -35,10 +35,10 @@ project.
 
 Try out [TodoMVC written in Elm][demo] and check out the [source code][src].
 
-[![Live Demo](todo.png)][demo]
+[![Live Demo](https://raw.githubusercontent.com/evancz/elm-html/master/todo.png)][demo]
 
 [demo]: http://evancz.github.io/elm-todomvc/
-[src]: https://github.com/evancz/elm-todomvc/blob/master/Todo.elm
+[src]: https://github.com/evancz/elm-todomvc/
 
 For information on architecting larger projects, see [this
 document][architecture].
