@@ -1,9 +1,11 @@
 module TextReverser where
 
 import Graphics.Input as Input
-import Html (Html, CssProperty, style, prop, text, on, getValue, toElement)
-import Html.Tags (div, input)
+import Html (Html, Attribute, text, toElement, div, input)
 import Html.Attributes (..)
+import Html.Events (on, targetValue)
+import Graphics.Element (Element)
+import Signal
 import String
 
 
@@ -24,7 +26,7 @@ stringReverser string =
 
 reversedString : String -> Html
 reversedString string =
-    div [ style myStyle ] [ text (String.reverse string) ]
+    div [ myStyle ] [ text (String.reverse string) ]
 
 
 stringInput : String -> Html
@@ -32,19 +34,19 @@ stringInput string =
     input
         [ placeholder "Text to reverse"
         , value string
-        , on "input" getValue actions.handle identity
-        , style myStyle
+        , on "input" targetValue (Signal.send updates << identity)
+        , myStyle
         ]
         []
 
 
-myStyle : [CssProperty]
-myStyle =
-    [ prop "width" "100%"
-    , prop "height" "40px"
-    , prop "padding" "10px 0"
-    , prop "font-size" "2em"
-    , prop "text-align" "center"
+myStyle : Attribute
+myStyle = style
+    [ ("width", "100%")
+    , ("height", "40px")
+    , ("padding", "10px 0")
+    , ("font-size", "2em")
+    , ("text-align", "center")
     ]
 
 
@@ -52,8 +54,8 @@ myStyle =
 
 main : Signal Element
 main =
-    scene <~ actions.signal
+    Signal.subscribe updates |> Signal.map scene
 
-actions : Input.Input String
-actions =
-    Input.input ""
+updates : Signal.Channel String
+updates =
+    Signal.channel ""

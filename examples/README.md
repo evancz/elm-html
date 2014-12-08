@@ -11,11 +11,11 @@ Let's say you want to see the results of `Yogi.elm`. You would run the
 following two commands:
 
 ```bash
-elm-get install
-elm --make Yogi.elm
+elm-package install
+elm-reactor
 ```
 
-Then open the resulting `build/Yogi.html` file in your browser!
+Then open `http://0.0.0.0:8000/Yogi.elm` in your browser!
 
-You only need to run `elm-get install` once. That will grab the latest released
-version of the `elm-html` library.
+You only need to run `elm-package install` once. That will grab the latest
+released version of the `elm-html` library.
