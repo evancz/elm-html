@@ -138,6 +138,29 @@ style props =
     |> property "style"
 
 
+{-| This function makes it easier to build a space-separated class attribute.
+
+    renderMessage : Msg -> Html
+    renderMessage msg =
+      div
+        [
+          classList [
+            ("message", True),
+            ("message-important", msg.isImportant),
+            ("message-read", msg.isRead)
+          ]
+        ]
+        [ text msg.content ]
+-}
+classList : List (String, Bool) -> Attribute
+classList list =
+  list
+    |> List.filter snd
+    |> List.map fst
+    |> String.join " "
+    |> class
+
+
 -- CUSTOM ATTRIBUTES
 
 {-| Create arbitrary *properties*.
