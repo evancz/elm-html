@@ -10,7 +10,7 @@ Attributes&rdquo; section to learn how to create new helpers.
 @docs key, style
 
 # Super Common Attributes
-@docs class, id, title, hidden
+@docs class, classList, id, title, hidden
 
 # Inputs
 @docs type', value, checked, placeholder, selected
@@ -136,6 +136,31 @@ style props =
     |> List.map (\(key,value) -> (key, Json.string value))
     |> Json.object
     |> property "style"
+
+
+{-| This function makes it easier to build a space-separated class attribute.
+Each class can easily be added and removed depending on the boolean value it
+is paired with.
+
+    renderMessage : Msg -> Html
+    renderMessage msg =
+      div
+        [
+          classList [
+            ("message", True),
+            ("message-important", msg.isImportant),
+            ("message-read", msg.isRead)
+          ]
+        ]
+        [ text msg.content ]
+-}
+classList : List (String, Bool) -> Attribute
+classList list =
+  list
+    |> List.filter snd
+    |> List.map fst
+    |> String.join " "
+    |> class
 
 
 -- CUSTOM ATTRIBUTES
