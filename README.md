@@ -8,22 +8,22 @@ Read more about how this library works and how to use it in [this post][html].
 
 ### Get Started
 
-Once you have the [Elm Platform][platform], use [elm-get][get] to download
+Once you have the [Elm Platform][platform], use [elm-package][package] to download
 elm-html. The commands would be something like this:
 
 [platform]: https://github.com/elm-lang/elm-platform#elm-platform
-[get]: https://github.com/elm-lang/elm-get#use
+[get]: https://github.com/elm-lang/elm-package#basic-usage
 
 ```
 mkdir myProject
 cd myProject
-elm-get install evancz/elm-html
+elm-package install evancz/elm-html
 ```
 
 After that you will be able to use anything described in [the
 documentation][docs].
 
-[docs]: http://library.elm-lang.org/catalog/evancz-elm-html/latest/
+[docs]: http://package.elm-lang.org/packages/evancz/elm-html/latest/
 
 Another way to get started is to fork the [elm-todomvc project][todomvc] and
 work from there. This will also give you a reasonable architecture for your
