@@ -10,7 +10,7 @@ Attributes&rdquo; section to learn how to create new helpers.
 @docs key, style
 
 # Super Common Attributes
-@docs class, id, title, hidden
+@docs class, classList, id, title, hidden
 
 # Inputs
 @docs type', value, checked, placeholder, selected
@@ -139,6 +139,8 @@ style props =
 
 
 {-| This function makes it easier to build a space-separated class attribute.
+Each class can easily be added and removed depending on the boolean value it
+is paired with.
 
     renderMessage : Msg -> Html
     renderMessage msg =
