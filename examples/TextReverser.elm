@@ -4,20 +4,14 @@ import Graphics.Input as Input
 import Html (Html, Attribute, text, toElement, div, input)
 import Html.Attributes (..)
 import Html.Events (on, targetValue)
-import Graphics.Element (Element)
 import Signal
 import String
 
 
 -- VIEW
 
-scene : String -> Element
-scene string =
-    toElement 400 200 (stringReverser string)
-
-
-stringReverser : String -> Html
-stringReverser string =
+view : String -> Html
+view string =
     div []
         [ stringInput string
         , reversedString string
@@ -52,9 +46,9 @@ myStyle = style
 
 -- SIGNALS
 
-main : Signal Element
+main : Signal Html
 main =
-    Signal.subscribe updates |> Signal.map scene
+    Signal.map view (Signal.subscribe updates)
 
 updates : Signal.Channel String
 updates =

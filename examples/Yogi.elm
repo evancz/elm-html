@@ -1,24 +1,19 @@
 
 import Html (Html, toElement, img)
 import Html.Attributes (src, style)
-import Graphics.Element (Element)
-import Signal (Signal, (<~), foldp, map)
+import Signal
 import Time (fps)
 import Window
 
 
 -- VIEW
 
-scene : Int -> Element
-scene n =
-    toElement n n yogi
-
-yogi : Html
-yogi =
+view : Int -> Html
+view n =
     img [ src "http://elm-lang.org/yogi.jpg"
         , style
-            [ ("width", "100%")
-            , ("height", "100%")
+            [ ("width", toString n ++ "px")
+            , ("height", toString n ++ "px")
             ]
         ]
         []
@@ -26,12 +21,12 @@ yogi =
 
 -- SIGNALS
 
-main : Signal Element
+main : Signal Html
 main =
-    scene <~ size
+    Signal.map view size
 
 size : Signal Int
 size =
     fps 30
-        |> foldp (+) 0
-        |> map (\t -> round (200 + 100 * sin (degrees t / 10)))
+      |> Signal.foldp (+) 0
+      |> Signal.map (\t -> round (200 + 100 * sin (degrees t / 10)))
