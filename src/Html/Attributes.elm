@@ -207,9 +207,9 @@ boolProperty name bool =
 Notice that you must give the *attribute* name, so we use `class` as it would
 be in HTML, not `className` as it would appear in JS.
 -}
---attribute : String -> String -> Attribute
---attribute =
---    VirtualDom.attribute
+attribute : String -> String -> Attribute
+attribute =
+    VirtualDom.attribute
 
 
 -- GLOBAL ATTRIBUTES
