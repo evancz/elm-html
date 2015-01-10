@@ -614,7 +614,7 @@ pattern value =
 {-| Indicates whether an `input` or `textarea` can be edited. -}
 readonly : Bool -> Attribute
 readonly bool =
-    boolProperty "readonly" bool
+    boolProperty "readOnly" bool
 
 {-| Indicates whether this element is required to fill out or not.
 For `input`, `select`, and `textarea`.
