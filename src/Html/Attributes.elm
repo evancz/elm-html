@@ -612,7 +612,7 @@ pattern value =
 {-| Indicates whether an `input` or `textarea` can be edited. -}
 readonly : Bool -> Attribute
 readonly bool =
-    boolProperty "readonly" bool
+    boolProperty "readOnly" bool
 
 {-| Indicates whether this element is required to fill out or not.
 For `input`, `select`, and `textarea`.
@@ -857,9 +857,9 @@ start n =
 {-| The colspan attribute defines the number of columns a cell should span.
 For `td` and `th`.
 -}
-colspan : String -> Attribute
-colspan value =
-    stringProperty "colSpan" value
+colspan : Int -> Attribute
+colspan n =
+    stringProperty "colSpan" (toString n)
 
 {-| A space separated list of element IDs indicating which `th` elements are
 headers for this cell. For `td` and `th`.
@@ -871,9 +871,9 @@ headers value =
 {-| Defines the number of rows a table cell should span over.
 For `td` and `th`.
 -}
-rowspan : String -> Attribute
-rowspan value =
-    stringProperty "rowSpan" value
+rowspan : Int -> Attribute
+rowspan n =
+    stringProperty "rowSpan" (toString n)
 
 {-| Specifies the scope of a header cell `th`. Possible values are: col, row,
 colgroup, rowgroup.
