@@ -192,6 +192,15 @@ boolProperty : String -> Bool -> Attribute
 boolProperty name bool =
     property name (Json.bool bool)
 
+intProperty : String -> Int -> Attribute
+intProperty name int =
+    property name (Json.int int)
+
+listIntProperty : String -> List Int -> Attribute
+listIntProperty name listInt =
+    let json = Json.list <| List.map Json.int listInt
+    in property name json
+
 
 {-| Create arbitrary HTML *attributes*. Maps onto JavaScript&rsquo;s
 `setAttribute` function under the hood.
@@ -292,7 +301,7 @@ instead.
 -}
 tabindex : Int -> Attribute
 tabindex n =
-    stringProperty "tabIndex" (toString n)
+    intProperty "tabIndex" n
 
 
 -- HEADER STUFF
@@ -361,14 +370,14 @@ src value =
 -}
 height : Int -> Attribute
 height value =
-    stringProperty "height" (toString value)
+    intProperty "height" value
 
 {-| Declare the width of a `canvas`, `embed`, `iframe`, `img`, `input`,
 `object`, or `video`.
 -}
 width : Int -> Attribute
 width value =
-    stringProperty "width" (toString value)
+    intProperty "width" value
 
 {-| Alternative text in case an image can't be displayed. Works with `img`,
 `area`, and `input`.
@@ -568,12 +577,20 @@ list : String -> Attribute
 list value =
     stringProperty "list" value
 
+
+{-| Defines the minimum number of characters allowed in an `input` or
+`textarea`.
+-}
+minlength : Int -> Attribute
+minlength n =
+  intProperty "minLength" n
+
 {-| Defines the maximum number of characters allowed in an `input` or
 `textarea`.
 -}
 maxlength : Int -> Attribute
 maxlength n =
-    stringProperty "maxLength" (toString n)
+    intProperty "maxLength" n
 
 {-| Defines which HTTP method to use when submitting a `form`. Can be GET
 (default) or POST.
@@ -629,7 +646,7 @@ For `select` specifies the number of visible options in a drop-down list.
 -}
 size : Int -> Attribute
 size n =
-    stringProperty "size" (toString n)
+    intProperty "size" n
 
 {-| The element ID described by this `label` or the element IDs that are used
 for an `output`.
@@ -666,7 +683,7 @@ min value =
 {-| Add a step size to an `input`. -}
 step : Int -> Attribute
 step n =
-    stringProperty "step" (toString n)
+    intProperty "step" n
 
 
 --------------------------
@@ -675,12 +692,12 @@ step n =
 {-| Defines the number of columns in a `textarea`. -}
 cols : Int -> Attribute
 cols n =
-    stringProperty "cols" (toString n)
+    intProperty "cols" n
 
 {-| Defines the number of rows in a `textarea`. -}
 rows : Int -> Attribute
 rows n =
-    stringProperty "rows" (toString n)
+    intProperty "rows" n
 
 {-| Indicates whether the text should be wrapped in a `textarea`. Possible
 values are "hard" and "soft".
@@ -718,10 +735,9 @@ shape value =
 {-| A set of values specifying the coordinates of the hot-spot region in an
 `area`. Needs to be paired with a `shape` attribute to be meaningful.
 -}
-coords : String -> Attribute
+coords : List Int -> Attribute
 coords value =
-    stringProperty "coords" value
-
+    listIntProperty "coords" value
 
 -- KEY GEN
 
@@ -851,7 +867,7 @@ besides 1.
 -}
 start : Int -> Attribute
 start n =
-    stringProperty "start" (toString n)
+    intProperty "start" n
 
 
 -- TABLES
@@ -861,7 +877,7 @@ For `td` and `th`.
 -}
 colspan : Int -> Attribute
 colspan n =
-    stringProperty "colSpan" (toString n)
+    intProperty "colSpan" n
 
 {-| A space separated list of element IDs indicating which `th` elements are
 headers for this cell. For `td` and `th`.
@@ -875,7 +891,7 @@ For `td` and `th`.
 -}
 rowspan : Int -> Attribute
 rowspan n =
-    stringProperty "rowSpan" (toString n)
+    intProperty "rowSpan" n
 
 {-| Specifies the scope of a header cell `th`. Possible values are: col, row,
 colgroup, rowgroup.
@@ -893,5 +909,5 @@ manifest value =
 {-| The number of columns a `col` or `colgroup` should span. -}
 span : Int -> Attribute
 span n =
-    stringProperty "span" (toString n)
+    intProperty "span" n
 --}
