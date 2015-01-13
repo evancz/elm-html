@@ -17,8 +17,8 @@ Attributes&rdquo; section to learn how to create new helpers.
 
 ## Input Helpers
 @docs accept, acceptCharset, action, autocomplete, autofocus, autosave,
-    disabled, enctype, formaction, list, maxlength, method, multiple, name,
-    novalidate, pattern, readonly, required, size, for, form
+    disabled, enctype, formaction, list, maxlength, minlength, method, multiple,
+    name, novalidate, pattern, readonly, required, size, for, form
 
 ## Input Ranges
 @docs max, min, step
