@@ -17,8 +17,8 @@ Attributes&rdquo; section to learn how to create new helpers.
 
 ## Input Helpers
 @docs accept, acceptCharset, action, autocomplete, autofocus, autosave,
-    disabled, enctype, formaction, list, maxlength, method, multiple, name,
-    novalidate, pattern, readonly, required, size, for, form
+    disabled, enctype, formaction, list, maxlength, minlength, method, multiple,
+    name, novalidate, pattern, readonly, required, size, for, form
 
 ## Input Ranges
 @docs max, min, step
@@ -566,6 +566,14 @@ list : String -> Attribute
 list value =
     stringProperty "list" value
 
+
+{-| Defines the minimum number of characters allowed in an `input` or
+`textarea`.
+-}
+minlength : Int -> Attribute
+minlength n =
+    stringProperty "minLength" (toString n)
+
 {-| Defines the maximum number of characters allowed in an `input` or
 `textarea`.
 -}
@@ -719,7 +727,6 @@ shape value =
 coords : String -> Attribute
 coords value =
     stringProperty "coords" value
-
 
 -- KEY GEN
 
