@@ -84,9 +84,7 @@ attribute can be used in HTML, but there is no corresponding property!
 Pretty much all of the functions in `Html.Attributes` are defined with
 `property` and that is generally the preferred approach.
 
-@docs property
-
-The `attribute` function is coming soon!
+@docs property, attribute
 
 -}
 
