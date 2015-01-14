@@ -3,8 +3,8 @@ module Html.Attributes where
 category. Each attribute is labeled with the HTML tags it can be used with, so
 just search the page for `video` if you want video stuff.
 
-If you cannot find what you are looking for, go to the &ldquo;Custom
-Attributes&rdquo; section to learn how to create new helpers.
+If you cannot find what you are looking for, go to the [Custom
+Attributes](#custom-attributes) section to learn how to create new helpers.
 
 # Special Attributes
 @docs key, style
