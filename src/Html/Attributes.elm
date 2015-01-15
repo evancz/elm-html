@@ -608,7 +608,7 @@ submitted.
 -}
 novalidate : Bool -> Attribute
 novalidate bool =
-    boolProperty "novalidate" bool
+    boolProperty "noValidate" bool
 
 {-| Defines a regular expression which an `input`'s value will be validated
 against.
