@@ -385,7 +385,7 @@ bdo = node "bdo"
 
 {-| Represents text with no specific meaning. This has to be used when no other
 text-semantic element conveys an adequate meaning, which, in this case, is
-often brought by global attributes like class, lang, or dir.
+often brought by global attributes like `class`, `lang`, or `dir`.
 -}
 span : List Attribute -> List Html -> Html
 span = node "span"
