@@ -282,7 +282,7 @@ content.
 dfn : List Attribute -> List Html -> Html
 dfn = node "dfn"
 
-{-| Represents an abbreviation or an acronym ; the expansion of the
+{-| Represents an abbreviation or an acronym; the expansion of the
 abbreviation can be represented in the title attribute.
 -}
 abbr : List Attribute -> List Html -> Html
