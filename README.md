@@ -12,7 +12,7 @@ Once you have the [Elm Platform][platform], use [elm-package][package] to downlo
 elm-html. The commands would be something like this:
 
 [platform]: https://github.com/elm-lang/elm-platform#elm-platform
-[get]: https://github.com/elm-lang/elm-package#basic-usage
+[package]: https://github.com/elm-lang/elm-package#basic-usage
 
 ```
 mkdir myProject
