@@ -747,7 +747,7 @@ keytype value =
 -- REAL STUFF
 
 {-| Specifies the horizontal alignment of a `caption`, `col`, `colgroup`,
-`hr`, `iframe`, `img`, `table`, `tbody`,  `td`,  `tfoot` , `th`, `thead`, or
+`hr`, `iframe`, `img`, `table`, `tbody`,  `td`,  `tfoot`, `th`, `thead`, or
 `tr`.
 -}
 align : String -> Attribute
