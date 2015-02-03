@@ -246,7 +246,7 @@ div = node "div"
 
 -- TEXT LEVEL SEMANTIC
 
-{-| Represents a hyperlink , linking to another resource. -}
+{-| Represents a hyperlink, linking to another resource. -}
 a : List Attribute -> List Html -> Html
 a = node "a"
 
@@ -258,13 +258,13 @@ em = node "em"
 strong : List Attribute -> List Html -> Html
 strong = node "strong"
 
-{-| Represents a side comment , that is, text like a disclaimer or a
+{-| Represents a side comment, that is, text like a disclaimer or a
 copyright, which is not essential to the comprehension of the document.
 -}
 small : List Attribute -> List Html -> Html
 small = node "small"
 
-{-| Represents content that is no longer accurate or relevant . -}
+{-| Represents content that is no longer accurate or relevant. -}
 s : List Attribute -> List Html -> Html
 s = node "s"
 
@@ -294,7 +294,7 @@ represented in the datetime attribute.
 time : List Attribute -> List Html -> Html
 time = node "time"
 
-{-| Represents computer code . -}
+{-| Represents computer code. -}
 code : List Attribute -> List Html -> Html
 code = node "code"
 
@@ -359,7 +359,7 @@ Japanese furigana.
 ruby : List Attribute -> List Html -> Html
 ruby = node "ruby"
 
-{-| Represents the text of a ruby annotation . -}
+{-| Represents the text of a ruby annotation. -}
 rt : List Attribute -> List Html -> Html
 rt = node "rt"
 
@@ -390,11 +390,11 @@ often brought by global attributes like class, lang, or dir.
 span : List Attribute -> List Html -> Html
 span = node "span"
 
-{-| Represents a line break . -}
+{-| Represents a line break. -}
 br : List Attribute -> List Html -> Html
 br = node "br"
 
-{-| Represents a line break opportunity , that is a suggested point for
+{-| Represents a line break opportunity, that is a suggested point for
 wrapping text in order to improve readability of text split on several lines.
 -}
 wbr : List Attribute -> List Html -> Html
@@ -429,7 +429,7 @@ application or interactive content.
 embed : List Attribute -> List Html -> Html
 embed = node "embed"
 
-{-| Represents an external resource , which is treated as an image, an HTML
+{-| Represents an external resource, which is treated as an image, an HTML
 sub-document, or an external resource to be processed by a plug-in.
 -}
 object : List Attribute -> List Html -> Html
@@ -531,7 +531,7 @@ th = node "th"
 
 -- FORMS
 
-{-| Represents a form , consisting of controls, that can be submitted to a
+{-| Represents a form, consisting of controls, that can be submitted to a
 server for processing.
 -}
 form : List Attribute -> List Html -> Html
@@ -565,7 +565,7 @@ select = node "select"
 datalist : List Attribute -> List Html -> Html
 datalist = node "datalist"
 
-{-| Represents a set of options , logically grouped. -}
+{-| Represents a set of options, logically grouped. -}
 optgroup : List Attribute -> List Html -> Html
 optgroup = node "optgroup"
 
@@ -606,7 +606,7 @@ or controls.
 details : List Attribute -> List Html -> Html
 details = node "details"
 
-{-| Represents a summary , caption , or legend for a given `details`. -}
+{-| Represents a summary, caption, or legend for a given `details`. -}
 summary : List Attribute -> List Html -> Html
 summary = node "summary"
 
