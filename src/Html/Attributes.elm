@@ -702,9 +702,9 @@ wrap value =
 indicates that the click location should be added to the parent `a`'s href as
 a query string.
 -}
-ismap : String -> Attribute
+ismap : Bool -> Attribute
 ismap value =
-    stringProperty "ismap" value
+    boolProperty "isMap" value
 
 {-| Specify the element ID of a `map` that should be used for an `img`,
 `input`, or `object`.
