@@ -702,16 +702,17 @@ wrap value =
 indicates that the click location should be added to the parent `a`'s href as
 a query string.
 -}
-ismap : String -> Attribute
+ismap : Bool -> Attribute
 ismap value =
-    stringProperty "ismap" value
+    boolProperty "isMap" value
 
-{-| Specify the element ID of a `map` that should be used for an `img`,
-`input`, or `object`.
+{-| Specify the hash name reference of a `map` that should be used for an `img`,
+`input`, or `object`. A hash name reference is a hash symbol followed by the element's name or id.
+E.g. `"#planet-map"`.
 -}
 usemap : String -> Attribute
 usemap value =
-    stringProperty "usemap" value
+    stringProperty "useMap" value
 
 {-| Declare the shape of the clickable area in an `a` or `area`. Valid values
 include: default, rect, circle, poly. This attribute can be paired with
