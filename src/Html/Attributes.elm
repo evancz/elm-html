@@ -706,8 +706,8 @@ ismap : Bool -> Attribute
 ismap value =
     boolProperty "isMap" value
 
-{-| Specify the hash name reference of a `map` that should be used for an `img`,
-`input`, or `object`. A hash name reference is a hash symbol followed by the element's name or id.
+{-| Specify the hash name reference of a `map` that should be used for an `img`
+or `object`. A hash name reference is a hash symbol followed by the element's name or id.
 E.g. `"#planet-map"`.
 -}
 usemap : String -> Attribute
