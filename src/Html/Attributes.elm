@@ -669,10 +669,12 @@ min : String -> Attribute
 min value =
     stringProperty "min" value
 
-{-| Add a step size to an `input`. -}
-step : Int -> Attribute
+{-| Add a step size to an `input`. Use `step "any"` to allow any floating-point
+number to be used in the input.
+-}
+step : String -> Attribute
 step n =
-    stringProperty "step" (toString n)
+    stringProperty "step" n
 
 
 --------------------------
