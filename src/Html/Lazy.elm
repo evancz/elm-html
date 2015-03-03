@@ -14,7 +14,7 @@ benchmark to be sure!
 @docs lazy, lazy2, lazy3
 -}
 
-import Html (Html)
+import Html exposing (Html)
 import VirtualDom
 
 

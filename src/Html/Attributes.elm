@@ -88,7 +88,7 @@ Pretty much all of the functions in `Html.Attributes` are defined with
 
 -}
 
-import Html (Attribute)
+import Html exposing (Attribute)
 import Json.Encode as Json
 import List
 import String

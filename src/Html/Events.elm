@@ -22,31 +22,30 @@ of events as seen in the [TodoMVC][] example.
 @docs on, targetValue, targetChecked, keyCode
 -}
 
-import Html (Attribute)
-import Json.Decode as Json
-import Json.Decode (..)
+import Html exposing (Attribute)
+import JavaScript.Decode as JS exposing (..)
 import Mailbox
 import VirtualDom
 
 
-on : String -> Json.Decoder a -> (a -> Mailbox.Message) -> Attribute
+on : String -> JS.Decoder a -> (a -> Mailbox.Message) -> Attribute
 on =
     VirtualDom.on
 
 
 -- COMMON DECODERS
 
-targetValue : Json.Decoder String
+targetValue : JS.Decoder String
 targetValue =
     at ["target", "value"] string
 
 
-targetChecked : Json.Decoder Bool
+targetChecked : JS.Decoder Bool
 targetChecked =
     at ["target", "checked"] bool
 
 
-keyCode : Json.Decoder Int
+keyCode : JS.Decoder Int
 keyCode =
     ("keyCode" := int)
 
