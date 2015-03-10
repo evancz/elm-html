@@ -24,11 +24,10 @@ of events as seen in the [TodoMVC][] example.
 
 import Html exposing (Attribute)
 import JavaScript.Decode as JS exposing (..)
-import Mailbox
 import VirtualDom
 
 
-on : String -> JS.Decoder a -> (a -> Mailbox.Message) -> Attribute
+on : String -> JS.Decoder a -> (a -> Stream.Message) -> Attribute
 on =
     VirtualDom.on
 
@@ -52,52 +51,52 @@ keyCode =
 
 -- MouseEvent
 
-messageOn : String -> Mailbox.Message -> Attribute
+messageOn : String -> Stream.Message -> Attribute
 messageOn name msg =
     on name value (always msg)
 
 
-onClick : Mailbox.Message -> Attribute
+onClick : Stream.Message -> Attribute
 onClick =
     messageOn "click"
 
 
-onDoubleClick : Mailbox.Message -> Attribute
+onDoubleClick : Stream.Message -> Attribute
 onDoubleClick =
     messageOn "dblclick"
 
 
-onMouseMove : Mailbox.Message -> Attribute
+onMouseMove : Stream.Message -> Attribute
 onMouseMove =
     messageOn "mousemove"
 
 
-onMouseDown : Mailbox.Message -> Attribute
+onMouseDown : Stream.Message -> Attribute
 onMouseDown =
     messageOn "mousedown"
 
 
-onMouseUp : Mailbox.Message -> Attribute
+onMouseUp : Stream.Message -> Attribute
 onMouseUp =
     messageOn "mouseup"
 
 
-onMouseEnter : Mailbox.Message -> Attribute
+onMouseEnter : Stream.Message -> Attribute
 onMouseEnter =
     messageOn "mouseenter"
 
 
-onMouseLeave : Mailbox.Message -> Attribute
+onMouseLeave : Stream.Message -> Attribute
 onMouseLeave =
     messageOn "mouseleave"
 
 
-onMouseOver : Mailbox.Message -> Attribute
+onMouseOver : Stream.Message -> Attribute
 onMouseOver =
     messageOn "mouseover"
 
 
-onMouseOut : Mailbox.Message -> Attribute
+onMouseOut : Stream.Message -> Attribute
 onMouseOut =
     messageOn "mouseout"
 
@@ -105,38 +104,38 @@ onMouseOut =
 
 -- KeyboardEvent
 
-onKey : String -> (Int -> Mailbox.Message) -> Attribute
+onKey : String -> (Int -> Stream.Message) -> Attribute
 onKey name =
     on name keyCode
 
 
-onKeyUp : (Int -> Mailbox.Message) -> Attribute
+onKeyUp : (Int -> Stream.Message) -> Attribute
 onKeyUp =
     onKey "keyup"
 
 
-onKeyDown : (Int -> Mailbox.Message) -> Attribute
+onKeyDown : (Int -> Stream.Message) -> Attribute
 onKeyDown =
     onKey "keydown"
 
 
-onKeyPress : (Int -> Mailbox.Message) -> Attribute
+onKeyPress : (Int -> Stream.Message) -> Attribute
 onKeyPress =
     onKey "keypress"
 
 
 -- Simple Events
 
-onBlur : Mailbox.Message -> Attribute
+onBlur : Stream.Message -> Attribute
 onBlur =
     messageOn "blur"
 
 
-onFocus : Mailbox.Message -> Attribute
+onFocus : Stream.Message -> Attribute
 onFocus =
     messageOn "focus"
 
 
-onSubmit : Mailbox.Message -> Attribute
+onSubmit : Stream.Message -> Attribute
 onSubmit =
     messageOn "submit"
