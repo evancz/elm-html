@@ -24,7 +24,7 @@ expect to use frequently will be closer to the top.
 @docs img, iframe, canvas, svg, math
 
 # Inputs
-@docs form, input, textarea, button, select, option
+@docs form, input', textarea, button, select, option
 
 # Sections
 @docs section, nav, article, aside, header, footer, address, main', body
@@ -39,7 +39,7 @@ expect to use frequently will be closer to the top.
 # Less Common Elements
 
 ## Less Common Inputs
-@docs fieldset, legend, label, datalist, optgroup, keygen, output, progress, meter
+@docs fieldset, legend, label, datalist, optgroup, keygen, output', progress, meter
 
 
 ## Audio and Video
@@ -550,8 +550,8 @@ label : List Attribute -> List Html -> Html
 label = node "label"
 
 {-| Represents a typed data field allowing the user to edit the data. -}
-input : List Attribute -> List Html -> Html
-input = node "input"
+input' : List Attribute -> List Html -> Html
+input' = node "input"
 
 {-| Represents a button. -}
 button : List Attribute -> List Html -> Html
@@ -584,8 +584,8 @@ keygen : List Attribute -> List Html -> Html
 keygen = node "keygen"
 
 {-| Represents the result of a calculation. -}
-output : List Attribute -> List Html -> Html
-output = node "output"
+output' : List Attribute -> List Html -> Html
+output' = node "output"
 
 {-| Represents the completion progress of a task. -}
 progress : List Attribute -> List Html -> Html
