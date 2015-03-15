@@ -398,9 +398,9 @@ loop bool =
     boolProperty "loop" bool
 
 {-| Control how much of an `audio` or `video` resource should be preloaded. -}
-preload : Bool -> Attribute
-preload bool =
-    boolProperty "preload" bool
+preload : String -> Attribute
+preload value =
+    stringProperty "preload" value
 
 {-| A URL indicating a poster frame to show until the user plays or seeks the
 `video`.
