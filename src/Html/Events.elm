@@ -24,10 +24,11 @@ of events as seen in the [TodoMVC][] example.
 
 import Html exposing (Attribute)
 import JavaScript.Decode as JS exposing (..)
+import Port
 import VirtualDom
 
 
-on : String -> JS.Decoder a -> (a -> Stream.Message) -> Attribute
+on : String -> JS.Decoder a -> (a -> Port.Message) -> Attribute
 on =
     VirtualDom.on
 
@@ -51,52 +52,52 @@ keyCode =
 
 -- MouseEvent
 
-messageOn : String -> Stream.Message -> Attribute
+messageOn : String -> Port.Message -> Attribute
 messageOn name msg =
     on name value (always msg)
 
 
-onClick : Stream.Message -> Attribute
+onClick : Port.Message -> Attribute
 onClick =
     messageOn "click"
 
 
-onDoubleClick : Stream.Message -> Attribute
+onDoubleClick : Port.Message -> Attribute
 onDoubleClick =
     messageOn "dblclick"
 
 
-onMouseMove : Stream.Message -> Attribute
+onMouseMove : Port.Message -> Attribute
 onMouseMove =
     messageOn "mousemove"
 
 
-onMouseDown : Stream.Message -> Attribute
+onMouseDown : Port.Message -> Attribute
 onMouseDown =
     messageOn "mousedown"
 
 
-onMouseUp : Stream.Message -> Attribute
+onMouseUp : Port.Message -> Attribute
 onMouseUp =
     messageOn "mouseup"
 
 
-onMouseEnter : Stream.Message -> Attribute
+onMouseEnter : Port.Message -> Attribute
 onMouseEnter =
     messageOn "mouseenter"
 
 
-onMouseLeave : Stream.Message -> Attribute
+onMouseLeave : Port.Message -> Attribute
 onMouseLeave =
     messageOn "mouseleave"
 
 
-onMouseOver : Stream.Message -> Attribute
+onMouseOver : Port.Message -> Attribute
 onMouseOver =
     messageOn "mouseover"
 
 
-onMouseOut : Stream.Message -> Attribute
+onMouseOut : Port.Message -> Attribute
 onMouseOut =
     messageOn "mouseout"
 
@@ -104,38 +105,38 @@ onMouseOut =
 
 -- KeyboardEvent
 
-onKey : String -> (Int -> Stream.Message) -> Attribute
+onKey : String -> (Int -> Port.Message) -> Attribute
 onKey name =
     on name keyCode
 
 
-onKeyUp : (Int -> Stream.Message) -> Attribute
+onKeyUp : (Int -> Port.Message) -> Attribute
 onKeyUp =
     onKey "keyup"
 
 
-onKeyDown : (Int -> Stream.Message) -> Attribute
+onKeyDown : (Int -> Port.Message) -> Attribute
 onKeyDown =
     onKey "keydown"
 
 
-onKeyPress : (Int -> Stream.Message) -> Attribute
+onKeyPress : (Int -> Port.Message) -> Attribute
 onKeyPress =
     onKey "keypress"
 
 
 -- Simple Events
 
-onBlur : Stream.Message -> Attribute
+onBlur : Port.Message -> Attribute
 onBlur =
     messageOn "blur"
 
 
-onFocus : Stream.Message -> Attribute
+onFocus : Port.Message -> Attribute
 onFocus =
     messageOn "focus"
 
 
-onSubmit : Stream.Message -> Attribute
+onSubmit : Port.Message -> Attribute
 onSubmit =
     messageOn "submit"
