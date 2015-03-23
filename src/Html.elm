@@ -62,7 +62,7 @@ expect to use frequently will be closer to the top.
 
 -}
 
-import Graphics.Element (Element)
+import Graphics.Element exposing (Element)
 import VirtualDom
 
 
