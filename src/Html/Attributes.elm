@@ -89,7 +89,7 @@ Pretty much all of the functions in `Html.Attributes` are defined with
 -}
 
 import Html exposing (Attribute)
-import JavaScript.Encode as JS
+import Json.Encode as Json
 import String
 import VirtualDom
 
@@ -130,8 +130,8 @@ recommendation is to use this function lightly.
 style : List (String, String) -> Attribute
 style props =
   props
-    |> List.map (\(key,value) -> (key, JS.string value))
-    |> JS.object
+    |> List.map (\(key,value) -> (key, Json.string value))
+    |> Json.object
     |> property "style"
 
 
@@ -175,19 +175,19 @@ classList list =
 Notice that you must give the *property* name, so we use `className` as it
 would be in JavaScript, not `class` as it would appear in HTML.
 -}
-property : String -> JS.Value -> Attribute
+property : String -> Json.Value -> Attribute
 property =
     VirtualDom.property
 
 
 stringProperty : String -> String -> Attribute
 stringProperty name string =
-    property name (JS.string string)
+    property name (Json.string string)
 
 
 boolProperty : String -> Bool -> Attribute
 boolProperty name bool =
-    property name (JS.bool bool)
+    property name (Json.bool bool)
 
 
 {-| Create arbitrary HTML *attributes*. Maps onto JavaScript&rsquo;s

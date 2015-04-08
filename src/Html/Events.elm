@@ -23,81 +23,81 @@ of events as seen in the [TodoMVC][] example.
 -}
 
 import Html exposing (Attribute)
-import JavaScript.Decode as JS exposing (..)
-import Port
+import Json.Decode as Json exposing (..)
+import Signal
 import VirtualDom
 
 
-on : String -> JS.Decoder a -> (a -> Port.Message) -> Attribute
+on : String -> Json.Decoder a -> (a -> Signal.Message) -> Attribute
 on =
     VirtualDom.on
 
 
 -- COMMON DECODERS
 
-targetValue : JS.Decoder String
+targetValue : Json.Decoder String
 targetValue =
     at ["target", "value"] string
 
 
-targetChecked : JS.Decoder Bool
+targetChecked : Json.Decoder Bool
 targetChecked =
     at ["target", "checked"] bool
 
 
-keyCode : JS.Decoder Int
+keyCode : Json.Decoder Int
 keyCode =
     ("keyCode" := int)
 
 
 -- MouseEvent
 
-messageOn : String -> Port.Message -> Attribute
+messageOn : String -> Signal.Message -> Attribute
 messageOn name msg =
     on name value (always msg)
 
 
-onClick : Port.Message -> Attribute
+onClick : Signal.Message -> Attribute
 onClick =
     messageOn "click"
 
 
-onDoubleClick : Port.Message -> Attribute
+onDoubleClick : Signal.Message -> Attribute
 onDoubleClick =
     messageOn "dblclick"
 
 
-onMouseMove : Port.Message -> Attribute
+onMouseMove : Signal.Message -> Attribute
 onMouseMove =
     messageOn "mousemove"
 
 
-onMouseDown : Port.Message -> Attribute
+onMouseDown : Signal.Message -> Attribute
 onMouseDown =
     messageOn "mousedown"
 
 
-onMouseUp : Port.Message -> Attribute
+onMouseUp : Signal.Message -> Attribute
 onMouseUp =
     messageOn "mouseup"
 
 
-onMouseEnter : Port.Message -> Attribute
+onMouseEnter : Signal.Message -> Attribute
 onMouseEnter =
     messageOn "mouseenter"
 
 
-onMouseLeave : Port.Message -> Attribute
+onMouseLeave : Signal.Message -> Attribute
 onMouseLeave =
     messageOn "mouseleave"
 
 
-onMouseOver : Port.Message -> Attribute
+onMouseOver : Signal.Message -> Attribute
 onMouseOver =
     messageOn "mouseover"
 
 
-onMouseOut : Port.Message -> Attribute
+onMouseOut : Signal.Message -> Attribute
 onMouseOut =
     messageOn "mouseout"
 
@@ -105,38 +105,38 @@ onMouseOut =
 
 -- KeyboardEvent
 
-onKey : String -> (Int -> Port.Message) -> Attribute
+onKey : String -> (Int -> Signal.Message) -> Attribute
 onKey name =
     on name keyCode
 
 
-onKeyUp : (Int -> Port.Message) -> Attribute
+onKeyUp : (Int -> Signal.Message) -> Attribute
 onKeyUp =
     onKey "keyup"
 
 
-onKeyDown : (Int -> Port.Message) -> Attribute
+onKeyDown : (Int -> Signal.Message) -> Attribute
 onKeyDown =
     onKey "keydown"
 
 
-onKeyPress : (Int -> Port.Message) -> Attribute
+onKeyPress : (Int -> Signal.Message) -> Attribute
 onKeyPress =
     onKey "keypress"
 
 
 -- Simple Events
 
-onBlur : Port.Message -> Attribute
+onBlur : Signal.Message -> Attribute
 onBlur =
     messageOn "blur"
 
 
-onFocus : Port.Message -> Attribute
+onFocus : Signal.Message -> Attribute
 onFocus =
     messageOn "focus"
 
 
-onSubmit : Port.Message -> Attribute
+onSubmit : Signal.Message -> Attribute
 onSubmit =
     messageOn "submit"
