@@ -24,7 +24,6 @@ of events as seen in the [TodoMVC][] example.
 
 import Html exposing (Attribute)
 import Json.Decode as Json exposing (..)
-import Signal
 import VirtualDom
 
 
