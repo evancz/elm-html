@@ -1,4 +1,14 @@
-module Html.Events where
+module Html.Events
+    ( onBlur, onFocus, onSubmit
+    , onKeyUp, onKeyDown, onKeyPress
+    , onClick, onDoubleClick
+    , onMouseMove
+    , onMouseDown, onMouseUp
+    , onMouseEnter, onMouseLeave
+    , onMouseOver, onMouseOut
+    , on
+    , targetValue, targetChecked, keyCode
+    ) where
 {-|
 It is often helpful to create an [Union Type][] so you can have many different kinds
 of events as seen in the [TodoMVC][] example.
