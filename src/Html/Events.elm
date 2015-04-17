@@ -51,52 +51,52 @@ keyCode =
 
 -- MouseEvent
 
-messageOn : String -> Signal.Message -> Attribute
-messageOn name msg =
-    on name value (always msg)
+messageOn : String -> Signal.Address a -> a -> Attribute
+messageOn name addr msg =
+    on name value (\_ -> Signal.message addr msg)
 
 
-onClick : Signal.Message -> Attribute
+onClick : Signal.Address a -> a -> Attribute
 onClick =
     messageOn "click"
 
 
-onDoubleClick : Signal.Message -> Attribute
+onDoubleClick : Signal.Address a -> a -> Attribute
 onDoubleClick =
     messageOn "dblclick"
 
 
-onMouseMove : Signal.Message -> Attribute
+onMouseMove : Signal.Address a -> a -> Attribute
 onMouseMove =
     messageOn "mousemove"
 
 
-onMouseDown : Signal.Message -> Attribute
+onMouseDown : Signal.Address a -> a -> Attribute
 onMouseDown =
     messageOn "mousedown"
 
 
-onMouseUp : Signal.Message -> Attribute
+onMouseUp : Signal.Address a -> a -> Attribute
 onMouseUp =
     messageOn "mouseup"
 
 
-onMouseEnter : Signal.Message -> Attribute
+onMouseEnter : Signal.Address a -> a -> Attribute
 onMouseEnter =
     messageOn "mouseenter"
 
 
-onMouseLeave : Signal.Message -> Attribute
+onMouseLeave : Signal.Address a -> a -> Attribute
 onMouseLeave =
     messageOn "mouseleave"
 
 
-onMouseOver : Signal.Message -> Attribute
+onMouseOver : Signal.Address a -> a -> Attribute
 onMouseOver =
     messageOn "mouseover"
 
 
-onMouseOut : Signal.Message -> Attribute
+onMouseOut : Signal.Address a -> a -> Attribute
 onMouseOut =
     messageOn "mouseout"
 
@@ -104,38 +104,38 @@ onMouseOut =
 
 -- KeyboardEvent
 
-onKey : String -> (Int -> Signal.Message) -> Attribute
-onKey name =
-    on name keyCode
+onKey : String -> Signal.Address a -> (Int -> a) -> Attribute
+onKey name addr handler =
+    on name keyCode (\code -> Signal.message addr (handler code))
 
 
-onKeyUp : (Int -> Signal.Message) -> Attribute
+onKeyUp : Signal.Address a -> (Int -> a) -> Attribute
 onKeyUp =
     onKey "keyup"
 
 
-onKeyDown : (Int -> Signal.Message) -> Attribute
+onKeyDown : Signal.Address a -> (Int -> a) -> Attribute
 onKeyDown =
     onKey "keydown"
 
 
-onKeyPress : (Int -> Signal.Message) -> Attribute
+onKeyPress : Signal.Address a -> (Int -> a) -> Attribute
 onKeyPress =
     onKey "keypress"
 
 
 -- Simple Events
 
-onBlur : Signal.Message -> Attribute
+onBlur : Signal.Address a -> a -> Attribute
 onBlur =
     messageOn "blur"
 
 
-onFocus : Signal.Message -> Attribute
+onFocus : Signal.Address a -> a -> Attribute
 onFocus =
     messageOn "focus"
 
 
-onSubmit : Signal.Message -> Attribute
+onSubmit : Signal.Address a -> a -> Attribute
 onSubmit =
     messageOn "submit"
