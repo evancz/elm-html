@@ -193,11 +193,9 @@ boolProperty name bool =
 {-| Create arbitrary HTML *attributes*. Maps onto JavaScript&rsquo;s
 `setAttribute` function under the hood.
 
-    import JavaScript.Encode (string)
-
     greeting : Html
     greeting =
-        div [ attribute "class" (string "greeting") ] [
+        div [ attribute "class" "greeting" ] [
           text "Hello!"
         ]
 
