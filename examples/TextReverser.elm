@@ -1,10 +1,9 @@
 module TextReverser where
 
 import Graphics.Input as Input
-import Html (Html, Attribute, text, toElement, div, input)
-import Html.Attributes (..)
-import Html.Events (on, targetValue)
-import Signal
+import Html exposing (Html, Attribute, text, toElement, div, input)
+import Html.Attributes exposing (..)
+import Html.Events exposing (on, targetValue)
 import String
 
 
@@ -12,30 +11,31 @@ import String
 
 view : String -> Html
 view string =
-    div []
-        [ stringInput string
-        , reversedString string
-        ]
+  div []
+    [ stringInput string
+    , reversedString string
+    ]
 
 
 reversedString : String -> Html
 reversedString string =
-    div [ myStyle ] [ text (String.reverse string) ]
+  div [ myStyle ] [ text (String.reverse string) ]
 
 
 stringInput : String -> Html
 stringInput string =
-    input
-        [ placeholder "Text to reverse"
-        , value string
-        , on "input" targetValue (Signal.send updates << identity)
-        , myStyle
-        ]
-        []
+  input
+    [ placeholder "Text to reverse"
+    , value string
+    , on "input" targetValue (Signal.message actions.address)
+    , myStyle
+    ]
+    []
 
 
 myStyle : Attribute
-myStyle = style
+myStyle =
+  style
     [ ("width", "100%")
     , ("height", "40px")
     , ("padding", "10px 0")
@@ -48,8 +48,8 @@ myStyle = style
 
 main : Signal Html
 main =
-    Signal.map view (Signal.subscribe updates)
+  Signal.map view actions.signal
 
-updates : Signal.Channel String
-updates =
-    Signal.channel ""
+actions : Signal.Mailbox String
+actions =
+  Signal.mailbox ""
