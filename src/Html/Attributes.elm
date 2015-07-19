@@ -187,11 +187,11 @@ classList list =
 
 {-| Create arbitrary *properties*.
 
-    import JavaScript.Encode (string)
+    import Json.Encode as Json
 
     greeting : Html
     greeting =
-        div [ property "className" (string "greeting") ] [
+        div [ property "className" (Json.string "greeting") ] [
           text "Hello!"
         ]
 
