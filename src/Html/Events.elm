@@ -95,7 +95,7 @@ event. This is often useful for input event on text fields.
 
     onInput : Signal.Address a -> (String -> a) -> Attribute
     onInput address contentToValue =
-        on "input" targetValue (\str -> Signal.message addr (contentToValue str))
+        on "input" targetValue (\str -> Signal.message address (contentToValue str))
 -}
 targetValue : Json.Decoder String
 targetValue =
@@ -107,7 +107,7 @@ event. This is useful for input event on checkboxes.
 
     onInput : Signal.Address a -> (Bool -> a) -> Attribute
     onInput address contentToValue =
-        on "input" targetChecked (\bool -> Signal.message addr (contentToValue bool))
+        on "input" targetChecked (\bool -> Signal.message address (contentToValue bool))
 -}
 targetChecked : Json.Decoder Bool
 targetChecked =
