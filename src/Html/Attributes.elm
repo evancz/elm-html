@@ -619,7 +619,7 @@ defined in the surrounding `form`.
 -}
 formaction : String -> Attribute
 formaction value =
-  stringProperty "formaction" value
+  stringProperty "formAction" value
 
 
 {-| Associates an `input` with a `datalist` tag. The datalist gives some
