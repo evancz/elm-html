@@ -263,7 +263,7 @@ title name =
 {-| Defines a keyboard shortcut to activate or add focus to the element. -}
 accesskey : Char -> Attribute
 accesskey char =
-  stringProperty "accesskey" (String.fromList [char])
+  stringProperty "accessKey" (String.fromChar char)
 
 
 {-| Indicates whether the element's content is editable. -}
