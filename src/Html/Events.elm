@@ -228,7 +228,14 @@ onFocus =
   messageOn "focus"
 
 
-{-|-}
+{-| Capture a [submit](https://developer.mozilla.org/en-US/docs/Web/Events/submit)
+event with [`preventDefault`](https://developer.mozilla.org/en-US/docs/Web/API/Event/preventDefault)
+in order to prevent the form from changing the page’s location.
+-}
 onSubmit : Signal.Address a -> a -> Attribute
-onSubmit =
-  messageOn "submit"
+onSubmit addr msg =
+  onWithOptions "submit" onSubmitOptions value (\_ -> Signal.message addr msg)
+
+
+onSubmitOptions =
+  { defaultOptions | preventDefault <- True }
