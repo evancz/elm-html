@@ -1,7 +1,6 @@
 module TextReverser where
 
-import Graphics.Input as Input
-import Html exposing (Html, Attribute, text, toElement, div, input)
+import Html exposing (Html, Attribute, text, div, input)
 import Html.Attributes exposing (..)
 import Html.Events exposing (on, targetValue)
 import String

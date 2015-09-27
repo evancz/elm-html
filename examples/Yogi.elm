@@ -1,5 +1,5 @@
 
-import Html exposing (Html, toElement, img)
+import Html exposing (Html, img)
 import Html.Attributes exposing (src, style)
 import Time exposing (fps)
 import Window
