@@ -277,7 +277,7 @@ context menu.
 -}
 contextmenu : String -> Attribute
 contextmenu value =
-  stringProperty "contextmenu" value
+  attribute "contextmenu" value
 
 
 {-| Defines the text direction. Allowed values are ltr (Left-To-Right) or rtl
