@@ -571,7 +571,7 @@ action value =
   stringProperty "action" value
 
 
-{-| Indicates whether a `form` anor `input` can have their values automatically
+{-| Indicates whether a `form` or an `input` can have their values automatically
 completed by the browser.
 -}
 autocomplete : Bool -> Attribute
