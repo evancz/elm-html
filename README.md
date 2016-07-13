@@ -1,6 +1,6 @@
 # DEPRECATED
 
-Use [`elm-lang/html`](https://github.com/elm-lang/html/) instead. It's way better!
+Use [`elm-lang/html`](http://package.elm-lang.org/packages/elm-lang/html/latest/) instead. It's way better!
 
 
 ## Story
