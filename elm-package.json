@@ -6,7 +6,12 @@
     "source-directories": [
         "src"
     ],
-    "exposed-modules": [],
+    "exposed-modules": [
+        "Html",
+        "Html.Attributes",
+        "Html.Events",
+        "Html.Lazy"
+    ],
     "dependencies": {
         "elm-lang/core": "2.0.0 <= v < 4.0.0",
         "evancz/virtual-dom": "2.0.0 <= v < 3.0.0"
