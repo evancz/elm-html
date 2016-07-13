@@ -7,7 +7,7 @@ module Html.Lazy where
 Check out the README for more information. You cannot publish modules with no
 functions, so it just contains a silly value:
 
-@docs howMuchWoodCouldAWoodChuckChuckIfAWoodChuckCouldChuckWood
+@docs howMuchWoodWouldAWoodChuckChuckIfAWoodChuckCouldChuckWood
 -}
 
 {-|-}
